@@ -1,8 +1,8 @@
 # Tutoriat: Utilizarea Sistemelor de Operare (USO)
 
-Repository-ul oficial cu materialele practice, scheletele de laborator, soluțiile complete și slide-urile introductive pentru tutoriatul de **Utilizarea Sistemelor de Operare (USO)**[span_1](start_span)[span_1](end_span), susținut la **Facultatea de Matematică și Informatică, Universitatea din București**[span_2](start_span)[span_2](end_span).
+Repository-ul oficial cu materialele practice, scheletele de laborator, soluțiile complete și slide-urile introductive pentru tutoriatul de **Utilizarea Sistemelor de Operare (USO)**, susținut la **Facultatea de Matematică și Informatică, Universitatea din București**[span_2](start_span)[span_2](end_span).
 
-Laboratorul este orientat pe **mediul Linux/UNIX**, programare de sistem în limbajul **C (standard POSIX)** și automatizare prin **Bash scripting**[span_3](start_span)[span_3](end_span)[span_4](start_span)[span_4](end_span).
+Laboratorul este orientat pe **mediul Linux/UNIX**, programare de sistem în limbajul **C (standard POSIX)** și automatizare prin **Bash scripting**.
 
 ---
 
