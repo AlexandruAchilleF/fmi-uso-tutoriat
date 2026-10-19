@@ -120,3 +120,9 @@ sudo apt install -y build-essential gcc gdb make valgrind tmux manpages-dev manp
 
 * In cazul in care identifici erori de redactare, probleme de compilare in schelete sau doresti sa propui o implementare alternativa, deschide un **Pull Request** sau semnaleaza situatia in sectiunea de **Issues**.
 * Recomandarea este sa rulezi `git pull` inainte de fiecare sedinta de tutoriat pentru a prelua la zi materialele adaugate.
+
+---
+
+## Tutoriat Utilizarea Sistemelor de Operare 2025
+
+*Mai multe materiale pot fi gasite in repo-ul https://github.com/VladCiobotenco/USO-Tutoring .
