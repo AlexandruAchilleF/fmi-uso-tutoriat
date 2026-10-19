@@ -25,3 +25,6 @@ valgrind-out.txt
 *.log
 build/
 bin/
+
+# Quiz-uri Kahoot (pastrate local pentru a nu fi vazute in avans de studenti)
+**/kahoot/
