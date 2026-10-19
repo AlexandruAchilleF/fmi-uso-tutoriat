@@ -43,7 +43,7 @@ fmi-uso-tutoriat/
 
 | Sesiune | Tematica Abordata | Concepte si Apeluri Cheie |
 | :--- | :--- | :--- |
-| **Tutoriat 01** | Arhitectura Linux, Kernel/User Mode, CLI de Baza | `cd`, `ls -la`, `mkdir`, `cp`, `mv`, `$PATH`, `gcc -Wall` |
+| **[Tutoriat 01](tutoriat-01/)** | Arhitectura Linux, Kernel/User Mode, CLI de Baza | `cd`, `ls -la`, `mkdir`, `cp`, `mv`, `$PATH`, `gcc -Wall` |
 | **Tutoriat 02** | Utilitare Text, Filtre, Despecializare si Redirectari | `grep`, `sort`, `uniq`, `wc`, pipe `\|`, redirectari `<`, `>`, `2>`|
 | **Tutoriat 03** | Shell Scripting in Bash: Conditii, Bucle si Automatizari | `if [ ... ]`, `test`, `for`, `while read`, `$1..$n`, `$(( ))`, `$( )`|
 | **Tutoriat 04** | Interfata C: Apeluri Sistem vs Biblioteca Standard C | TRAP, `errno`, `perror()`, `open()`, `read()`, `write()`, `FILE*` |

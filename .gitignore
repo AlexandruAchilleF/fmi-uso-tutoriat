@@ -1,0 +1,27 @@
+# Binare executabile
+exercitiu
+program
+*.out
+*.exe
+
+# Fisiere obiect si biblioteci
+*.o
+*.a
+*.so
+*.dylib
+
+# Fisiere temporare si de editor
+*~
+*.swp
+*.swo
+.DS_Store
+
+# Fisiere de depanare / profiling
+*.dSYM/
+gmon.out
+valgrind-out.txt
+
+# Log-uri si directoare temporare de build
+*.log
+build/
+bin/

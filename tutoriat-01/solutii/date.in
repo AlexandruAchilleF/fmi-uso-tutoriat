@@ -1,0 +1,8 @@
+Linux este un nucleu de sistem de operare monolitic si modular.
+Creat de Linus Torvalds in anul 1991 la Universitatea din Helsinki.
+Filosofia UNIX promoveaza programe mici si specializate conectate prin conducte.
+Comenzile de baza precum ls, cp, mv si cat sunt utilitare de nivel utilizator.
+Fiecare fisier si director este identificat unic intr-un arbore unic ierarhic.
+Compilatorul GCC traduce codul C in binar nativ prin patru etape de compilare.
+Directorul curent notat cu punct nu este in PATH din motive critice de securitate.
+Modul Kernel are acces direct la hardware in timp ce User Mode este izolat.
