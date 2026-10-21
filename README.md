@@ -23,7 +23,8 @@ fmi-uso-tutoriat/
 │
 ├── tutoriat-01/
 │   ├── README.md                      # Breviar teoretic, comenzi sintetizate și ghid de rulare
-│   ├── slides.pdf                     # Diagramele conceptuale prezentate la începutul ședinței
+│   ├── slides.html                    # Slide-urile interactive (se deschid în browser)
+│   ├── slides.pdf                     # Aceleași slide-uri, export static pentru printat
 │   ├── schelet/                       # Cod sursă cu marcaje /* TODO */ și date de test
 │   │   ├── Makefile                   # Automatizarea compilării
 │   │   ├── exercitiu.c
@@ -65,7 +66,16 @@ git clone [https://github.com/AlexandruAchilleF/fmi-uso-tutoriat.git](https://gi
 cd fmi-uso-tutoriat
 ```
 
-### 2. Cum lucrezi la o sedinta de tutoriat
+### 2. Slide-urile
+
+Fiecare sedinta are slide-uri interactive in `slides.html`. Deschide fisierul in orice browser (dublu-click sau `xdg-open tutoriat-01/slides.html`):
+* navighezi cu sagetile `←` `→` sau cu butoanele de jos;
+* pe slide-uri poti apasa pe diagrame, comenzi si exemple ca sa vezi ce se intampla;
+* butonul **Tema** comuta intre fundal deschis si inchis.
+
+`slides.pdf` contine aceleasi slide-uri ca imagini statice, pentru printat.
+
+### 3. Cum lucrezi la o sedinta de tutoriat
 In timpul tutoriatului, intra direct in folderul `schelet` al laboratorului curent:
 ```bash
 cd tutoriat-05/schelet
@@ -79,7 +89,7 @@ cd tutoriat-05/schelet
   make clean  # sterge fisierele binare temporare
   ```
 
-### 3. Verificarea solutiei
+### 4. Verificarea solutiei
 Daca te-ai blocat sau vrei sa compari implementarea ta cu varianta demonstrata la videoproiector, consulta fisierele din folderul `solutii/`:
 ```bash
 cd ../solutii

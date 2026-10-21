@@ -331,7 +331,8 @@ Repository-ul acestui tutoriat conține următoarele directoare și fișiere:
 ```text
 tutoriat-01/
 ├── README.md                      # Prezentul breviar teoretic și ghid
-├── slides.pdf                     # Slide-urile cu diagramele arhitecturale de nucleu
+├── slides.html                    # Slide-urile interactive (deschide în browser, navighezi cu ← →)
+├── slides.pdf                     # Export static al slide-urilor, pentru printat
 ├── schelet/                       # Codul C de lucru pentru studenti
 │   ├── Makefile                   # Automatizarea compilarii
 │   ├── exercitiu.c                # Scheletul C cu instructiuni /* TODO */

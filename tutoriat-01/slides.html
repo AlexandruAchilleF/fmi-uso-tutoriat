@@ -1,0 +1,1136 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>USO Tutoriat 01</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: o scenă 16:9 (1280×720) scalată pe ecran; sub 760px slide-urile se așază unul sub altul. */
+:root {
+  --bg: #eef1f0;          /* fundal liniștit, gri cu o tentă de verde */
+  --surface: #ffffff;
+  --surface-2: #f6f8f7;
+  --ink: #1d282c;
+  --muted: #5d6b6f;
+  --line: #d9e0de;
+  --accent: #2c7a74;      /* user space, acțiuni */
+  --accent-soft: #dcefec;
+  --kernel: #a8701c;      /* kernel / zona privilegiată */
+  --kernel-soft: #f6ead6;
+  --ok: #3a8455;
+  --ok-soft: #e0f0e5;
+  --bad: #b04f45;
+  --bad-soft: #f6e1de;
+  --term-bg: #1f2a2e;
+  --term-ink: #dfe7e5;
+  --term-dim: #8fa19f;
+  --term-green: #8fd4a6;
+  --term-blue: #8cc2e6;
+  --font-ui: "Onest", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151b1d; --surface: #1d2629; --surface-2: #192124; --ink: #e3eae8; --muted: #95a4a6; --line: #2e3a3d;
+    --accent: #62b6ae; --accent-soft: #1e3633; --kernel: #d6a552; --kernel-soft: #352c1c;
+    --ok: #6fbf8a; --ok-soft: #1d3326; --bad: #e08378; --bad-soft: #3a2422;
+    --term-bg: #0f1517; --term-ink: #dfe7e5; --term-dim: #7f9290; --term-green: #8fd4a6; --term-blue: #8cc2e6;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #151b1d; --surface: #1d2629; --surface-2: #192124; --ink: #e3eae8; --muted: #95a4a6; --line: #2e3a3d;
+  --accent: #62b6ae; --accent-soft: #1e3633; --kernel: #d6a552; --kernel-soft: #352c1c;
+  --ok: #6fbf8a; --ok-soft: #1d3326; --bad: #e08378; --bad-soft: #3a2422;
+  --term-bg: #0f1517; --term-ink: #dfe7e5; --term-dim: #7f9290; --term-green: #8fd4a6; --term-blue: #8cc2e6;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 20px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; }
+code, kbd, .mono { font-family: var(--font-mono); font-size: .9em; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+/* ---------- Scena ---------- */
+.viewport {
+  position: fixed; inset: 0;
+  display: grid; place-items: center;
+  overflow: hidden;
+}
+.stage {
+  width: 1280px; height: 720px;
+  position: relative;
+  transform-origin: center center;
+  flex: none;
+}
+.slide {
+  position: absolute; inset: 0;
+  padding: 56px 72px 76px;
+  display: flex; flex-direction: column; gap: 22px;
+  opacity: 0; visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity .35s ease, transform .35s ease, visibility 0s linear .35s;
+}
+.slide.active {
+  opacity: 1; visibility: visible; transform: none;
+  transition: opacity .35s ease, transform .35s ease;
+}
+.eyebrow {
+  font-size: 14px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent);
+}
+h1, h2, h3 { margin: 0; text-wrap: balance; letter-spacing: -.015em; }
+h1 { font-size: 64px; line-height: 1.05; font-weight: 700; }
+h2 { font-size: 40px; line-height: 1.15; font-weight: 700; }
+h3 { font-size: 22px; line-height: 1.3; font-weight: 600; }
+p { margin: 0; }
+.lead { font-size: 22px; color: var(--muted); max-width: 60ch; }
+.muted { color: var(--muted); }
+.small { font-size: 16px; }
+.head { display: flex; flex-direction: column; gap: 8px; }
+.grow { flex: 1; min-height: 0; }
+.row { display: flex; gap: 24px; min-width: 0; }
+.col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.hint { font-size: 15px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.hint::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+
+.panel {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 22px 26px;
+}
+.note {
+  border-left: 3px solid var(--accent); padding: 4px 0 4px 16px; font-size: 18px;
+}
+.note.k { border-color: var(--kernel); }
+
+/* butoane, chip-uri */
+.btn {
+  border: 1px solid var(--line); background: var(--surface); border-radius: 999px;
+  padding: 8px 18px; font-size: 17px; cursor: pointer; font-weight: 500;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.btn[aria-pressed="true"], .btn.on { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn code { font-size: .95em; }
+.btns { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* terminal */
+.term {
+  background: var(--term-bg); color: var(--term-ink);
+  border-radius: 12px; padding: 18px 22px;
+  font-family: var(--font-mono); font-size: 16px; line-height: 1.6;
+  white-space: pre-wrap; overflow: auto; min-width: 0;
+}
+.term .p { color: var(--term-green); }
+.term .d { color: var(--term-dim); }
+.term .b { color: var(--term-blue); }
+.term .e { color: #f0a49b; }
+
+/* ---------- Bara de navigare ---------- */
+.nav {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  display: flex; align-items: center; gap: 14px;
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  font-size: 14px; color: var(--muted);
+  z-index: 5;
+}
+.nav .bar { flex: 1; height: 3px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.nav .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+.nav button {
+  border: 1px solid var(--line); background: var(--surface); border-radius: 999px;
+  width: 36px; height: 36px; cursor: pointer; display: grid; place-items: center; font-size: 16px;
+}
+.nav .count { font-variant-numeric: tabular-nums; min-width: 56px; text-align: center; }
+.nav .theme { width: auto; padding: 0 14px; font-size: 13px; }
+
+/* ---------- 1. Copertă ---------- */
+.cover { justify-content: center; gap: 30px; }
+.cover .term { max-width: 640px; font-size: 18px; }
+.cursor { display: inline-block; width: .6em; height: 1.1em; background: var(--term-green); vertical-align: -3px; animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.cover .meta { display: flex; gap: 28px; font-size: 16px; color: var(--muted); }
+
+/* ---------- 2. Agenda ---------- */
+.route { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.stop { display: flex; flex-direction: column; gap: 10px; padding-top: 18px; border-top: 3px solid var(--line); }
+.stop b { font-size: 14px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.stop h3 { font-size: 21px; }
+.stop p { font-size: 16px; color: var(--muted); }
+.timeline { display: flex; height: 44px; border-radius: 10px; overflow: hidden; font-size: 15px; font-weight: 500; }
+.timeline div { display: flex; align-items: center; padding: 0 14px; white-space: nowrap; overflow: hidden; }
+.tl-a { background: var(--accent-soft); flex: 15; }
+.tl-b { background: var(--accent); color: var(--surface); flex: 60; }
+.tl-c { background: var(--kernel-soft); flex: 10; }
+.tl-d { background: var(--surface); border: 1px solid var(--line); flex: 5; }
+
+/* ---------- 3. Straturi ---------- */
+.layers { display: flex; flex-direction: column; gap: 8px; width: 520px; flex: none; }
+.layer {
+  text-align: left; border: 1px solid var(--line); background: var(--surface);
+  border-radius: 12px; padding: 14px 20px; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  transition: border-color .15s, background .15s, transform .15s;
+}
+.layer span { font-size: 15px; color: var(--muted); }
+.layer:hover { border-color: var(--accent); }
+.layer[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); transform: translateX(6px); }
+.layer.kz { background: var(--kernel-soft); border-color: transparent; }
+.layer.kz[aria-pressed="true"] { border-color: var(--kernel); }
+.layer.hw { background: var(--surface-2); }
+.border-line {
+  display: flex; align-items: center; gap: 12px; font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--kernel); font-weight: 600; padding: 2px 4px; background: none; border: 0; cursor: pointer; text-align: left;
+}
+.border-line::before, .border-line::after { content: ""; flex: 1; border-top: 2px dashed var(--kernel); opacity: .6; }
+.border-line[aria-pressed="true"] { color: var(--ink); }
+.explain { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+.explain .tag { font-size: 14px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.analogy { display: flex; gap: 14px; align-items: flex-start; background: var(--surface-2); border-radius: 12px; padding: 16px 18px; font-size: 18px; }
+.analogy svg { flex: none; }
+
+/* ---------- 4. User / Kernel ---------- */
+.modes { position: relative; display: grid; grid-template-rows: 1fr 54px 1fr; gap: 0; height: 380px; }
+.zone { border-radius: 14px; padding: 18px 22px; display: flex; gap: 22px; align-items: center; position: relative; }
+.zone.user { background: var(--accent-soft); }
+.zone.kern { background: var(--kernel-soft); }
+.zone .label { width: 210px; flex: none; }
+.zone .label b { display: block; font-size: 22px; }
+.zone .label span { font-size: 15px; color: var(--muted); }
+.box {
+  background: var(--surface); border: 2px solid transparent; border-radius: 12px;
+  padding: 12px 18px; font-size: 17px; min-width: 150px; text-align: center;
+  transition: border-color .25s, box-shadow .25s, opacity .25s;
+}
+.box small { display: block; font-size: 13px; color: var(--muted); }
+.box.lit { border-color: var(--accent); box-shadow: 0 0 0 6px var(--accent-soft); }
+.zone.kern .box.lit { border-color: var(--kernel); box-shadow: 0 0 0 6px color-mix(in srgb, var(--kernel) 22%, transparent); }
+.door {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  font-size: 15px; color: var(--muted); position: relative;
+}
+.door::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 2px dashed var(--line); }
+.door span { position: relative; background: var(--bg); padding: 4px 14px; border-radius: 999px; border: 2px solid var(--line); transition: border-color .25s, color .25s; }
+.door.lit span { border-color: var(--kernel); color: var(--ink); }
+.steps { display: flex; flex-direction: column; gap: 10px; width: 380px; flex: none; }
+.step { display: flex; gap: 12px; padding: 10px 14px; border-radius: 10px; font-size: 17px; color: var(--muted); transition: background .2s, color .2s; }
+.step i { font-style: normal; font-weight: 600; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); flex: none; font-size: 14px; }
+.step.on { background: var(--surface); color: var(--ink); }
+.step.on i { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+.crash { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.crash div { border-radius: 12px; padding: 12px 16px; font-size: 16px; background: var(--surface); border: 1px solid var(--line); }
+.crash b { display: block; font-size: 15px; }
+
+/* ---------- 5. Arbore ---------- */
+.tree5 { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.rootnode { font-family: var(--font-mono); font-size: 22px; font-weight: 600; background: var(--ink); color: var(--bg); border-radius: 10px; padding: 6px 20px; }
+.stem { width: 2px; height: 22px; background: var(--line); }
+.kids { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; width: 100%; position: relative; padding-top: 22px; }
+.kids::before { content: ""; position: absolute; top: 0; left: calc(100% / 14); right: calc(100% / 14); border-top: 2px solid var(--line); }
+.dir {
+  position: relative; border: 1px solid var(--line); background: var(--surface); border-radius: 12px;
+  padding: 10px 8px; cursor: pointer; text-align: center; transition: border-color .15s, background .15s;
+}
+.dir::before { content: ""; position: absolute; top: -23px; left: 50%; height: 22px; border-left: 2px solid var(--line); }
+.dir b { font-family: var(--font-mono); font-size: 19px; display: block; }
+.dir span { font-size: 13px; color: var(--muted); display: block; }
+.dir:hover { border-color: var(--accent); }
+.dir[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.dirinfo { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: start; }
+.files { display: flex; flex-wrap: wrap; gap: 8px; }
+.files code { background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 3px 10px; font-size: 15px; }
+
+/* ---------- 6. Căi ---------- */
+.fs { font-family: var(--font-mono); font-size: 17px; display: flex; flex-direction: column; gap: 2px; width: 420px; flex: none; }
+.node {
+  display: flex; align-items: center; gap: 10px; border: 1px solid transparent; background: none; text-align: left;
+  border-radius: 8px; padding: 5px 10px; cursor: pointer; font-family: inherit; font-size: inherit;
+}
+.node:hover { background: var(--surface); }
+.node .ic { width: 16px; height: 13px; border-radius: 3px; background: var(--accent); opacity: .55; flex: none; }
+.node.file .ic { width: 12px; height: 15px; background: var(--muted); opacity: .4; border-radius: 2px; }
+.node.target { background: var(--surface); border-color: var(--accent); }
+.node .here { font-family: var(--font-ui); font-size: 12px; font-weight: 600; background: var(--kernel); color: var(--surface); padding: 1px 8px; border-radius: 999px; }
+.pathcard { display: grid; grid-template-columns: 130px 1fr; gap: 10px 16px; align-items: baseline; font-size: 18px; }
+.pathcard .k { font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-weight: 600; }
+.pathcard .v { font-family: var(--font-mono); font-size: 20px; word-break: break-all; }
+.pathcard .v.abs { color: var(--accent); }
+.pathcard .v.rel { color: var(--kernel); }
+.legend { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.legend div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; font-size: 15px; }
+.legend code { font-size: 20px; font-weight: 600; display: block; }
+
+/* ---------- 7. Wildcards ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.fchip {
+  font-family: var(--font-mono); font-size: 17px; padding: 8px 14px; border-radius: 10px;
+  background: var(--surface); border: 1px solid var(--line); transition: background .2s, border-color .2s, opacity .2s;
+}
+.fchip.hit { background: var(--ok-soft); border-color: var(--ok); }
+.fchip.miss { opacity: .45; }
+.patin { display: flex; align-items: center; gap: 10px; }
+.patin input {
+  font-family: var(--font-mono); font-size: 18px; padding: 8px 14px; border-radius: 10px; width: 220px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+}
+
+/* ---------- 8. Terminale ---------- */
+.twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.mini { display: flex; gap: 16px; align-items: center; }
+.cmdlist { display: flex; flex-direction: column; gap: 8px; }
+.cmdlist .btn { text-align: left; }
+#globBtns .btn { font-family: var(--font-mono); font-size: 16px; }
+
+/* ---------- 9. PATH ---------- */
+.pathrow { display: flex; align-items: stretch; gap: 10px; }
+.pdir {
+  flex: 1; border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 6px; transition: border-color .2s, background .2s, opacity .2s;
+}
+.pdir code { font-size: 17px; }
+.pdir .st { font-size: 15px; color: var(--muted); min-height: 1.5em; }
+.pdir.checking { border-color: var(--kernel); }
+.pdir.no { opacity: .55; }
+.pdir.yes { border-color: var(--ok); background: var(--ok-soft); }
+.pdir.skip { opacity: .35; border-style: dashed; }
+.sep { align-self: center; font-family: var(--font-mono); color: var(--muted); font-size: 22px; }
+.result { border-radius: 12px; padding: 14px 18px; font-size: 18px; background: var(--surface); border: 1px solid var(--line); min-height: 58px; }
+.result.ok { background: var(--ok-soft); border-color: var(--ok); }
+.result.bad { background: var(--bad-soft); border-color: var(--bad); }
+
+/* ---------- 10. GCC ---------- */
+.pipe { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; align-items: stretch; }
+.stg {
+  position: relative; border: 1px solid var(--line); background: var(--surface); padding: 12px 14px; cursor: pointer; text-align: left;
+  display: flex; flex-direction: column; gap: 2px; margin-right: 18px; border-radius: 12px; transition: border-color .15s, background .15s;
+}
+.stg:not(:last-child)::after {
+  content: "→"; position: absolute; right: -17px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 18px;
+}
+.stg:last-child { margin-right: 0; }
+.stg code { font-size: 18px; font-weight: 600; }
+.stg span { font-size: 14px; color: var(--muted); }
+.stg:hover { border-color: var(--accent); }
+.stg[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.flag { font-family: var(--font-mono); }
+
+/* ---------- 12. Comenzi ---------- */
+.cmdgrid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+.cmd {
+  border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 10px 12px; cursor: pointer; text-align: left;
+  display: flex; flex-direction: column; gap: 2px; transition: border-color .15s, background .15s;
+}
+.cmd code { font-size: 18px; font-weight: 600; }
+.cmd span { font-size: 14px; color: var(--muted); line-height: 1.3; }
+.cmd:hover { border-color: var(--accent); }
+.cmd[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+
+/* ---------- 13. Capcane ---------- */
+.traps { display: flex; flex-direction: column; gap: 10px; }
+.trap { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; overflow: hidden; }
+.trap > button {
+  width: 100%; display: flex; align-items: center; gap: 14px; background: none; border: 0; padding: 12px 18px; cursor: pointer; text-align: left;
+}
+.trap > button code { color: var(--bad); font-size: 16px; flex: 1; }
+.trap > button .chev { color: var(--muted); transition: transform .2s; }
+.trap.open > button .chev { transform: rotate(90deg); }
+.trap .body { display: none; padding: 0 18px 14px 18px; font-size: 17px; gap: 24px; grid-template-columns: 1fr 1fr; }
+.trap.open .body { display: grid; }
+.trap .body b { display: block; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* ---------- 14. Quiz ---------- */
+.quiz { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.q { display: flex; flex-direction: column; gap: 12px; }
+.q h3 { font-size: 20px; min-height: 3.9em; }
+.opt {
+  border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 9px 14px; text-align: left; cursor: pointer; font-size: 17px;
+  transition: background .15s, border-color .15s;
+}
+.opt:hover { border-color: var(--accent); }
+.opt.right { background: var(--ok-soft); border-color: var(--ok); }
+.opt.wrong { background: var(--bad-soft); border-color: var(--bad); }
+.q .why { font-size: 15px; color: var(--muted); min-height: 3em; }
+
+/* ---------- 15. Final ---------- */
+.todo { display: flex; flex-direction: column; gap: 10px; }
+.todo label { display: flex; gap: 14px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; cursor: pointer; font-size: 18px; }
+.todo input { width: 20px; height: 20px; accent-color: var(--accent); }
+.todo label:has(input:checked) { opacity: .55; }
+.todo label:has(input:checked) code { text-decoration: line-through; }
+
+/* ---------- Telefon / fereastră îngustă: slide-urile în flux ---------- */
+@media (max-width: 760px) {
+  body { font-size: 17px; }
+  .viewport { position: static; display: block; place-items: normal; overflow: visible; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px 40px; }
+  .stage { width: auto; height: auto; transform: none !important; }
+  .slide { position: static; opacity: 1; visibility: visible; transform: none; padding: 28px 0; border-bottom: 1px solid var(--line); }
+  .nav { display: none; }
+  h1 { font-size: 40px; } h2 { font-size: 28px; }
+  .row, .dirinfo, .twocol, .crash, .trap .body { display: flex; flex-direction: column; }
+  .layers, .fs, .steps, .row > .col { width: auto !important; }
+  .route, .quiz { grid-template-columns: 1fr; }
+  .kids { grid-template-columns: repeat(2, 1fr); padding-top: 12px; }
+  .kids::before, .dir::before, .stem { display: none; }
+  .modes { height: auto; grid-template-rows: auto 54px auto; }
+  .zone { flex-wrap: wrap; }
+  .pipe { grid-template-columns: 1fr; gap: 10px; }
+  .stg { margin-right: 0; }
+  .stg::after { display: none; }
+  .pathrow { flex-wrap: wrap; } .sep { display: none; } .pdir { flex: 1 1 40%; }
+  .cmdgrid { grid-template-columns: repeat(2, 1fr); }
+  .legend { grid-template-columns: repeat(2, 1fr); }
+  .timeline { font-size: 12px; } .timeline div { padding: 0 6px; }
+  .q h3 { min-height: 0; }
+}
+
+/* ---------- Print / PDF: câte un slide pe pagină ---------- */
+@media print {
+  @page { size: 1280px 720px; margin: 0; }
+  html, body { height: auto; }
+  .viewport { position: static; display: block; place-items: normal; overflow: visible; }
+  .stage { transform: none !important; width: 1280px; height: auto; }
+  .slide { position: relative; width: 1280px; height: 720px; opacity: 1; visibility: visible; transform: none; break-after: page; background: var(--bg); }
+  .nav { display: none; }
+  .cursor { animation: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="viewport">
+<main class="stage" id="stage">
+
+<!-- 1 · Copertă -->
+<section class="slide cover" id="start" data-title="Start">
+  <div class="eyebrow">USO · Tutoriat 01 din 10</div>
+  <h1>Primii pași în Linux</h1>
+  <p class="lead">Ce face un sistem de operare, unde stau fișierele și cum vorbim cu calculatorul direct din terminal.</p>
+  <div class="term" aria-label="Exemplu de terminal"><span class="p">student@fmi</span>:<span class="b">~</span>$ <span id="typed"></span><span class="cursor"></span></div>
+  <div class="meta"><span>FMI · Universitatea din București</span><span>Folosește ← → sau butoanele de jos</span></div>
+</section>
+
+<!-- 2 · Agenda -->
+<section class="slide" id="azi" data-title="Azi">
+  <div class="head">
+    <div class="eyebrow">Planul de azi</div>
+    <h2>Cinci întrebări, apoi trecem la terminal</h2>
+  </div>
+  <div class="route">
+    <div class="stop"><b>1</b><h3>Din ce e făcut un sistem?</h3><p>Straturile: de la aplicații până la hardware.</p></div>
+    <div class="stop"><b>2</b><h3>Cine are voie la hardware?</h3><p>User mode, kernel mode și „ușa” dintre ele.</p></div>
+    <div class="stop"><b>3</b><h3>Unde stau fișierele?</h3><p>Un singur arbore, căi absolute și relative.</p></div>
+    <div class="stop"><b>4</b><h3>Cum găsește shell-ul o comandă?</h3><p>Variabila <code>$PATH</code> și de ce scriem <code>./</code>.</p></div>
+    <div class="stop"><b>5</b><h3>Cum devine codul C program?</h3><p>Pașii lui <code>gcc</code> și codul de ieșire.</p></div>
+  </div>
+  <div class="col" style="margin-top:36px">
+    <p class="small muted">Cum împărțim cele 90 de minute</p>
+    <div class="timeline">
+      <div class="tl-a">15′ idei</div>
+      <div class="tl-b">60′ lucrăm în terminal</div>
+      <div class="tl-c">10′ Kahoot</div>
+      <div class="tl-d">5′</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · Straturi -->
+<section class="slide" id="straturi" data-title="Straturi">
+  <div class="head">
+    <div class="eyebrow">1 · Straturile</div>
+    <h2>Un calculator e construit pe etaje</h2>
+    <p class="lead">Fiecare etaj vorbește doar cu vecinul lui. Apasă pe un etaj.</p>
+  </div>
+  <div class="row grow">
+    <div class="layers" role="group" aria-label="Straturile sistemului">
+      <button class="layer" data-layer="app"><b>Aplicații</b><span>browser, editor, programul tău C</span></button>
+      <button class="layer" data-layer="shell"><b>Shell și utilitare</b><span>bash, ls, cp, gcc</span></button>
+      <button class="border-line" data-layer="sys">apeluri de sistem</button>
+      <button class="layer kz" data-layer="kernel"><b>Kernel (nucleul)</b><span>procese, memorie, fișiere</span></button>
+      <button class="layer hw" data-layer="hw"><b>Hardware</b><span>procesor, RAM, disc, rețea</span></button>
+    </div>
+    <div class="explain" aria-live="polite">
+      <div class="tag" id="lyTag"></div>
+      <h3 id="lyTitle" style="font-size:28px"></h3>
+      <p id="lyText"></p>
+      <div class="analogy">
+        <svg width="40" height="34" viewBox="0 0 40 34" aria-hidden="true"><path d="M4 4v9a3 3 0 0 0 6 0V4M7 4v26" stroke="var(--kernel)" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="24" cy="17" r="11" fill="none" stroke="var(--kernel)" stroke-width="2"/><circle cx="24" cy="17" r="6" fill="none" stroke="var(--kernel)" stroke-width="1.5" opacity=".5"/></svg>
+        <p><b>Ca la restaurant:</b> <span id="lyAnalogy"></span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · User mode vs Kernel mode -->
+<section class="slide" id="moduri" data-title="User vs Kernel">
+  <div class="head">
+    <div class="eyebrow">2 · Cine are voie la hardware</div>
+    <h2>Programul tău nu atinge direct ecranul. Cere voie.</h2>
+  </div>
+  <div class="row grow">
+    <div class="modes grow">
+      <div class="zone user">
+        <div class="label"><b>User mode</b><span>aici rulează programele noastre, fără drepturi speciale</span></div>
+        <div class="box" id="m-prog">programul tău<small><code>printf("Salut")</code></small></div>
+        <div class="box" id="m-back">primește răspunsul<small>continuă să ruleze</small></div>
+      </div>
+      <div class="door" id="m-door"><span>apel de sistem <code>write()</code> · singura ușă spre kernel</span></div>
+      <div class="zone kern">
+        <div class="label"><b>Kernel mode</b><span>nucleul, cu control total asupra mașinii</span></div>
+        <div class="box" id="m-kern">kernelul<small>verifică cererea</small></div>
+        <div class="box" id="m-hw">ecranul / terminalul<small>apare „Salut”</small></div>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step" data-s="1"><i>1</i><span>Programul vrea să afișeze ceva, dar nu are voie să scrie singur pe ecran.</span></div>
+      <div class="step" data-s="2"><i>2</i><span>Face un <b>apel de sistem</b>. Procesorul trece în kernel mode.</span></div>
+      <div class="step" data-s="3"><i>3</i><span>Kernelul verifică cererea și trimite textul către terminal.</span></div>
+      <div class="step" data-s="4"><i>4</i><span>Procesorul revine în user mode, iar programul merge mai departe.</span></div>
+      <div class="btns"><button class="btn primary" id="m-next">Pas următor</button><button class="btn" id="m-reset">De la capăt</button></div>
+    </div>
+  </div>
+  <div class="crash">
+    <div><b>Dacă greșește un program</b>Se oprește doar el (de exemplu <code>Segmentation fault</code>). Restul sistemului merge.</div>
+    <div><b>Dacă greșește kernelul</b>Cade tot calculatorul: <i>kernel panic</i>. De asta kernelul e protejat.</div>
+  </div>
+</section>
+
+<!-- 5 · Arborele de fișiere -->
+<section class="slide" id="arbore" data-title="Arborele">
+  <div class="head">
+    <div class="eyebrow">3 · Unde stau fișierele</div>
+    <h2>Totul pornește dintr-un singur punct: <code>/</code></h2>
+    <p class="lead">Nu există <code>C:\</code> sau <code>D:\</code>. Un stick USB apare și el ca un folder, de exemplu <code>/media/student/USB</code>.</p>
+  </div>
+  <div class="tree5">
+    <div class="rootnode">/</div>
+    <div class="stem"></div>
+    <div class="kids" role="group" aria-label="Directoarele principale">
+      <button class="dir" data-dir="bin"><b>/bin</b><span>comenzi de bază</span></button>
+      <button class="dir" data-dir="etc"><b>/etc</b><span>setări</span></button>
+      <button class="dir" data-dir="home"><b>/home</b><span>utilizatorii</span></button>
+      <button class="dir" data-dir="dev"><b>/dev</b><span>dispozitive</span></button>
+      <button class="dir" data-dir="usr"><b>/usr</b><span>programe</span></button>
+      <button class="dir" data-dir="tmp"><b>/tmp</b><span>temporare</span></button>
+      <button class="dir" data-dir="var"><b>/var</b><span>date care cresc</span></button>
+    </div>
+  </div>
+  <div class="dirinfo panel" aria-live="polite">
+    <div class="col">
+      <h3 id="dTitle"></h3>
+      <p id="dText"></p>
+    </div>
+    <div class="col">
+      <p class="small muted">Ce găsești înăuntru</p>
+      <div class="files" id="dFiles"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · Căi -->
+<section class="slide" id="cai" data-title="Căi">
+  <div class="head">
+    <div class="eyebrow">3 · Căi absolute și relative</div>
+    <h2>Două feluri de a da indicații</h2>
+    <p class="lead">Absolută: adresa completă, de la <code>/</code>. Relativă: „de unde ești acum, mergi…”. Alege un fișier sau folder din arbore.</p>
+  </div>
+  <div class="row grow">
+    <div class="fs" id="fs" role="group" aria-label="Arbore de fișiere"></div>
+    <div class="col grow">
+      <div class="panel pathcard" aria-live="polite">
+        <span class="k">Ești în</span><span class="v" id="pPwd"></span>
+        <span class="k">Ținta</span><span class="v" id="pTarget"></span>
+        <span class="k">Absolută</span><span class="v abs" id="pAbs"></span>
+        <span class="k">Relativă</span><span class="v rel" id="pRel"></span>
+      </div>
+      <div class="btns">
+        <button class="btn primary" id="pCd">cd aici</button>
+        <span class="small muted" id="pCdNote" style="align-self:center"></span>
+      </div>
+      <div class="legend">
+        <div><code>.</code>folderul curent</div>
+        <div><code>..</code>un nivel mai sus</div>
+        <div><code>~</code>folderul tău acasă</div>
+        <div><code>/</code>rădăcina</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · Wildcards -->
+<section class="slide" id="mascari" data-title="Măști">
+  <div class="head">
+    <div class="eyebrow">Bonus · Măști de căutare</div>
+    <h2>Cum alegi mai multe fișiere deodată</h2>
+    <p class="lead"><code>*</code> = orice, oricât de lung · <code>?</code> = exact un caracter · <code>[12]</code> = unul dintre cele din paranteze.</p>
+  </div>
+  <div class="patin">
+    <span class="mono" style="color:var(--muted)">$ ls</span>
+    <label for="globIn" class="small muted" hidden>Tipar</label>
+    <input id="globIn" value="*.c" spellcheck="false" autocomplete="off">
+    <div class="btns" id="globBtns">
+      <button class="btn">*.c</button>
+      <button class="btn">tema?.txt</button>
+      <button class="btn">lab[12].c</button>
+      <button class="btn">*a*</button>
+      <button class="btn">*.o</button>
+    </div>
+  </div>
+  <div class="chips" id="globFiles"></div>
+  <div class="grow"></div>
+  <div class="col">
+    <p class="small muted">Ce rulează de fapt, după ce shell-ul înlocuiește tiparul:</p>
+    <div class="term" id="globCmd"></div>
+    <div class="note k">Înlocuirea o face <b>shell-ul</b>, înainte să pornească comanda. <code>ls</code> (sau <code>rm</code>, sau orice altă comandă) nu vede niciodată steluța, ci direct lista de fișiere.</div>
+  </div>
+</section>
+
+<!-- 8 · Terminale -->
+<section class="slide" id="terminale" data-title="Terminale">
+  <div class="head">
+    <div class="eyebrow">Terminalul</div>
+    <h2>Fereastra în care scrii comenzi</h2>
+  </div>
+  <div class="twocol">
+    <div class="panel col">
+      <div class="mini">
+        <svg width="60" height="44" viewBox="0 0 60 44" aria-hidden="true"><rect x="1" y="1" width="58" height="42" rx="6" fill="var(--term-bg)"/><path d="M10 14l7 6-7 6" stroke="var(--term-green)" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M21 28h12" stroke="var(--term-ink)" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <div><h3>Consola text · <code>/dev/tty1</code></h3><p class="small muted">Ecran negru, fără ferestre</p></div>
+      </div>
+      <p class="small">O primești direct de la kernel, chiar dacă nu pornește interfața grafică. O deschizi cu <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>F1…F6</kbd>.</p>
+    </div>
+    <div class="panel col">
+      <div class="mini">
+        <svg width="60" height="44" viewBox="0 0 60 44" aria-hidden="true"><rect x="1" y="1" width="58" height="42" rx="6" fill="var(--surface-2)" stroke="var(--line)"/><rect x="1" y="1" width="58" height="9" rx="6" fill="var(--line)"/><rect x="7" y="15" width="46" height="23" rx="3" fill="var(--term-bg)"/><path d="M12 22l5 4-5 4" stroke="var(--term-green)" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+        <div><h3>Pseudoterminal · <code>/dev/pts/0</code></h3><p class="small muted">Terminalul dintr-o fereastră</p></div>
+      </div>
+      <p class="small">Aplicația „Terminal”, un tab din <code>tmux</code> sau o conexiune SSH. Aproape mereu vei lucra în așa ceva.</p>
+    </div>
+  </div>
+  <div class="row grow">
+    <div class="col" style="width:330px;flex:none">
+      <p class="small muted">Apasă pe o comandă ca s-o „rulezi”</p>
+      <div class="cmdlist" id="idBtns">
+        <button class="btn" data-c="whoami"><code>whoami</code> · cine sunt?</button>
+        <button class="btn" data-c="tty"><code>tty</code> · în ce terminal?</button>
+        <button class="btn" data-c="pwd"><code>pwd</code> · unde sunt?</button>
+        <button class="btn" data-c="echo $HOME"><code>echo $HOME</code> · unde e „acasă”?</button>
+      </div>
+    </div>
+    <div class="term grow" id="idTerm" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- 9 · PATH -->
+<section class="slide" id="path" data-title="$PATH">
+  <div class="head">
+    <div class="eyebrow">4 · Cum găsește shell-ul o comandă</div>
+    <h2>De ce scriem <code>./program</code> și nu doar <code>program</code>?</h2>
+    <p class="lead">Când scrii doar un nume, shell-ul îl caută pe rând în folderele din <code>$PATH</code>. Folderul tău nu e pe listă.</p>
+  </div>
+  <div class="btns" id="pathBtns">
+    <button class="btn" data-cmd="ls"><code>ls</code></button>
+    <button class="btn" data-cmd="gcc"><code>gcc</code></button>
+    <button class="btn" data-cmd="program"><code>program</code></button>
+    <button class="btn" data-cmd="./program"><code>./program</code></button>
+  </div>
+  <div class="pathrow" id="pathRow"></div>
+  <div class="result" id="pathResult" aria-live="polite">Alege o comandă de mai sus și urmărește căutarea.</div>
+  <div class="grow"></div>
+  <div class="row">
+    <div class="note grow"><b><code>./</code> înseamnă „uite exact fișierul, aici”.</b> Când comanda conține un <code>/</code>, shell-ul nu mai caută în <code>$PATH</code>.</div>
+    <div class="note k grow"><b>De ce nu e <code>.</code> în <code>$PATH</code>?</b> Cineva ar putea lăsa în <code>/tmp</code> un program fals numit <code>ls</code>. Ai rula programul lui fără să-ți dai seama.</div>
+  </div>
+</section>
+
+<!-- 10 · GCC -->
+<section class="slide" id="gcc" data-title="gcc">
+  <div class="head">
+    <div class="eyebrow">5 · De la cod la program</div>
+    <h2><code>gcc</code> face patru pași, unul după altul</h2>
+    <p class="lead">De obicei îi faci pe toți dintr-o comandă. Apasă pe fiecare etapă ca să vezi cum arată fișierul.</p>
+  </div>
+  <div class="pipe" id="pipe" role="group" aria-label="Etapele compilării"></div>
+  <div class="row grow">
+    <div class="col grow">
+      <div class="term" id="pipeView" aria-live="polite" style="height:270px"></div>
+    </div>
+    <div class="col" style="width:420px;flex:none">
+      <h3 id="pipeTitle"></h3>
+      <p id="pipeText" class="small"></p>
+      <p class="small muted">Ca să te oprești după pasul ăsta:</p>
+      <div class="term" id="pipeCmd" style="padding:12px 16px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · Flag-uri și cod de ieșire -->
+<section class="slide" id="ruleaza" data-title="Rulare">
+  <div class="head">
+    <div class="eyebrow">5 · Compilăm și rulăm exercițiul</div>
+    <h2>Fiecare program lasă în urmă un număr</h2>
+    <p class="lead"><code>0</code> înseamnă „a mers”. Orice altceva înseamnă „ceva n-a mers”. Îl vezi cu <code>echo $?</code>.</p>
+  </div>
+  <div class="row grow">
+    <div class="col" style="width:440px;flex:none">
+      <p class="small muted">Comanda pe care o folosim la laborator. Apasă pe o opțiune:</p>
+      <div class="btns" id="flagBtns">
+        <button class="btn flag" data-f="wall">-Wall -Wextra</button>
+        <button class="btn flag" data-f="std">-std=c11</button>
+        <button class="btn flag" data-f="ped">-pedantic</button>
+        <button class="btn flag" data-f="g">-g</button>
+        <button class="btn flag" data-f="o">-o exercitiu</button>
+      </div>
+      <div class="panel small" id="flagText" aria-live="polite" style="flex:none;min-height:110px;padding:14px 18px"></div>
+      <p class="small muted">Rulează exercițiul în trei feluri:</p>
+      <div class="cmdlist" id="runBtns">
+        <button class="btn" data-r="ok"><code>./exercitiu date.in</code></button>
+        <button class="btn" data-r="noarg"><code>./exercitiu</code></button>
+        <button class="btn" data-r="nofile"><code>./exercitiu lipsa.txt</code></button>
+      </div>
+    </div>
+    <div class="term grow" id="runTerm" aria-live="polite" style="font-size:14.5px"></div>
+  </div>
+</section>
+
+<!-- 12 · Comenzi -->
+<section class="slide" id="comenzi" data-title="Comenzi">
+  <div class="head">
+    <div class="eyebrow">Fișă rapidă</div>
+    <h2>Comenzile pe care le folosești azi</h2>
+    <p class="lead">Apasă pe o comandă ca să vezi un exemplu.</p>
+  </div>
+  <div class="cmdgrid" id="cmdGrid"></div>
+  <div class="row grow">
+    <div class="term grow" id="cmdTerm" aria-live="polite" style="height:200px;flex:1 1 auto"></div>
+    <div class="col" style="width:380px;flex:none">
+      <h3 id="cmdTitle"></h3>
+      <p class="small" id="cmdText"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 13 · Capcane -->
+<section class="slide" id="capcane" data-title="Capcane">
+  <div class="head">
+    <div class="eyebrow">Greșeli frecvente</div>
+    <h2>Mesajele pe care le vei vedea sigur</h2>
+    <p class="lead">Apasă pe o eroare: vezi de ce apare și cum o rezolvi.</p>
+  </div>
+  <div class="traps" id="traps"></div>
+</section>
+
+<!-- 14 · Verificare -->
+<section class="slide" id="verifica" data-title="Verifică-te">
+  <div class="head">
+    <div class="eyebrow">Încălzire înainte de Kahoot</div>
+    <h2>Trei întrebări rapide</h2>
+  </div>
+  <div class="quiz" id="quiz"></div>
+</section>
+
+<!-- 15 · La treabă -->
+<section class="slide" id="practica" data-title="La treabă">
+  <div class="head">
+    <div class="eyebrow">Acum e rândul tău</div>
+    <h2>Deschide terminalul și urmează pașii</h2>
+    <p class="lead">Completează în <code>exercitiu.c</code> zonele marcate cu <code>TODO</code>. Bifează pe măsură ce avansezi.</p>
+  </div>
+  <div class="row grow">
+    <div class="todo grow">
+      <label><input type="checkbox" id="t1"><code>cd tutoriat-01/schelet</code><span class="small muted">intră în folder</span></label>
+      <label><input type="checkbox" id="t2"><code>ls -la</code><span class="small muted">vezi ce fișiere ai</span></label>
+      <label><input type="checkbox" id="t3"><code>nano exercitiu.c</code><span class="small muted">rezolvă TODO-urile</span></label>
+      <label><input type="checkbox" id="t4"><code>make</code><span class="small muted">compilează</span></label>
+      <label><input type="checkbox" id="t5"><code>./exercitiu date.in</code><span class="small muted">rulează</span></label>
+      <label><input type="checkbox" id="t6"><code>echo $?</code><span class="small muted">a mers? ar trebui 0</span></label>
+    </div>
+    <div class="col" style="width:400px;flex:none">
+      <div class="panel col">
+        <h3>Ce exersezi</h3>
+        <p class="small">Citești argumentele programului (<code>argc</code>, <code>argv</code>), variabile de mediu cu <code>getenv()</code>, un fișier linie cu linie și întorci un cod de ieșire corect.</p>
+      </div>
+      <p class="small muted">Te-ai blocat? Soluția completă e în <code>tutoriat-01/solutii/</code>. Încearcă întâi singur.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<nav class="nav" aria-label="Navigare slide-uri">
+  <button id="prev" aria-label="Slide-ul anterior">←</button>
+  <span class="count" id="count">1 / 15</span>
+  <button id="next" aria-label="Slide-ul următor">→</button>
+  <div class="bar"><i id="bar"></i></div>
+  <span id="slideName"></span>
+  <button class="theme" id="theme">Temă</button>
+</nav>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const pressOne = (group, el) => group.forEach(b => b.setAttribute("aria-pressed", b === el ? "true" : "false"));
+
+  /* ---------- Navigare ---------- */
+  const slides = $$(".slide");
+  const stage = $("#stage");
+  let cur = 0;
+  function fit() {
+    if (matchMedia("(max-width: 760px)").matches) { stage.style.transform = ""; return; }
+    const s = Math.min(innerWidth / 1280, (innerHeight - 56) / 720);
+    stage.style.transform = `scale(${s})`;
+    stage.style.marginBottom = "56px";
+  }
+  function go(i) {
+    cur = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, k) => { s.classList.toggle("active", k === cur); s.setAttribute("aria-hidden", k === cur ? "false" : "true"); });
+    $("#count").textContent = `${cur + 1} / ${slides.length}`;
+    $("#bar").style.width = `${(cur + 1) / slides.length * 100}%`;
+    $("#slideName").textContent = slides[cur].dataset.title;
+    $("#prev").disabled = cur === 0; $("#next").disabled = cur === slides.length - 1;
+    try { history.replaceState(null, "", "#" + slides[cur].id); } catch (e) {}
+  }
+  $("#prev").onclick = () => go(cur - 1);
+  $("#next").onclick = () => go(cur + 1);
+  addEventListener("keydown", e => {
+    if (e.target.closest("input, textarea")) return;
+    if (["ArrowRight", "PageDown"].includes(e.key) || (e.key === " " && !e.target.closest("button"))) { e.preventDefault(); go(cur + 1); }
+    else if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); go(cur - 1); }
+    else if (e.key === "Home") go(0);
+    else if (e.key === "End") go(slides.length - 1);
+  });
+  let tx = null;
+  addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, { passive: true });
+  addEventListener("touchend", e => {
+    if (tx === null || matchMedia("(max-width: 760px)").matches) return;
+    const dx = e.changedTouches[0].clientX - tx; tx = null;
+    if (Math.abs(dx) > 60) go(cur + (dx < 0 ? 1 : -1));
+  });
+  addEventListener("resize", fit);
+  $("#theme").onclick = () => {
+    const root = document.documentElement;
+    const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+  };
+
+  /* ---------- 1. Copertă: text tastat ---------- */
+  const typedText = 'echo "Salut, USO!"';
+  const typed = $("#typed");
+  if (reduced) typed.textContent = typedText;
+  else { let k = 0; const t = setInterval(() => { typed.textContent = typedText.slice(0, ++k); if (k >= typedText.length) clearInterval(t); }, 70); }
+
+  /* ---------- 3. Straturi ---------- */
+  const layers = {
+    app: ["Etajul de sus", "Aplicațiile", "Tot ce pornești tu: browserul, editorul, programele scrise în C. Ele știu ce vor să facă, dar nu știu cum se vorbește cu discul sau cu placa de rețea.", "clientul care comandă din meniu."],
+    shell: ["Interpretul de comenzi", "Shell-ul și utilitarele", "Shell-ul (de obicei bash) citește ce scrii, înțelege comanda și pornește programul potrivit. Utilitarele ca ls, cp sau gcc sunt programe obișnuite.", "ospătarul care preia comanda și o duce mai departe."],
+    sys: ["Granița", "Apelurile de sistem", "Singurul drum legal dintre aplicații și kernel. Când un program vrea să citească un fișier sau să scrie pe ecran, face un apel de sistem, de exemplu read() sau write().", "ghișeul dintre sală și bucătărie. Clienții nu intră în bucătărie."],
+    kernel: ["Inima sistemului", "Kernelul", "Nucleul sistemului de operare. Împarte procesorul între programe, ține evidența memoriei și a fișierelor, vorbește cu dispozitivele prin drivere.", "bucătarul-șef: doar el folosește aragazul și cuțitele."],
+    hw: ["Etajul de jos", "Hardware-ul", "Piesele fizice: procesorul execută instrucțiuni, RAM-ul ține datele cât rulează programele, discul le păstrează și după ce închizi calculatorul.", "bucătăria însăși: aragazul, frigiderul, ingredientele."]
+  };
+  const lyBtns = $$("#straturi [data-layer]");
+  function showLayer(k) {
+    const [tag, title, text, an] = layers[k];
+    $("#lyTag").textContent = tag; $("#lyTitle").textContent = title; $("#lyText").textContent = text; $("#lyAnalogy").textContent = an;
+    pressOne(lyBtns, lyBtns.find(b => b.dataset.layer === k));
+  }
+  lyBtns.forEach(b => b.onclick = () => showLayer(b.dataset.layer));
+  showLayer("kernel");
+
+  /* ---------- 4. User/Kernel pași ---------- */
+  let mStep = 0;
+  const mLit = { 1: ["m-prog"], 2: ["m-door"], 3: ["m-kern", "m-hw"], 4: ["m-back", "m-door"] };
+  function mShow() {
+    ["m-prog", "m-door", "m-kern", "m-hw", "m-back"].forEach(id => $("#" + id).classList.toggle("lit", (mLit[mStep] || []).includes(id)));
+    $$("#moduri .step").forEach(s => s.classList.toggle("on", +s.dataset.s === mStep));
+    $("#m-next").textContent = mStep === 0 ? "Pornește printf()" : mStep < 4 ? "Pas următor" : "Gata";
+    $("#m-next").disabled = mStep === 4;
+  }
+  $("#m-next").onclick = () => { mStep = Math.min(4, mStep + 1); mShow(); };
+  $("#m-reset").onclick = () => { mStep = 0; mShow(); };
+  mShow();
+
+  /* ---------- 5. Arbore ---------- */
+  const dirs = {
+    bin: ["/bin · comenzile de bază", "Programele de care are nevoie orice sistem ca să pornească și să fie folosit. Când scrii ls, rulezi de fapt un fișier de aici.", ["ls", "cp", "mv", "cat", "bash"]],
+    etc: ["/etc · setările sistemului", "Fișiere text cu configurări. Le citești liniștit, dar le modifici doar dacă știi ce faci.", ["passwd", "hosts", "hostname", "fstab"]],
+    home: ["/home · casele utilizatorilor", "Fiecare utilizator are aici folderul lui. Al tău este /home/student, pe scurt ~. Aici lucrezi aproape tot timpul.", ["student/", "student/Desktop", "student/tutoriat-01"]],
+    dev: ["/dev · dispozitivele, ca fișiere", "În Linux, „totul e fișier”: discul, terminalul, chiar și o gaură neagră pentru date. Poți scrie în ele ca într-un fișier obișnuit.", ["null", "sda", "tty1", "pts/0"]],
+    usr: ["/usr · programele instalate", "Majoritatea aplicațiilor și bibliotecilor. Compilatorul gcc stă în /usr/bin.", ["bin/gcc", "bin/python3", "lib/", "include/stdio.h"]],
+    tmp: ["/tmp · fișiere temporare", "Oricine poate scrie aici, iar conținutul se poate șterge la repornire. Nu-ți ține tema aici.", ["test.txt", "build-123/"]],
+    var: ["/var · date care se tot schimbă", "Jurnale (loguri), cozi de printare, cache. Fișiere care cresc cât timp sistemul rulează.", ["log/syslog", "cache/", "spool/"]]
+  };
+  const dBtns = $$("#arbore .dir");
+  function showDir(k) {
+    const [t, x, f] = dirs[k];
+    $("#dTitle").textContent = t; $("#dText").textContent = x;
+    $("#dFiles").innerHTML = f.map(n => `<code>${esc(n)}</code>`).join("");
+    pressOne(dBtns, dBtns.find(b => b.dataset.dir === k));
+  }
+  dBtns.forEach(b => b.onclick = () => showDir(b.dataset.dir));
+  showDir("home");
+
+  /* ---------- 6. Căi ---------- */
+  const tree = [
+    ["/", 0, "d"], ["/etc", 1, "d"], ["/etc/passwd", 2, "f"], ["/tmp", 1, "d"], ["/home", 1, "d"],
+    ["/home/student", 2, "d"], ["/home/student/documente", 3, "d"], ["/home/student/proiect", 3, "d"],
+    ["/home/student/proiect/Makefile", 4, "f"], ["/home/student/proiect/src", 4, "d"], ["/home/student/proiect/src/main.c", 5, "f"]
+  ];
+  const HOME = "/home/student";
+  let pwd = "/home/student/proiect/src", target = "/home/student/proiect/Makefile";
+  const parts = p => p.split("/").filter(Boolean);
+  function rel(from, to) {
+    const a = parts(from), b = parts(to);
+    let i = 0; while (i < a.length && i < b.length && a[i] === b[i]) i++;
+    const r = [...Array(a.length - i).fill(".."), ...b.slice(i)];
+    return r.length ? r.join("/") : ".";
+  }
+  const fs = $("#fs");
+  fs.innerHTML = tree.map(([p, d, t]) =>
+    `<button class="node ${t === "f" ? "file" : ""}" data-p="${p}" style="padding-left:${10 + d * 22}px"><span class="ic"></span><span>${p === "/" ? "/" : esc(p.split("/").pop())}</span></button>`).join("");
+  const nodes = $$(".node", fs);
+  function showPath() {
+    nodes.forEach(n => {
+      n.classList.toggle("target", n.dataset.p === target);
+      const old = $(".here", n); if (old) old.remove();
+      if (n.dataset.p === pwd) n.insertAdjacentHTML("beforeend", '<span class="here">ești aici</span>');
+    });
+    $("#pPwd").textContent = pwd;
+    $("#pTarget").textContent = target.split("/").pop() || "/";
+    $("#pAbs").textContent = target;
+    let r = rel(pwd, target);
+    if (target.startsWith(HOME) && r.split("/").filter(x => x === "..").length > 1) r += `   sau   ~${target.slice(HOME.length)}`;
+    $("#pRel").textContent = r;
+    const isFile = tree.find(t => t[0] === target)[2] === "f";
+    $("#pCd").disabled = isFile || target === pwd;
+    $("#pCd").innerHTML = `cd <code>${esc(rel(pwd, target))}</code>`;
+    $("#pCdNote").textContent = isFile ? "Ținta e un fișier. Poți intra doar în foldere." : target === pwd ? "Ești deja aici." : "";
+  }
+  nodes.forEach(n => n.onclick = () => { target = n.dataset.p; showPath(); });
+  $("#pCd").onclick = () => { pwd = target; showPath(); };
+  showPath();
+
+  /* ---------- 7. Wildcards ---------- */
+  const gFiles = ["main.c", "util.c", "util.h", "lab1.c", "lab2.c", "lab3.c", "tema1.txt", "tema2.txt", "tema10.txt", "notite.md", "Makefile", "date.in"];
+  function globRe(p) {
+    let r = "", i = 0;
+    while (i < p.length) {
+      const c = p[i];
+      if (c === "*") r += ".*";
+      else if (c === "?") r += ".";
+      else if (c === "[") {
+        const j = p.indexOf("]", i + 1);
+        if (j === -1) r += "\\[";
+        else { let body = p.slice(i + 1, j); if (body[0] === "!" || body[0] === "^") body = "^" + body.slice(1); r += "[" + body.replace(/\\/g, "\\\\") + "]"; i = j; }
+      } else r += c.replace(/[.+^${}()|\\]/g, "\\$&");
+      i++;
+    }
+    try { return new RegExp("^" + r + "$"); } catch (e) { return null; }
+  }
+  $("#globFiles").innerHTML = gFiles.map(f => `<span class="fchip">${f}</span>`).join("");
+  const gChips = $$("#globFiles .fchip");
+  function glob() {
+    const p = $("#globIn").value.trim();
+    const re = globRe(p);
+    const hits = re ? gFiles.filter(f => re.test(f)) : [];
+    gChips.forEach((c, k) => { const h = hits.includes(gFiles[k]); c.classList.toggle("hit", h && !!p); c.classList.toggle("miss", !h && !!p); });
+    $$("#globBtns .btn").forEach(b => b.classList.toggle("on", b.textContent === p));
+    const shown = p ? (hits.length ? hits.join(" ") : esc(p)) : "";
+    $("#globCmd").innerHTML =
+      `<span class="d"># tu scrii:</span>\n<span class="p">$</span> ls ${esc(p)}\n<span class="d"># shell-ul pornește de fapt:</span>\n<span class="p">$</span> ls ${shown}` +
+      (p && !hits.length ? `\n<span class="e">ls: cannot access '${esc(p)}': No such file or directory</span>  <span class="d"># nicio potrivire, tiparul rămâne așa cum e</span>` : "");
+  }
+  $("#globIn").addEventListener("input", glob);
+  $$("#globBtns .btn").forEach(b => b.onclick = () => { $("#globIn").value = b.textContent; glob(); });
+  glob();
+
+  /* ---------- 8. Comenzi de identificare ---------- */
+  const idOut = { "whoami": "student", "tty": "/dev/pts/0", "pwd": "/home/student/tutoriat-01", "echo $HOME": "/home/student" };
+  const idTerm = $("#idTerm");
+  let idLog = [];
+  function idRender() {
+    idTerm.innerHTML = idLog.map(c => `<span class="p">student@fmi</span>:<span class="b">~/tutoriat-01</span>$ ${esc(c)}\n${esc(idOut[c])}`).join("\n") +
+      (idLog.length ? "\n" : "") + `<span class="p">student@fmi</span>:<span class="b">~/tutoriat-01</span>$ `;
+  }
+  $$("#idBtns .btn").forEach(b => b.onclick = () => { idLog.push(b.dataset.c); idLog = idLog.slice(-4); idRender(); });
+  idLog = ["whoami"]; idRender();
+
+  /* ---------- 9. PATH ---------- */
+  const pDirs = ["/usr/local/bin", "/usr/bin", "/bin", "/usr/games"];
+  const where = { ls: 1, gcc: 1 };
+  $("#pathRow").innerHTML = `<div class="small muted" style="align-self:center;width:90px;flex:none"><code>$PATH</code> =</div>` +
+    pDirs.map((d, k) => `${k ? '<span class="sep">:</span>' : ""}<div class="pdir"><code>${d}</code><span class="st"></span></div>`).join("");
+  const pEls = $$("#pathRow .pdir");
+  let pTimer = null;
+  function runPath(cmd) {
+    clearTimeout(pTimer);
+    pEls.forEach(e => { e.className = "pdir"; $(".st", e).textContent = ""; });
+    const res = $("#pathResult"); res.className = "result";
+    pressOne($$("#pathBtns .btn"), $(`#pathBtns [data-cmd="${cmd}"]`));
+    if (cmd.includes("/")) {
+      pEls.forEach(e => { e.classList.add("skip"); $(".st", e).textContent = "sărit"; });
+      res.classList.add("ok");
+      res.innerHTML = `Comanda conține <code>/</code>, deci e o cale. Shell-ul nu mai caută nicăieri și rulează direct <code>/home/student/proiect/program</code>.`;
+      return;
+    }
+    const found = cmd in where ? where[cmd] : null;
+    let k = 0;
+    res.textContent = `Caut „${cmd}”…`;
+    const tick = () => {
+      if (k > 0) { const prev = pEls[k - 1]; prev.classList.remove("checking"); if (k - 1 !== found) { prev.classList.add("no"); $(".st", prev).textContent = "nu e aici"; } }
+      if (k - 1 === found) {
+        pEls[found].classList.add("yes"); $(".st", pEls[found]).textContent = "găsit!";
+        res.classList.add("ok");
+        res.innerHTML = `Găsit: shell-ul rulează <code>${pDirs[found]}/${cmd}</code> și se oprește din căutat.`;
+        return;
+      }
+      if (k === pEls.length) {
+        res.classList.add("bad");
+        res.innerHTML = `<code>bash: ${cmd}: command not found</code> · Programul există, dar în folderul tău, care nu e în <code>$PATH</code>. Scrie <code>./${cmd}</code>.`;
+        return;
+      }
+      pEls[k].classList.add("checking"); $(".st", pEls[k]).textContent = "caut…";
+      k++;
+      pTimer = setTimeout(tick, reduced ? 0 : 550);
+    };
+    tick();
+  }
+  $$("#pathBtns .btn").forEach(b => b.onclick = () => runPath(b.dataset.cmd));
+
+  /* ---------- 10. GCC ---------- */
+  const stages = [
+    ["prog.c", "codul tău", "Codul sursă", "Ce ai scris tu: text simplu, pe care îl citește un om.",
+      `<span class="b">#include</span> &lt;stdio.h&gt;\n\n<span class="d">// primul program</span>\nint main(void) {\n    printf("Salut!\\n");\n    return 0;\n}`, "nano prog.c"],
+    ["prog.i", "preprocesare", "1 · Preprocesarea", "#include e înlocuit cu tot conținutul lui stdio.h, iar comentariile dispar. Fișierul crește la sute de linii.",
+      `<span class="d"># ... ~700 de linii venite din stdio.h ...</span>\nextern int printf(const char *, ...);\n<span class="d"># ...</span>\nint main(void) {\n    printf("Salut!\\n");\n    return 0;\n}`, "gcc -E prog.c -o prog.i"],
+    ["prog.s", "compilare", "2 · Compilarea", "Codul C devine limbaj de asamblare: instrucțiuni mici, specifice procesorului (aici x86-64).",
+      `main:\n    push    rbp\n    mov     rbp, rsp\n    lea     rdi, .LC0[rip]   <span class="d"># adresa lui "Salut!"</span>\n    call    puts\n    mov     eax, 0           <span class="d"># return 0</span>\n    pop     rbp\n    ret`, "gcc -S prog.c"],
+    ["prog.o", "asamblare", "3 · Asamblarea", "Asamblarea devine cod mașină: doar octeți. Nu mai e text și nu-l mai poți citi cu ochiul liber.",
+      `7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00\n01 00 3e 00 01 00 00 00  00 00 00 00 00 00 00 00\n55 48 89 e5 48 8d 05 00  00 00 00 48 89 c7 e8 00\n<span class="d"># ... lipsește încă codul pentru printf</span>`, "gcc -c prog.c"],
+    ["program", "legare", "4 · Legarea (linking)", "Se adaugă codul pentru printf din biblioteca standard C. Rezultatul e un executabil pe care îl poți rula.",
+      `<span class="p">$</span> ./program\nSalut!\n<span class="p">$</span> echo $?\n0`, "gcc prog.c -o program"]
+  ];
+  $("#pipe").innerHTML = stages.map(([f, s], k) => `<button class="stg" data-k="${k}"><code>${f}</code><span>${s}</span></button>`).join("");
+  const sBtns = $$("#pipe .stg");
+  function showStage(k) {
+    const [, , t, x, view, cmd] = stages[k];
+    $("#pipeTitle").textContent = t; $("#pipeText").textContent = x; $("#pipeView").innerHTML = view;
+    $("#pipeCmd").innerHTML = `<span class="p">$</span> ${esc(cmd)}`;
+    pressOne(sBtns, sBtns[k]);
+  }
+  sBtns.forEach(b => b.onclick = () => showStage(+b.dataset.k));
+  showStage(0);
+
+  /* ---------- 11. Flag-uri și rulare ---------- */
+  const flags = {
+    wall: "<b>-Wall -Wextra</b> · Compilatorul te avertizează despre lucruri suspecte: variabile nefolosite, comparații ciudate. Citește avertismentele, de obicei au dreptate.",
+    std: "<b>-std=c11</b> · Folosim versiunea C11 a limbajului, aceeași pentru toată lumea. Codul se comportă la fel pe orice calculator.",
+    ped: "<b>-pedantic</b> · Te atenționează când folosești ceva ce nu e C standard, ci doar un „truc” al lui gcc.",
+    g: "<b>-g</b> · Păstrează în executabil informații pentru depanare. Fără el, gdb și valgrind nu-ți pot arăta linia cu problema.",
+    o: "<b>-o exercitiu</b> · Numele fișierului rezultat. Fără el, gcc îl numește <code>a.out</code>."
+  };
+  const fBtns = $$("#flagBtns .btn");
+  function showFlag(k) { $("#flagText").innerHTML = flags[k]; pressOne(fBtns, fBtns.find(b => b.dataset.f === k)); }
+  fBtns.forEach(b => b.onclick = () => showFlag(b.dataset.f));
+  showFlag("wall");
+  const P = `<span class="p">$</span> `;
+  const runs = {
+    ok: `${P}./exercitiu date.in\n<span class="d">[+] Director personal   : /home/student</span>\n<span class="d">...</span>\nAnalizam fisierul: date.in\n[ 1] (11 cuv,  64 B): Linux este un nucleu de sistem de operare...\n<span class="d">...</span>\n  [+] Linii citite     : 8\n  [+] Cuvinte gasite   : 98\n\n[SUCCES] Programul s-a incheiat cu succes.\n${P}echo $?\n<span class="p">0</span>   <span class="d"># totul a mers</span>`,
+    noarg: `${P}./exercitiu\n<span class="e">Eroare: Numar insuficient de argumente! (primit: 1, asteptat: minim 2)</span>\n\nUtilizare: ./exercitiu &lt;cale_fisier_intrare&gt;\nExemplu:   ./exercitiu date.in\n${P}echo $?\n<span class="e">1</span>   <span class="d"># ai uitat argumentul</span>`,
+    nofile: `${P}./exercitiu lipsa.txt\n<span class="d">...</span>\n<span class="e">Eroare la deschiderea fisierului de intrare: No such file or directory</span>\n\n<span class="e">[ESEC] Procesarea fisierului 'lipsa.txt' a esuat.</span>\n${P}echo $?\n<span class="e">1</span>   <span class="d"># fișierul nu există</span>`
+  };
+  const rBtns = $$("#runBtns .btn");
+  function showRun(k) { $("#runTerm").innerHTML = `${P}gcc -Wall -Wextra -std=c11 -pedantic -g -o exercitiu exercitiu.c\n` + runs[k]; pressOne(rBtns, rBtns.find(b => b.dataset.r === k)); }
+  rBtns.forEach(b => b.onclick = () => showRun(b.dataset.r));
+  showRun("ok");
+
+  /* ---------- 12. Comenzi ---------- */
+  const cmds = [
+    ["pwd", "unde sunt", "Afișează calea completă a folderului în care ești.", "pwd\n/home/student/tutoriat-01"],
+    ["ls -la", "ce e aici", "Listează tot din folder, inclusiv fișierele ascunse (cele care încep cu punct), cu detalii.", "ls -la\ndrwxr-xr-x  schelet\ndrwxr-xr-x  solutii\n-rw-r--r--  README.md"],
+    ["cd", "schimbă folderul", "Te mută în alt folder. Singur, fără nimic după, te duce acasă (~).", "cd schelet\ncd ..\ncd ~/tutoriat-01"],
+    ["mkdir", "folder nou", "Creează un folder. Cu -p creează și folderele intermediare care lipsesc.", "mkdir teme\nmkdir -p teme/lab1/src"],
+    ["touch", "fișier gol", "Creează un fișier gol, dacă nu există deja.", "touch notite.txt"],
+    ["cat", "arată conținutul", "Afișează tot conținutul unui fișier în terminal.", "cat date.in\nLinux este un nucleu de sistem de operare..."],
+    ["cp", "copiază", "Copiază un fișier. Cu -r copiază un folder întreg.", "cp exercitiu.c backup.c\ncp -r schelet copie"],
+    ["mv", "mută / redenumește", "Mută un fișier în alt loc sau îi schimbă numele. E aceeași operație.", "mv backup.c vechi.c\nmv vechi.c ~/teme/"],
+    ["rm", "șterge", "Șterge fișiere. Nu există coș de gunoi! Cu -r șterge foldere întregi, deci atenție.", "rm vechi.c\nrm -r copie"],
+    ["rmdir", "șterge folder gol", "Șterge doar foldere goale. Dacă e ceva înăuntru, refuză.", "rmdir teme/lab1/src"],
+    ["echo", "afișează text", "Scrie textul primit. Util ca să vezi valoarea unei variabile.", "echo $HOME\n/home/student"],
+    ["which", "unde e programul", "Îți spune în ce folder din $PATH a găsit o comandă.", "which gcc\n/usr/bin/gcc"]
+  ];
+  $("#cmdGrid").innerHTML = cmds.map(([c, s], k) => `<button class="cmd" data-k="${k}"><code>${c}</code><span>${s}</span></button>`).join("");
+  const cBtns = $$("#cmdGrid .cmd");
+  function showCmd(k) {
+    const [c, , x, ex] = cmds[k];
+    $("#cmdTitle").innerHTML = `<code>${c}</code>`; $("#cmdText").textContent = x;
+    const lines = ex.split("\n"), firstWord = c.split(" ")[0];
+    $("#cmdTerm").innerHTML = lines.map(l => l.startsWith(firstWord) ? `${P}${esc(l)}` : `<span class="d">${esc(l)}</span>`).join("\n");
+    pressOne(cBtns, cBtns[k]);
+  }
+  cBtns.forEach(b => b.onclick = () => showCmd(+b.dataset.k));
+  showCmd(1);
+
+  /* ---------- 13. Capcane ---------- */
+  const traps = [
+    ["bash: ./program: Permission denied", "Fișierul nu are dreptul de execuție (x). Linux nu rulează orice fișier, doar pe cele marcate ca executabile.", "chmod +x program"],
+    ["bash: program: command not found", "Ai scris doar numele. Shell-ul l-a căutat în $PATH, iar folderul curent nu e acolo.", "./program"],
+    ["rmdir: failed to remove 'teme': Directory not empty", "rmdir șterge doar foldere goale, ca să nu pierzi date din greșeală.", "rm -r teme   (verifică de două ori!)"],
+    ["cat: Date.in: No such file or directory", "Linux face diferența între litere mari și mici. date.in și Date.in sunt fișiere diferite.", "ls  ca să vezi numele exact, apoi cat date.in"],
+    ["cd: tutoriat-01: No such file or directory", "Calea relativă pornește din folderul în care ești acum. Probabil ești în alt loc decât crezi.", "pwd  ca să vezi unde ești, apoi cd ~/tutoriat-01"]
+  ];
+  $("#traps").innerHTML = traps.map(([e, w, f], k) =>
+    `<div class="trap${k === 0 ? " open" : ""}"><button aria-expanded="${k === 0}"><code>${esc(e)}</code><span class="chev">›</span></button>` +
+    `<div class="body"><div><b>De ce</b>${esc(w)}</div><div><b>Rezolvare</b><code>${esc(f)}</code></div></div></div>`).join("");
+  $$("#traps .trap").forEach(t => $("button", t).onclick = () => {
+    $$("#traps .trap").forEach(o => { const on = o === t && !o.classList.contains("open"); o.classList.toggle("open", on); $("button", o).setAttribute("aria-expanded", on); });
+  });
+
+  /* ---------- 14. Quiz ---------- */
+  const quiz = [
+    ["Ești în /home/student/proiect. Unde te duce cd ..?", ["/home/student", "/home", "/"], 0, "Două puncte înseamnă „un nivel mai sus”, deci în folderul părinte."],
+    ["Ce afișează echo $? după un program care a mers fără probleme?", ["1", "0", "OK"], 1, "Prin convenție, 0 înseamnă succes. Orice altă valoare e o eroare."],
+    ["Cine transformă *.c în lista de fișiere?", ["comanda rm", "kernelul", "shell-ul"], 2, "Shell-ul face înlocuirea înainte să pornească comanda."]
+  ];
+  $("#quiz").innerHTML = quiz.map(([q, o], k) =>
+    `<div class="q panel" data-k="${k}"><h3>${esc(q)}</h3>${o.map((x, j) => `<button class="opt" data-j="${j}">${esc(x)}</button>`).join("")}<p class="why" aria-live="polite"></p></div>`).join("");
+  $$("#quiz .q").forEach(q => {
+    const [, , ans, why] = quiz[+q.dataset.k];
+    $$(".opt", q).forEach(b => b.onclick = () => {
+      const j = +b.dataset.j;
+      $$(".opt", q).forEach(o => o.classList.remove("right", "wrong"));
+      b.classList.add(j === ans ? "right" : "wrong");
+      $(".why", q).textContent = j === ans ? "Corect. " + why : "Nu chiar. Mai încearcă.";
+    });
+  });
+
+  /* ---------- Start ---------- */
+  const fromHash = slides.findIndex(s => "#" + s.id === location.hash);
+  fit();
+  go(fromHash >= 0 ? fromHash : 0);
+})();
+</script>
+</body>
+</html>
