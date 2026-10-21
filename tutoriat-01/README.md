@@ -333,6 +333,7 @@ tutoriat-01/
 ├── README.md                      # Prezentul breviar teoretic și ghid
 ├── slides.html                    # Slide-urile interactive (deschide în browser, navighezi cu ← →)
 ├── slides.pdf                     # Export static al slide-urilor, pentru printat
+├── img/                           # Capturi reale de terminal (term-*.png) și CREDITE.md
 ├── schelet/                       # Codul C de lucru pentru studenti
 │   ├── Makefile                   # Automatizarea compilarii
 │   ├── exercitiu.c                # Scheletul C cu instructiuni /* TODO */

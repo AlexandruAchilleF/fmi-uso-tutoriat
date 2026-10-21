@@ -52,6 +52,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { height: 100%; }
 body {
   margin: 0;
@@ -181,6 +182,75 @@ p { margin: 0; }
 .cursor { display: inline-block; width: .6em; height: 1.1em; background: var(--term-green); vertical-align: -3px; animation: blink 1s steps(2) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 .cover .meta { display: flex; gap: 28px; font-size: 16px; color: var(--muted); }
+
+/* ---------- Imagini ---------- */
+.photo { margin: 0; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.photo .frame { position: relative; border-radius: 14px; overflow: hidden; background: var(--surface-2); border: 1px solid var(--line); }
+.photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.photo .ph { display: none; position: absolute; inset: 0; flex-direction: column; justify-content: center; align-items: center; gap: 4px; padding: 20px; text-align: center; font-size: 15px; color: var(--muted); }
+.photo .ph b { color: var(--ink); font-weight: 600; }
+.photo.noimg img { visibility: hidden; }
+.photo.noimg .ph { display: flex; }
+.photo figcaption { font-size: 14px; color: var(--muted); line-height: 1.4; }
+.photo figcaption a { color: var(--accent); }
+.shot { margin: 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: var(--term-bg); box-shadow: 0 10px 30px rgba(0,0,0,.12); }
+.shot .bar { display: flex; align-items: center; gap: 7px; padding: 9px 12px; background: #2b373b; font-size: 12px; color: #9fb0ae; font-family: var(--font-mono); }
+.shot .bar i { width: 11px; height: 11px; border-radius: 50%; background: #55656a; display: block; }
+.shot .bar span { margin-left: 8px; }
+.shot img { display: block; width: 100%; }
+.real { position: absolute; top: 36px; right: 72px; display: flex; align-items: center; gap: 8px; }
+.real::before { content: ""; width: 18px; height: 13px; border-radius: 3px; background: var(--term-bg); box-shadow: inset 4px 4px 0 -2px var(--term-green); flex: none; }
+.lightbox { position: fixed; inset: 0; z-index: 20; background: rgba(10,16,18,.82); display: grid; place-items: center; padding: 24px max(16px, env(safe-area-inset-left, 0px)); }
+.lightbox figure { margin: 0; max-width: min(1200px, 100%); display: flex; flex-direction: column; gap: 12px; }
+.lightbox img { max-width: 100%; max-height: 78vh; border-radius: 10px; display: block; margin: 0 auto; }
+.lightbox figcaption { color: #e3eae8; font-size: 16px; text-align: center; }
+.lightbox .lbclose { position: absolute; top: calc(14px + env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); width: 44px; height: 44px; border-radius: 50%; border: 0; background: #e3eae8; color: #1d282c; font-size: 24px; cursor: pointer; }
+
+/* ---------- Istorie ---------- */
+.hist { display: grid; grid-template-columns: 1fr 470px; gap: 48px; align-items: start; }
+.rail { display: flex; gap: 0; align-items: center; font-size: 14px; font-variant-numeric: tabular-nums; color: var(--muted); }
+.rail span { display: flex; align-items: center; gap: 8px; }
+.rail span::before { content: ""; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--line); background: var(--bg); }
+.rail span.on { color: var(--ink); font-weight: 600; }
+.rail span.on::before { border-color: var(--accent); background: var(--accent); }
+.rail span.done::before { border-color: var(--accent); }
+.rail em { flex: none; width: 46px; height: 2px; background: var(--line); margin: 0 10px; }
+.year { font-size: 88px; font-weight: 700; line-height: .9; letter-spacing: -.03em; color: var(--accent); font-variant-numeric: tabular-nums; }
+.hist .col p { font-size: 20px; }
+.hist .photo .frame { aspect-ratio: 4 / 3.3; }
+.photo.tux { width: 260px; flex: none; }
+.photo.tux .frame { aspect-ratio: 1; background: var(--surface); }
+.photo.tux img { object-fit: contain; padding: 18px; }
+.post { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; font-family: var(--font-mono); font-size: 14.5px; line-height: 1.55; }
+.post .hd { color: var(--muted); }
+.post blockquote { margin: 10px 0 0; font-size: 16px; color: var(--ink); }
+.post .ro { font-family: var(--font-ui); font-size: 16px; color: var(--muted); margin-top: 8px; }
+.eq { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-size: 20px; }
+.eq .pill { border-radius: 12px; padding: 10px 16px; background: var(--surface); border: 1px solid var(--line); }
+.eq .pill.k { background: var(--kernel-soft); border-color: transparent; }
+.eq .pill.ok { background: var(--accent-soft); border-color: var(--accent); font-weight: 600; }
+.eq b { color: var(--muted); font-weight: 500; }
+.tl { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; padding-top: 22px; }
+.tl::before { content: ""; position: absolute; left: 0; right: 0; top: 8px; height: 2px; background: var(--line); }
+.tlb { position: relative; text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 10px 12px; cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
+.tlb::before { content: ""; position: absolute; top: -19px; left: 14px; width: 10px; height: 10px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); }
+.tlb b { font-size: 18px; font-variant-numeric: tabular-nums; }
+.tlb span { font-size: 14px; color: var(--muted); line-height: 1.3; }
+.tlb:hover { border-color: var(--accent); }
+.tlb[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.tlb[aria-pressed="true"]::before { background: var(--accent); }
+.distros { display: flex; flex-wrap: wrap; gap: 8px; }
+.distros span { font-size: 15px; padding: 4px 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); }
+.uses { display: grid; grid-template-columns: 1.25fr 1fr 1fr; grid-template-rows: auto auto; gap: 16px; }
+.use { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; }
+.use svg { flex: none; }
+.use h3 { font-size: 20px; }
+.use p { font-size: 16px; color: var(--muted); }
+.use.big { grid-row: span 2; padding: 0; overflow: hidden; }
+.use.big .photo { height: 100%; }
+.use.big .photo .frame { border: 0; border-radius: 0; flex: 1; min-height: 240px; }
+.use.big .txt { padding: 14px 20px 18px; display: flex; flex-direction: column; gap: 4px; }
+.cover-grid { display: grid; grid-template-columns: 1fr 560px; gap: 48px; align-items: center; }
 
 /* ---------- 2. Agenda ---------- */
 .route { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
@@ -412,6 +482,13 @@ p { margin: 0; }
   .legend { grid-template-columns: repeat(2, 1fr); }
   .timeline { font-size: 12px; } .timeline div { padding: 0 6px; }
   .q h3 { min-height: 0; }
+  .hist, .cover-grid, .uses { display: flex; flex-direction: column; }
+  .tl { grid-template-columns: repeat(2, 1fr); padding-top: 0; }
+  .tl::before, .tlb::before { display: none; }
+  .year { font-size: 56px; }
+  .real { position: static; align-self: flex-start; }
+  .rail { flex-wrap: wrap; row-gap: 6px; font-size: 13px; }
+  .rail em { width: 8px; margin: 0 4px; }
   .slide { position: relative; }
   .tip { max-width: 300px; }
 }
@@ -426,6 +503,7 @@ p { margin: 0; }
   .nav { display: none; }
   .cursor { animation: none; }
   .tip { display: none; }
+  .real, .lightbox { display: none !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -440,11 +518,129 @@ p { margin: 0; }
 
 <!-- 1 · Copertă -->
 <section class="slide cover" id="start" data-title="Start">
+  <div class="cover-grid">
+  <div class="col" style="gap:28px">
   <div class="eyebrow">USO · Tutoriat 01 din 10</div>
   <h1>Primii pași în Linux</h1>
   <p class="lead">Ce face un <span class="t" data-t="os">sistem de operare</span>, unde stau fișierele și cum vorbim cu calculatorul direct din <span class="t" data-t="terminal">terminal</span>.</p>
-  <div class="term" aria-label="Exemplu de terminal"><span class="p">student@fmi</span>:<span class="b">~</span>$ <span id="typed"></span><span class="cursor"></span></div>
-  <div class="meta"><span>FMI · Universitatea din București</span><span>Folosește ← → sau butoanele de jos · cuvintele subliniate au explicații</span></div>
+  <div class="meta"><span>FMI · Universitatea din București</span><span>← → pentru navigare · cuvintele subliniate au explicații</span></div>
+  </div>
+  <figure class="photo"><div class="shot"><div class="bar"><i></i><i></i><i></i><span>student@fmi: ~</span></div><img src="img/term-cover.png" alt="Captură reală dintr-un terminal Linux: whoami, pwd, echo și ls"></div><figcaption>Captură reală dintr-un terminal Linux (Ubuntu 24.04). Exact așa arată ce vom face azi.</figcaption></figure>
+  </div>
+</section>
+
+<!-- Istorie 1 · UNIX -->
+<section class="slide" id="unix" data-title="1969 · UNIX">
+  <div class="head">
+    <div class="eyebrow">Povestea Linux</div>
+    <div class="rail" aria-label="Unde suntem în poveste"><span class="on">1969</span><em></em><span class="">1983</span><em></em><span class="">1991</span><em></em><span class="">1992+</span><em></em><span class="">azi</span></div>
+  </div>
+  <div class="hist grow">
+    <div class="col" style="gap:18px">
+      <div class="year">1969</div>
+      <h2>Totul începe cu UNIX</h2>
+      <p>La Bell Labs, în SUA, Ken Thompson și Dennis Ritchie scriu UNIX, un <span class="t" data-t="os">sistem de operare</span> pentru calculatoarele mari ale vremii.</p>
+      <p>Ca să-l poată muta ușor pe alte calculatoare, Ritchie inventează <b>limbajul C</b>. Da, același C pe care îl învățați acum.</p>
+      <p class="muted">Problema: UNIX era al unei firme. Nu aveai voie să-l modifici sau să-l dai mai departe.</p>
+    </div>
+    <figure class="photo "><div class="frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Ken_Thompson_(sitting)_and_Dennis_Ritchie_at_PDP-11_(2876612463).jpg?width=900" alt="Ken Thompson și Dennis Ritchie lucrând la un calculator PDP-11" loading="lazy"><div class="ph"><b>Fotografia se încarcă de pe Wikimedia Commons</b><span>Ai nevoie de conexiune la internet.</span></div></div><figcaption>Ken Thompson (așezat) și Dennis Ritchie la un PDP-11, cca. 1972 · <a href="https://commons.wikimedia.org/wiki/File:Ken_Thompson_(sitting)_and_Dennis_Ritchie_at_PDP-11_(2876612463).jpg" target="_blank" rel="noopener">sursa și licența</a></figcaption></figure>
+  </div>
+</section>
+
+<!-- Istorie 2 · GNU -->
+<section class="slide" id="gnu" data-title="1983 · GNU">
+  <div class="head">
+    <div class="eyebrow">Povestea Linux</div>
+    <div class="rail" aria-label="Unde suntem în poveste"><span class="done">1969</span><em></em><span class="on">1983</span><em></em><span class="">1991</span><em></em><span class="">1992+</span><em></em><span class="">azi</span></div>
+  </div>
+  <div class="hist grow">
+    <div class="col" style="gap:18px">
+      <div class="year">1983</div>
+      <h2>GNU: un UNIX pe care îl poate folosi oricine</h2>
+      <p>Richard Stallman pornește proiectul GNU. Vrea un sistem <span class="t" data-t="liber">liber</span>: oricine să-l poată folosi, citi, modifica și da mai departe.</p>
+      <p>Până la începutul anilor ’90 scriu aproape tot: <span class="t" data-t="compilator">compilatorul</span> <code>gcc</code>, <span class="t" data-t="shell">shell-ul</span> <code>bash</code>, comenzile <code>ls</code>, <code>cp</code>, <code>cat</code>.</p>
+      <p class="note k">Le lipsea o singură piesă: <span class="t" data-t="kernel">kernelul</span>.</p>
+    </div>
+    <figure class="photo "><div class="frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Richard_Stallman_2005_(chrys).jpg?width=900" alt="Richard Stallman vorbind la o conferință în 2005" loading="lazy"><div class="ph"><b>Fotografia se încarcă de pe Wikimedia Commons</b><span>Ai nevoie de conexiune la internet.</span></div></div><figcaption>Richard Stallman, fondatorul proiectului GNU, în 2005 · <a href="https://commons.wikimedia.org/wiki/File:Richard_Stallman_2005_(chrys).jpg" target="_blank" rel="noopener">sursa și licența</a></figcaption></figure>
+  </div>
+</section>
+
+<!-- Istorie 3 · Linus -->
+<section class="slide" id="linus" data-title="1991 · Linus">
+  <div class="head">
+    <div class="eyebrow">Povestea Linux</div>
+    <div class="rail" aria-label="Unde suntem în poveste"><span class="done">1969</span><em></em><span class="done">1983</span><em></em><span class="on">1991</span><em></em><span class="">1992+</span><em></em><span class="">azi</span></div>
+  </div>
+  <div class="hist grow">
+    <div class="col" style="gap:16px">
+      <div class="year">1991</div>
+      <h2>Un student și „doar un hobby”</h2>
+      <p>Linus Torvalds, 21 de ani, student la Universitatea din Helsinki, își scrie propriul <span class="t" data-t="kernel">kernel</span> ca să înțeleagă cum merge PC-ul lui nou. Pe 25 august anunță proiectul pe un forum:</p>
+      <div class="post">
+        <div class="hd">From: torvalds@klaava.Helsinki.FI (Linus Benedict Torvalds)<br>Newsgroups: comp.os.minix</div>
+        <blockquote>I'm doing a (free) operating system (just a hobby, won't be big and professional like gnu) for 386(486) AT clones.</blockquote>
+        <div class="ro">„Fac un sistem de operare (liber), doar ca hobby, nu va fi mare și profesionist ca GNU.”</div>
+      </div>
+    </div>
+    <figure class="photo "><div class="frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/LinuxCon_Europe_Linus_Torvalds_03_(cropped).jpg?width=900" alt="Linus Torvalds la conferința LinuxCon Europe" loading="lazy"><div class="ph"><b>Fotografia se încarcă de pe Wikimedia Commons</b><span>Ai nevoie de conexiune la internet.</span></div></div><figcaption>Linus Torvalds, creatorul kernelului Linux, la LinuxCon Europe 2014 · <a href="https://commons.wikimedia.org/wiki/File:LinuxCon_Europe_Linus_Torvalds_03_(cropped).jpg" target="_blank" rel="noopener">sursa și licența</a></figcaption></figure>
+  </div>
+</section>
+
+<!-- Istorie 4 · GNU + Linux -->
+<section class="slide" id="gnulinux" data-title="GNU + Linux">
+  <div class="head">
+    <div class="eyebrow">Povestea Linux</div>
+    <div class="rail" aria-label="Unde suntem în poveste"><span class="done">1969</span><em></em><span class="done">1983</span><em></em><span class="done">1991</span><em></em><span class="on">1992+</span><em></em><span class="">azi</span></div>
+  </div>
+  <div class="row" style="align-items:center;gap:40px">
+    <div class="col grow" style="gap:16px">
+      <h2>GNU + Linux = un sistem complet și gratuit</h2>
+      <div class="eq">
+        <span class="pill">uneltele GNU <small class="muted">(gcc, bash, ls…)</small></span><b>+</b>
+        <span class="pill k">kernelul Linux</span><b>=</b>
+        <span class="pill ok">sistem de operare liber</span>
+      </div>
+      <p class="small muted">Echipe diferite îl împachetează cu programe și setări gata făcute. Pachetul se numește <span class="t" data-t="distributie">distribuție</span>:</p>
+      <div class="distros"><span>Ubuntu</span><span>Debian</span><span>Fedora</span><span>Linux Mint</span><span>Arch</span></div>
+    </div>
+    <figure class="photo tux"><div class="frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Tux.svg?width=400" alt="Tux, pinguinul care e mascota Linux" loading="lazy"><div class="ph"><b>Fotografia se încarcă de pe Wikimedia Commons</b><span>Ai nevoie de conexiune la internet.</span></div></div><figcaption>Tux, mascota Linux · desen de Larry Ewing, făcut cu GIMP · <a href="https://commons.wikimedia.org/wiki/File:Tux.svg" target="_blank" rel="noopener">sursa și licența</a></figcaption></figure>
+  </div>
+  <div class="col grow" style="gap:14px">
+    <p class="small muted">Ce a urmat. Apasă pe un an:</p>
+    <div class="tl" id="tl" role="group" aria-label="Momente din istoria Linux"></div>
+    <div class="panel small" id="tlText" aria-live="polite" style="min-height:64px"></div>
+  </div>
+</section>
+
+<!-- Istorie 5 · Linux azi -->
+<section class="slide" id="azi-linux" data-title="Linux azi">
+  <div class="head">
+    <div class="eyebrow">Povestea Linux</div>
+    <div class="rail" aria-label="Unde suntem în poveste"><span class="done">1969</span><em></em><span class="done">1983</span><em></em><span class="done">1991</span><em></em><span class="done">1992+</span><em></em><span class="on">azi</span></div>
+    <h2>Folosiți Linux în fiecare zi, chiar dacă nu știți</h2>
+  </div>
+  <div class="uses grow">
+    <div class="use big">
+      <figure class="photo "><div class="frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Ingenuity_at_Two_Years_on_Mars_(PIA25881).jpg?width=1000" alt="Elicopterul Ingenuity pe suprafața planetei Marte" loading="lazy"><div class="ph"><b>Fotografia se încarcă de pe Wikimedia Commons</b><span>Ai nevoie de conexiune la internet.</span></div></div><figcaption>Ingenuity pe Marte, fotografiat de roverul Perseverance · NASA/JPL-Caltech · <a href="https://commons.wikimedia.org/wiki/File:Ingenuity_at_Two_Years_on_Mars_(PIA25881).jpg" target="_blank" rel="noopener">sursa și licența</a></figcaption></figure>
+      <div class="txt"><h3>Chiar și pe Marte</h3><p>Elicopterul Ingenuity, care a zburat pe Marte din 2021, rula Linux.</p></div>
+    </div>
+    <div class="use">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="9" y="2" width="16" height="30" rx="4" fill="none" stroke="var(--accent)" stroke-width="2"/><path d="M15 27h4" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>
+      <h3>Telefoane</h3><p>Android rulează pe kernelul Linux. Asta înseamnă majoritatea telefoanelor din lume.</p>
+    </div>
+    <div class="use">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="4" y="4" width="26" height="8" rx="2" fill="none" stroke="var(--accent)" stroke-width="2"/><rect x="4" y="14" width="26" height="8" rx="2" fill="none" stroke="var(--accent)" stroke-width="2"/><rect x="4" y="24" width="26" height="6" rx="2" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="25" cy="8" r="1.5" fill="var(--accent)"/><circle cx="25" cy="18" r="1.5" fill="var(--accent)"/></svg>
+      <h3>Internet și cloud</h3><p>Majoritatea site-urilor și a aplicațiilor din cloud rulează pe <span class="t" data-t="server">servere</span> Linux.</p>
+    </div>
+    <div class="use">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="7" y="7" width="20" height="20" rx="3" fill="none" stroke="var(--accent)" stroke-width="2"/><rect x="12" y="12" width="10" height="10" rx="1" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/><path d="M12 3v4M17 3v4M22 3v4M12 27v4M17 27v4M22 27v4M3 12h4M3 17h4M3 22h4M27 12h4M27 17h4M27 22h4" stroke="var(--accent)" stroke-width="1.5"/></svg>
+      <h3>Supercalculatoare</h3><p>Toate cele 500 cele mai puternice supercalculatoare din lume rulează Linux.</p>
+    </div>
+    <div class="use">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="3" y="9" width="28" height="18" rx="4" fill="none" stroke="var(--accent)" stroke-width="2"/><path d="M10 15v6M7 18h6" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/><circle cx="23" cy="16" r="1.6" fill="var(--accent)"/><circle cx="26" cy="20" r="1.6" fill="var(--accent)"/></svg>
+      <h3>Lucruri de zi cu zi</h3><p>Routere, televizoare smart, mașini, console ca Steam Deck.</p>
+    </div>
+  </div>
 </section>
 
 <!-- 2 · Agenda -->
@@ -612,6 +808,7 @@ p { margin: 0; }
 
 <!-- 7 · Wildcards -->
 <section class="slide" id="mascari" data-title="Măști">
+  <button class="btn real" data-img="img/term-glob.png" data-cap="Captură reală: măștile *.c, tema?.txt și lab[12].c într-un terminal Linux">Vezi în terminalul real</button>
   <div class="head">
     <div class="eyebrow">Bonus · <span class="t" data-t="wildcard">Măști de căutare</span></div>
     <h2>Cum alegi mai multe fișiere deodată</h2>
@@ -640,6 +837,7 @@ p { margin: 0; }
 
 <!-- 8 · Terminale -->
 <section class="slide" id="terminale" data-title="Terminale">
+  <button class="btn real" data-img="img/term-start.png" data-cap="Captură reală: whoami, pwd, ls și ls -la într-un terminal Linux">Vezi în terminalul real</button>
   <div class="head">
     <div class="eyebrow">Terminalul</div>
     <h2>Fereastra în care scrii <span class="t" data-t="comanda">comenzi</span></h2>
@@ -676,6 +874,7 @@ p { margin: 0; }
 
 <!-- 9 · PATH -->
 <section class="slide" id="path" data-title="$PATH">
+  <button class="btn real" data-img="img/term-path.png" data-cap="Captură reală: program dă „command not found”, ./program merge, iar echo $PATH arată lista de foldere">Vezi în terminalul real</button>
   <div class="head">
     <div class="eyebrow">4 · Cum găsește shell-ul o comandă</div>
     <h2>De ce scriem <code>./program</code> și nu doar <code>program</code>?</h2>
@@ -719,10 +918,11 @@ p { margin: 0; }
 
 <!-- 11 · Flag-uri și cod de ieșire -->
 <section class="slide" id="ruleaza" data-title="Rulare">
+  <button class="btn real" data-img="img/term-gcc.png" data-cap="Captură reală: make compilează exercițiul, apoi echo $? arată 1 la eroare și 0 la succes">Vezi în terminalul real</button>
   <div class="head">
     <div class="eyebrow">5 · Compilăm și rulăm exercițiul</div>
     <h2>Fiecare program lasă în urmă un număr</h2>
-    <p class="lead">Se numește <span class="t" data-t="exitcode">cod de ieșire</span>. <code>0</code> înseamnă „a mers”, orice altceva înseamnă „ceva n-a mers”. Îl vezi cu <code>echo $?</code>.</p>
+    <p class="lead">Se numește <span class="t" data-t="exitcode">cod de ieșire</span>: <code>0</code> = a mers, altceva = eroare. Îl vezi cu <code>echo $?</code>.</p>
   </div>
   <div class="row grow">
     <div class="col" style="width:440px;flex:none">
@@ -765,6 +965,7 @@ p { margin: 0; }
 
 <!-- 13 · Capcane -->
 <section class="slide" id="capcane" data-title="Capcane">
+  <button class="btn real" data-img="img/term-erori.png" data-cap="Captură reală: Permission denied, No such file or directory, Directory not empty">Vezi în terminalul real</button>
   <div class="head">
     <div class="eyebrow">Greșeli frecvente</div>
     <h2>Mesajele pe care le vei vedea sigur</h2>
@@ -811,9 +1012,14 @@ p { margin: 0; }
 </main>
 </div>
 
+<div class="lightbox" id="lb" hidden role="dialog" aria-modal="true" aria-label="Captură de ecran">
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button class="lbclose" id="lbClose" aria-label="Închide">×</button>
+</div>
+
 <nav class="nav" aria-label="Navigare slide-uri">
   <button id="prev" aria-label="Slide-ul anterior">←</button>
-  <span class="count" id="count">1 / 15</span>
+  <span class="count" id="count"></span>
   <button id="next" aria-label="Slide-ul următor">→</button>
   <div class="bar"><i id="bar"></i></div>
   <span id="slideName"></span>
@@ -851,6 +1057,7 @@ p { margin: 0; }
   $("#prev").onclick = () => go(cur - 1);
   $("#next").onclick = () => go(cur + 1);
   addEventListener("keydown", e => {
+    if (!$("#lb").hidden) { if (e.key === "Escape") $("#lb").hidden = true; return; }
     if (e.target.closest("input, textarea")) return;
     if (["ArrowRight", "PageDown"].includes(e.key) || (e.key === " " && !e.target.closest("button"))) { e.preventDefault(); go(cur + 1); }
     else if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); go(cur - 1); }
@@ -921,7 +1128,10 @@ p { margin: 0; }
     schelet: ["schelet", "Codul pe jumătate scris pe care îl completați. Ce e greu de pus la punct e deja acolo."],
     todo: ["TODO", "Comentariu care marchează locul unde trebuie să scrii tu cod."],
     argc: ["argc și argv", "argc = câte argumente a primit programul (numele lui inclus). argv = lista lor, ca text."],
-    make: ["make", "Comandă care citește rețeta de compilare din Makefile și o rulează, ca să nu scrii comenzi lungi."]
+    make: ["make", "Comandă care citește rețeta de compilare din Makefile și o rulează, ca să nu scrii comenzi lungi."],
+    liber: ["software liber", "Program al cărui cod e public: oricine îl poate folosi, citi, modifica și da mai departe."],
+    distributie: ["distribuție", "Kernelul Linux plus programe, instalator și setări, puse la un loc de o echipă. Ex.: Ubuntu, Debian, Fedora."],
+    server: ["server", "Un calculator care stă într-un centru de date și le trimite altora pagini, fișiere sau date, de obicei fără ecran."]
   };
   const gl = str => str.replace(/\[\[([a-z]+)\|([^\]]+)\]\]/g, (m, k, t) => `<span class="t" data-t="${k}">${t}</span>`);
   const tip = document.createElement("div");
@@ -958,7 +1168,7 @@ p { margin: 0; }
   /* ---------- 1. Copertă: text tastat ---------- */
   const typedText = 'echo "Salut, USO!"';
   const typed = $("#typed");
-  if (reduced) typed.textContent = typedText;
+  if (!typed) {} else if (reduced) typed.textContent = typedText;
   else { let k = 0; const t = setInterval(() => { typed.textContent = typedText.slice(0, ++k); if (k >= typedText.length) clearInterval(t); }, 70); }
 
   /* ---------- 3. Straturi ---------- */
@@ -1244,6 +1454,36 @@ p { margin: 0; }
       $(".why", q).textContent = j === ans ? "Corect. " + why : "Nu chiar. Mai încearcă.";
     });
   });
+
+  /* ---------- Imagini: rezervă dacă nu se încarcă ---------- */
+  $$(".photo img").forEach(img => {
+    const fail = () => img.closest(".photo").classList.add("noimg");
+    img.addEventListener("error", fail);
+    if (img.complete && img.naturalWidth === 0 && img.src) fail();
+  });
+
+  /* ---------- Captură reală (lightbox) ---------- */
+  const lb = $("#lb");
+  function openLb(src, cap) { $("#lbImg").src = src; $("#lbImg").alt = cap; $("#lbCap").textContent = cap; lb.hidden = false; $("#lbClose").focus(); }
+  function closeLb() { lb.hidden = true; }
+  $$(".real").forEach(b => b.onclick = () => openLb(b.dataset.img, b.dataset.cap));
+  $("#lbClose").onclick = closeLb;
+  lb.addEventListener("click", e => { if (e.target === lb) closeLb(); });
+
+  /* ---------- Istorie: cronologie ---------- */
+  const tlData = [
+    ["1992", "licența GPL", "Linus pune kernelul sub licența GPL: oricine îl poate folosi și modifica, dar versiunea lui trebuie să rămână tot liberă. De aici încep să contribuie oameni din toată lumea."],
+    ["1993", "Debian", "Apare Debian, una dintre primele distribuții. Ubuntu, pe care îl folosesc mulți dintre voi, e construit pe Debian."],
+    ["2004", "Ubuntu", "Apare Ubuntu, gândit să fie ușor de instalat și de folosit. E una dintre cele mai populare distribuții."],
+    ["2005", "Git", "Linus scrie Git, ca să poată ține evidența modificărilor din kernel. Azi aproape orice proiect software folosește Git, inclusiv repo-ul cu materialele astea."],
+    ["2008", "Android", "Apare primul telefon cu Android. Android folosește kernelul Linux."],
+    ["2017", "supercalculatoare", "Din 2017, toate cele 500 cele mai puternice supercalculatoare din lume rulează Linux."]
+  ];
+  $("#tl").innerHTML = tlData.map(([y, t], k) => `<button class="tlb" data-k="${k}"><b>${y}</b><span>${t}</span></button>`).join("");
+  const tlBtns = $$("#tl .tlb");
+  function showTl(k) { const [y, t, x] = tlData[k]; $("#tlText").innerHTML = `<b>${y} · ${esc(t)}.</b> ${esc(x)}`; pressOne(tlBtns, tlBtns[k]); }
+  tlBtns.forEach(b => b.onclick = () => showTl(+b.dataset.k));
+  showTl(0);
 
   /* ---------- Start ---------- */
   new MutationObserver(() => prepTerms(stage)).observe(stage, { childList: true, subtree: true });

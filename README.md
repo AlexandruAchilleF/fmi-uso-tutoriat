@@ -25,6 +25,7 @@ fmi-uso-tutoriat/
 │   ├── README.md                      # Breviar teoretic, comenzi sintetizate și ghid de rulare
 │   ├── slides.html                    # Slide-urile interactive (se deschid în browser)
 │   ├── slides.pdf                     # Aceleași slide-uri, export static pentru printat
+│   ├── img/                           # Capturi reale de terminal și sursele imaginilor
 │   ├── schelet/                       # Cod sursă cu marcaje /* TODO */ și date de test
 │   │   ├── Makefile                   # Automatizarea compilării
 │   │   ├── exercitiu.c
