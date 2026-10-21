@@ -143,6 +143,21 @@ p { margin: 0; }
 .term .b { color: var(--term-blue); }
 .term .e { color: #f0a49b; }
 
+/* termeni explicați (hover / click) */
+.t { text-decoration: underline dotted var(--accent); text-decoration-thickness: 2px; text-underline-offset: 5px; cursor: help; border-radius: 4px; }
+.t:hover, .t:focus-visible { background: var(--accent-soft); }
+.tip {
+  position: absolute; z-index: 4; width: max-content; max-width: 360px;
+  background: var(--ink); color: var(--bg); border-radius: 10px; padding: 10px 14px;
+  font-size: 16px; line-height: 1.45; font-weight: 400; text-transform: none; letter-spacing: 0;
+  box-shadow: 0 6px 24px rgba(0,0,0,.18); pointer-events: none;
+}
+.tip b { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; opacity: .7; margin-bottom: 2px; }
+.vocab { display: flex; flex-wrap: wrap; gap: 8px; }
+.vocab .btn { font-size: 16px; padding: 6px 14px; }
+.vocabdef { min-height: 54px; display: flex; align-items: center; gap: 12px; font-size: 18px; padding: 12px 18px; }
+.vocabdef b { color: var(--accent); white-space: nowrap; }
+
 /* ---------- Bara de navigare ---------- */
 .nav {
   position: fixed; left: 0; right: 0; bottom: 0;
@@ -212,7 +227,7 @@ p { margin: 0; }
 .zone.kern { background: var(--kernel-soft); }
 .zone .label { width: 210px; flex: none; }
 .zone .label b { display: block; font-size: 22px; }
-.zone .label span { font-size: 15px; color: var(--muted); }
+.zone .label > span { font-size: 15px; color: var(--muted); }
 .box {
   background: var(--surface); border: 2px solid transparent; border-radius: 12px;
   padding: 12px 18px; font-size: 17px; min-width: 150px; text-align: center;
@@ -226,8 +241,8 @@ p { margin: 0; }
   font-size: 15px; color: var(--muted); position: relative;
 }
 .door::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 2px dashed var(--line); }
-.door span { position: relative; background: var(--bg); padding: 4px 14px; border-radius: 999px; border: 2px solid var(--line); transition: border-color .25s, color .25s; }
-.door.lit span { border-color: var(--kernel); color: var(--ink); }
+.door > span { position: relative; background: var(--bg); padding: 4px 14px; border-radius: 999px; border: 2px solid var(--line); transition: border-color .25s, color .25s; }
+.door.lit > span { border-color: var(--kernel); color: var(--ink); }
 .steps { display: flex; flex-direction: column; gap: 10px; width: 380px; flex: none; }
 .step { display: flex; gap: 12px; padding: 10px 14px; border-radius: 10px; font-size: 17px; color: var(--muted); transition: background .2s, color .2s; }
 .step i { font-style: normal; font-weight: 600; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); flex: none; font-size: 14px; }
@@ -397,6 +412,8 @@ p { margin: 0; }
   .legend { grid-template-columns: repeat(2, 1fr); }
   .timeline { font-size: 12px; } .timeline div { padding: 0 6px; }
   .q h3 { min-height: 0; }
+  .slide { position: relative; }
+  .tip { max-width: 300px; }
 }
 
 /* ---------- Print / PDF: câte un slide pe pagină ---------- */
@@ -408,6 +425,7 @@ p { margin: 0; }
   .slide { position: relative; width: 1280px; height: 720px; opacity: 1; visibility: visible; transform: none; break-after: page; background: var(--bg); }
   .nav { display: none; }
   .cursor { animation: none; }
+  .tip { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -424,9 +442,9 @@ p { margin: 0; }
 <section class="slide cover" id="start" data-title="Start">
   <div class="eyebrow">USO · Tutoriat 01 din 10</div>
   <h1>Primii pași în Linux</h1>
-  <p class="lead">Ce face un sistem de operare, unde stau fișierele și cum vorbim cu calculatorul direct din terminal.</p>
+  <p class="lead">Ce face un <span class="t" data-t="os">sistem de operare</span>, unde stau fișierele și cum vorbim cu calculatorul direct din <span class="t" data-t="terminal">terminal</span>.</p>
   <div class="term" aria-label="Exemplu de terminal"><span class="p">student@fmi</span>:<span class="b">~</span>$ <span id="typed"></span><span class="cursor"></span></div>
-  <div class="meta"><span>FMI · Universitatea din București</span><span>Folosește ← → sau butoanele de jos</span></div>
+  <div class="meta"><span>FMI · Universitatea din București</span><span>Folosește ← → sau butoanele de jos · cuvintele subliniate au explicații</span></div>
 </section>
 
 <!-- 2 · Agenda -->
@@ -436,13 +454,29 @@ p { margin: 0; }
     <h2>Cinci întrebări, apoi trecem la terminal</h2>
   </div>
   <div class="route">
-    <div class="stop"><b>1</b><h3>Din ce e făcut un sistem?</h3><p>Straturile: de la aplicații până la hardware.</p></div>
-    <div class="stop"><b>2</b><h3>Cine are voie la hardware?</h3><p>User mode, kernel mode și „ușa” dintre ele.</p></div>
-    <div class="stop"><b>3</b><h3>Unde stau fișierele?</h3><p>Un singur arbore, căi absolute și relative.</p></div>
-    <div class="stop"><b>4</b><h3>Cum găsește shell-ul o comandă?</h3><p>Variabila <code>$PATH</code> și de ce scriem <code>./</code>.</p></div>
-    <div class="stop"><b>5</b><h3>Cum devine codul C program?</h3><p>Pașii lui <code>gcc</code> și codul de ieșire.</p></div>
+    <div class="stop"><b>1</b><h3>Din ce e făcut un sistem?</h3><p>Straturile: de la aplicații până la <span class="t" data-t="hardware">hardware</span>.</p></div>
+    <div class="stop"><b>2</b><h3>Cine are voie la hardware?</h3><p><span class="t" data-t="usermode">User mode</span>, <span class="t" data-t="kernelmode">kernel mode</span> și „ușa” dintre ele.</p></div>
+    <div class="stop"><b>3</b><h3>Unde stau fișierele?</h3><p>Un singur arbore, <span class="t" data-t="cale">căi</span> absolute și relative.</p></div>
+    <div class="stop"><b>4</b><h3>Cum găsește shell-ul o comandă?</h3><p><span class="t" data-t="varmediu">Variabila</span> <code>$PATH</code> și de ce scriem <code>./</code>.</p></div>
+    <div class="stop"><b>5</b><h3>Cum devine codul C program?</h3><p>Pașii lui <span class="t" data-t="compilator"><code>gcc</code></span> și <span class="t" data-t="exitcode">codul de ieșire</span>.</p></div>
   </div>
-  <div class="col" style="margin-top:36px">
+  <div class="col">
+    <p class="small muted">Cuvinte pe care le vom folosi des. Apasă pe unul:</p>
+    <div class="vocab" id="vocabBtns">
+      <button class="btn" data-v="os">sistem de operare</button>
+      <button class="btn" data-v="kernel">kernel</button>
+      <button class="btn" data-v="hardware">hardware</button>
+      <button class="btn" data-v="proces">program și proces</button>
+      <button class="btn" data-v="terminal">terminal</button>
+      <button class="btn" data-v="shell">shell</button>
+      <button class="btn" data-v="comanda">comandă</button>
+      <button class="btn" data-v="director">director</button>
+      <button class="btn" data-v="cale">cale</button>
+    </div>
+    <div class="panel vocabdef" id="vocabDef" aria-live="polite"></div>
+  </div>
+  <div class="grow"></div>
+  <div class="col">
     <p class="small muted">Cum împărțim cele 90 de minute</p>
     <div class="timeline">
       <div class="tl-a">15′ idei</div>
@@ -458,7 +492,7 @@ p { margin: 0; }
   <div class="head">
     <div class="eyebrow">1 · Straturile</div>
     <h2>Un calculator e construit pe etaje</h2>
-    <p class="lead">Fiecare etaj vorbește doar cu vecinul lui. Apasă pe un etaj.</p>
+    <p class="lead">Fiecare etaj vorbește doar cu vecinul lui. Apasă pe un etaj. Cuvintele subliniate au explicații.</p>
   </div>
   <div class="row grow">
     <div class="layers" role="group" aria-label="Straturile sistemului">
@@ -489,28 +523,28 @@ p { margin: 0; }
   <div class="row grow">
     <div class="modes grow">
       <div class="zone user">
-        <div class="label"><b>User mode</b><span>aici rulează programele noastre, fără drepturi speciale</span></div>
+        <div class="label"><b><span class="t" data-t="usermode">User mode</span></b><span>aici rulează programele noastre, fără drepturi speciale</span></div>
         <div class="box" id="m-prog">programul tău<small><code>printf("Salut")</code></small></div>
         <div class="box" id="m-back">primește răspunsul<small>continuă să ruleze</small></div>
       </div>
-      <div class="door" id="m-door"><span>apel de sistem <code>write()</code> · singura ușă spre kernel</span></div>
+      <div class="door" id="m-door"><span><span class="t" data-t="syscall">apel de sistem</span> <code>write()</code> · singura ușă spre kernel</span></div>
       <div class="zone kern">
-        <div class="label"><b>Kernel mode</b><span>nucleul, cu control total asupra mașinii</span></div>
+        <div class="label"><b><span class="t" data-t="kernelmode">Kernel mode</span></b><span>nucleul, cu control total asupra mașinii</span></div>
         <div class="box" id="m-kern">kernelul<small>verifică cererea</small></div>
         <div class="box" id="m-hw">ecranul / terminalul<small>apare „Salut”</small></div>
       </div>
     </div>
     <div class="steps">
       <div class="step" data-s="1"><i>1</i><span>Programul vrea să afișeze ceva, dar nu are voie să scrie singur pe ecran.</span></div>
-      <div class="step" data-s="2"><i>2</i><span>Face un <b>apel de sistem</b>. Procesorul trece în kernel mode.</span></div>
+      <div class="step" data-s="2"><i>2</i><span>Face un <b><span class="t" data-t="syscall">apel de sistem</span></b>. <span class="t" data-t="cpu">Procesorul</span> trece în kernel mode.</span></div>
       <div class="step" data-s="3"><i>3</i><span>Kernelul verifică cererea și trimite textul către terminal.</span></div>
       <div class="step" data-s="4"><i>4</i><span>Procesorul revine în user mode, iar programul merge mai departe.</span></div>
       <div class="btns"><button class="btn primary" id="m-next">Pas următor</button><button class="btn" id="m-reset">De la capăt</button></div>
     </div>
   </div>
   <div class="crash">
-    <div><b>Dacă greșește un program</b>Se oprește doar el (de exemplu <code>Segmentation fault</code>). Restul sistemului merge.</div>
-    <div><b>Dacă greșește kernelul</b>Cade tot calculatorul: <i>kernel panic</i>. De asta kernelul e protejat.</div>
+    <div><b>Dacă greșește un program</b>Se oprește doar el (de exemplu <span class="t" data-t="segfault"><code>Segmentation fault</code></span>). Restul sistemului merge.</div>
+    <div><b>Dacă greșește kernelul</b>Cade tot calculatorul: <span class="t" data-t="panic"><i>kernel panic</i></span>. De asta kernelul e protejat.</div>
   </div>
 </section>
 
@@ -518,8 +552,8 @@ p { margin: 0; }
 <section class="slide" id="arbore" data-title="Arborele">
   <div class="head">
     <div class="eyebrow">3 · Unde stau fișierele</div>
-    <h2>Totul pornește dintr-un singur punct: <code>/</code></h2>
-    <p class="lead">Nu există <code>C:\</code> sau <code>D:\</code>. Un stick USB apare și el ca un folder, de exemplu <code>/media/student/USB</code>.</p>
+    <h2>Totul pornește dintr-un singur punct: <span class="t" data-t="radacina"><code>/</code></span></h2>
+    <p class="lead">Nu există <code>C:\</code> sau <code>D:\</code>. Un stick USB apare și el ca un <span class="t" data-t="director">folder</span>, de exemplu <code>/media/student/USB</code>.</p>
   </div>
   <div class="tree5">
     <div class="rootnode">/</div>
@@ -551,13 +585,13 @@ p { margin: 0; }
   <div class="head">
     <div class="eyebrow">3 · Căi absolute și relative</div>
     <h2>Două feluri de a da indicații</h2>
-    <p class="lead">Absolută: adresa completă, de la <code>/</code>. Relativă: „de unde ești acum, mergi…”. Alege un fișier sau folder din arbore.</p>
+    <p class="lead">O <span class="t" data-t="cale">cale</span> absolută e adresa completă, de la <code>/</code>. Una relativă spune „de unde ești acum, mergi…”. Alege un fișier sau folder din arbore.</p>
   </div>
   <div class="row grow">
     <div class="fs" id="fs" role="group" aria-label="Arbore de fișiere"></div>
     <div class="col grow">
       <div class="panel pathcard" aria-live="polite">
-        <span class="k">Ești în</span><span class="v" id="pPwd"></span>
+        <span class="k"><span class="t" data-t="cwd">Ești în</span></span><span class="v" id="pPwd"></span>
         <span class="k">Ținta</span><span class="v" id="pTarget"></span>
         <span class="k">Absolută</span><span class="v abs" id="pAbs"></span>
         <span class="k">Relativă</span><span class="v rel" id="pRel"></span>
@@ -579,7 +613,7 @@ p { margin: 0; }
 <!-- 7 · Wildcards -->
 <section class="slide" id="mascari" data-title="Măști">
   <div class="head">
-    <div class="eyebrow">Bonus · Măști de căutare</div>
+    <div class="eyebrow">Bonus · <span class="t" data-t="wildcard">Măști de căutare</span></div>
     <h2>Cum alegi mai multe fișiere deodată</h2>
     <p class="lead"><code>*</code> = orice, oricât de lung · <code>?</code> = exact un caracter · <code>[12]</code> = unul dintre cele din paranteze.</p>
   </div>
@@ -600,7 +634,7 @@ p { margin: 0; }
   <div class="col">
     <p class="small muted">Ce rulează de fapt, după ce shell-ul înlocuiește tiparul:</p>
     <div class="term" id="globCmd"></div>
-    <div class="note k">Înlocuirea o face <b>shell-ul</b>, înainte să pornească comanda. <code>ls</code> (sau <code>rm</code>, sau orice altă comandă) nu vede niciodată steluța, ci direct lista de fișiere.</div>
+    <div class="note k">Înlocuirea o face <b><span class="t" data-t="shell">shell-ul</span></b>, înainte să pornească comanda. <code>ls</code> (sau <code>rm</code>, sau orice altă comandă) nu vede niciodată steluța, ci direct lista de fișiere.</div>
   </div>
 </section>
 
@@ -608,27 +642,27 @@ p { margin: 0; }
 <section class="slide" id="terminale" data-title="Terminale">
   <div class="head">
     <div class="eyebrow">Terminalul</div>
-    <h2>Fereastra în care scrii comenzi</h2>
+    <h2>Fereastra în care scrii <span class="t" data-t="comanda">comenzi</span></h2>
   </div>
   <div class="twocol">
     <div class="panel col">
       <div class="mini">
         <svg width="60" height="44" viewBox="0 0 60 44" aria-hidden="true"><rect x="1" y="1" width="58" height="42" rx="6" fill="var(--term-bg)"/><path d="M10 14l7 6-7 6" stroke="var(--term-green)" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M21 28h12" stroke="var(--term-ink)" stroke-width="2.5" stroke-linecap="round"/></svg>
-        <div><h3>Consola text · <code>/dev/tty1</code></h3><p class="small muted">Ecran negru, fără ferestre</p></div>
+        <div><h3><span class="t" data-t="consola">Consola text</span> · <code>/dev/tty1</code></h3><p class="small muted">Ecran negru, fără ferestre</p></div>
       </div>
-      <p class="small">O primești direct de la kernel, chiar dacă nu pornește interfața grafică. O deschizi cu <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>F1…F6</kbd>.</p>
+      <p class="small">O primești direct de la <span class="t" data-t="kernel">kernel</span>, chiar dacă nu pornește interfața grafică. O deschizi cu <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>F1…F6</kbd>.</p>
     </div>
     <div class="panel col">
       <div class="mini">
         <svg width="60" height="44" viewBox="0 0 60 44" aria-hidden="true"><rect x="1" y="1" width="58" height="42" rx="6" fill="var(--surface-2)" stroke="var(--line)"/><rect x="1" y="1" width="58" height="9" rx="6" fill="var(--line)"/><rect x="7" y="15" width="46" height="23" rx="3" fill="var(--term-bg)"/><path d="M12 22l5 4-5 4" stroke="var(--term-green)" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
         <div><h3>Pseudoterminal · <code>/dev/pts/0</code></h3><p class="small muted">Terminalul dintr-o fereastră</p></div>
       </div>
-      <p class="small">Aplicația „Terminal”, un tab din <code>tmux</code> sau o conexiune SSH. Aproape mereu vei lucra în așa ceva.</p>
+      <p class="small">Aplicația „Terminal”, un tab din <span class="t" data-t="tmux"><code>tmux</code></span> sau o conexiune <span class="t" data-t="ssh">SSH</span>. Aproape mereu vei lucra în așa ceva.</p>
     </div>
   </div>
   <div class="row grow">
     <div class="col" style="width:330px;flex:none">
-      <p class="small muted">Apasă pe o comandă ca s-o „rulezi”</p>
+      <p class="small muted">Apasă pe o comandă ca s-o „rulezi”. Textul verde de la început e <span class="t" data-t="prompt">promptul</span>.</p>
       <div class="cmdlist" id="idBtns">
         <button class="btn" data-c="whoami"><code>whoami</code> · cine sunt?</button>
         <button class="btn" data-c="tty"><code>tty</code> · în ce terminal?</button>
@@ -645,7 +679,7 @@ p { margin: 0; }
   <div class="head">
     <div class="eyebrow">4 · Cum găsește shell-ul o comandă</div>
     <h2>De ce scriem <code>./program</code> și nu doar <code>program</code>?</h2>
-    <p class="lead">Când scrii doar un nume, shell-ul îl caută pe rând în folderele din <code>$PATH</code>. Folderul tău nu e pe listă.</p>
+    <p class="lead">Când scrii doar un nume, <span class="t" data-t="shell">shell-ul</span> îl caută pe rând în folderele din <span class="t" data-t="path"><code>$PATH</code></span>. Folderul tău nu e pe listă.</p>
   </div>
   <div class="btns" id="pathBtns">
     <button class="btn" data-cmd="ls"><code>ls</code></button>
@@ -666,8 +700,8 @@ p { margin: 0; }
 <section class="slide" id="gcc" data-title="gcc">
   <div class="head">
     <div class="eyebrow">5 · De la cod la program</div>
-    <h2><code>gcc</code> face patru pași, unul după altul</h2>
-    <p class="lead">De obicei îi faci pe toți dintr-o comandă. Apasă pe fiecare etapă ca să vezi cum arată fișierul.</p>
+    <h2><span class="t" data-t="compilator"><code>gcc</code></span> face patru pași, unul după altul</h2>
+    <p class="lead">Din <span class="t" data-t="sursa">codul sursă</span> iese un <span class="t" data-t="executabil">executabil</span>. De obicei faci totul dintr-o comandă; apasă pe fiecare etapă ca să vezi cum arată fișierul.</p>
   </div>
   <div class="pipe" id="pipe" role="group" aria-label="Etapele compilării"></div>
   <div class="row grow">
@@ -688,11 +722,11 @@ p { margin: 0; }
   <div class="head">
     <div class="eyebrow">5 · Compilăm și rulăm exercițiul</div>
     <h2>Fiecare program lasă în urmă un număr</h2>
-    <p class="lead"><code>0</code> înseamnă „a mers”. Orice altceva înseamnă „ceva n-a mers”. Îl vezi cu <code>echo $?</code>.</p>
+    <p class="lead">Se numește <span class="t" data-t="exitcode">cod de ieșire</span>. <code>0</code> înseamnă „a mers”, orice altceva înseamnă „ceva n-a mers”. Îl vezi cu <code>echo $?</code>.</p>
   </div>
   <div class="row grow">
     <div class="col" style="width:440px;flex:none">
-      <p class="small muted">Comanda pe care o folosim la laborator. Apasă pe o opțiune:</p>
+      <p class="small muted">Comanda pe care o folosim la laborator. Apasă pe o <span class="t" data-t="optiune">opțiune</span>:</p>
       <div class="btns" id="flagBtns">
         <button class="btn flag" data-f="wall">-Wall -Wextra</button>
         <button class="btn flag" data-f="std">-std=c11</button>
@@ -701,7 +735,7 @@ p { margin: 0; }
         <button class="btn flag" data-f="o">-o exercitiu</button>
       </div>
       <div class="panel small" id="flagText" aria-live="polite" style="flex:none;min-height:110px;padding:14px 18px"></div>
-      <p class="small muted">Rulează exercițiul în trei feluri:</p>
+      <p class="small muted">Rulează exercițiul în trei feluri, cu <span class="t" data-t="argument">argumente</span> diferite:</p>
       <div class="cmdlist" id="runBtns">
         <button class="btn" data-r="ok"><code>./exercitiu date.in</code></button>
         <button class="btn" data-r="noarg"><code>./exercitiu</code></button>
@@ -753,7 +787,7 @@ p { margin: 0; }
   <div class="head">
     <div class="eyebrow">Acum e rândul tău</div>
     <h2>Deschide terminalul și urmează pașii</h2>
-    <p class="lead">Completează în <code>exercitiu.c</code> zonele marcate cu <code>TODO</code>. Bifează pe măsură ce avansezi.</p>
+    <p class="lead">Completează în <span class="t" data-t="schelet">scheletul</span> <code>exercitiu.c</code> zonele marcate cu <span class="t" data-t="todo"><code>TODO</code></span>. Bifează pe măsură ce avansezi.</p>
   </div>
   <div class="row grow">
     <div class="todo grow">
@@ -767,7 +801,7 @@ p { margin: 0; }
     <div class="col" style="width:400px;flex:none">
       <div class="panel col">
         <h3>Ce exersezi</h3>
-        <p class="small">Citești argumentele programului (<code>argc</code>, <code>argv</code>), variabile de mediu cu <code>getenv()</code>, un fișier linie cu linie și întorci un cod de ieșire corect.</p>
+        <p class="small">Citești <span class="t" data-t="argc">argumentele programului</span> (<code>argc</code>, <code>argv</code>), <span class="t" data-t="varmediu">variabile de mediu</span> cu <code>getenv()</code>, un fișier linie cu linie și întorci un <span class="t" data-t="exitcode">cod de ieșire</span> corect.</p>
       </div>
       <p class="small muted">Te-ai blocat? Soluția completă e în <code>tutoriat-01/solutii/</code>. Încearcă întâi singur.</p>
     </div>
@@ -806,6 +840,7 @@ p { margin: 0; }
   }
   function go(i) {
     cur = Math.max(0, Math.min(slides.length - 1, i));
+    if (typeof hideTip === "function") hideTip();
     slides.forEach((s, k) => { s.classList.toggle("active", k === cur); s.setAttribute("aria-hidden", k === cur ? "false" : "true"); });
     $("#count").textContent = `${cur + 1} / ${slides.length}`;
     $("#bar").style.width = `${(cur + 1) / slides.length * 100}%`;
@@ -836,6 +871,90 @@ p { margin: 0; }
     root.dataset.theme = dark ? "light" : "dark";
   };
 
+
+  /* ---------- Termeni explicați ---------- */
+  const G = {
+    os: ["sistem de operare", "Programul de bază care pornește primul și administrează calculatorul pentru toate celelalte programe. Ex.: Windows, macOS, Linux."],
+    kernel: ["kernel (nucleu)", "Inima sistemului de operare. Împarte procesorul și memoria între programe și e singura parte care vorbește direct cu hardware-ul."],
+    hardware: ["hardware", "Piesele fizice ale calculatorului: procesorul, memoria RAM, discul, tastatura, ecranul."],
+    cpu: ["procesor (CPU)", "Piesa care execută instrucțiunile programelor, una după alta, foarte repede."],
+    proces: ["program și proces", "Programul e un fișier cu instrucțiuni, pe disc. Procesul e programul acela în timp ce rulează. Același program poate rula de mai multe ori deodată."],
+    terminal: ["terminal", "Fereastra în care scrii comenzi text și vezi ce răspunde calculatorul."],
+    shell: ["shell", "Programul din terminal care citește ce scrii și pornește comenzile. Pe Linux e de obicei bash."],
+    comanda: ["comandă", "Numele unui program pe care îl pornești din terminal, ca ls sau cp. Fiecare comandă e de fapt un program."],
+    director: ["director", "Același lucru cu un folder: un loc în care stau fișiere și alte directoare."],
+    cale: ["cale (path)", "Adresa unui fișier: folderele prin care treci ca să ajungi la el, de exemplu /home/student/tema.c."],
+    usermode: ["user mode", "Modul în care rulează programele obișnuite, cu drepturi limitate. Nu au voie să umble direct la hardware."],
+    kernelmode: ["kernel mode", "Modul în care rulează kernelul, cu acces la tot: memorie, disc, rețea, ecran."],
+    syscall: ["apel de sistem", "Cererea pe care un program o face kernelului când are nevoie de ceva ce nu poate face singur, de exemplu write() ca să scrie pe ecran."],
+    biblioteca: ["bibliotecă", "Cod gata scris pe care îl folosesc programele. printf() vine din biblioteca standard C."],
+    segfault: ["Segmentation fault", "Programul a umblat la o zonă de memorie care nu e a lui, așa că kernelul l-a oprit. Restul sistemului merge mai departe."],
+    panic: ["kernel panic", "Eroare gravă în kernel, care oprește tot calculatorul. Ceva ca ecranul albastru de pe Windows."],
+    driver: ["driver", "Bucată din kernel care știe să comande un anumit dispozitiv, de exemplu placa video sau imprimanta."],
+    utilitar: ["utilitar", "Program mic, făcut pentru un singur lucru: ls listează, cp copiază, cat afișează."],
+    radacina: ["rădăcina /", "Folderul din care pornește tot în Linux. Orice fișier are o adresă care începe de aici."],
+    dispozitiv: ["dispozitiv", "Orice piesă hardware: disc, tastatură, terminal. În Linux, fiecare are un fișier în /dev."],
+    home: ["home (~)", "Folderul tău personal, de exemplu /home/student. Aici ajungi când deschizi terminalul."],
+    cwd: ["director curent", "Folderul în care ești acum în terminal. Îl afli cu pwd. Căile relative pornesc de aici."],
+    wildcard: ["mască (wildcard)", "Caractere speciale care aleg mai multe fișiere deodată: * (orice), ? (un caracter), [ ] (unul din listă)."],
+    consola: ["consolă (TTY)", "Terminalul text oferit direct de kernel, fără ferestre. Merge chiar dacă interfața grafică nu pornește."],
+    ssh: ["SSH", "Un mod de a deschide terminalul unui alt calculator, prin rețea. Așa lucrezi pe servere."],
+    tmux: ["tmux", "Program care împarte un terminal în mai multe ferestre și tab-uri."],
+    prompt: ["prompt", "Textul de la începutul rândului, ca student@fmi:~$. Arată cine ești, pe ce calculator și în ce folder. După $ poți scrie."],
+    varmediu: ["variabilă de mediu", "O setare cu nume și valoare, ca HOME=/home/student, pe care o primesc toate programele pornite din terminal."],
+    path: ["$PATH", "Variabila de mediu cu lista de foldere în care shell-ul caută o comandă când scrii doar numele ei."],
+    sursa: ["cod sursă", "Textul programului, scris de tine într-un limbaj ca C. De exemplu, exercitiu.c."],
+    compilator: ["compilator", "Programul care traduce codul sursă în cod pe care îl înțelege procesorul. La noi, gcc."],
+    header: ["header", "Fișier ca stdio.h, care anunță ce funcții există (printf, fopen…). #include îl lipește în codul tău."],
+    asamblare: ["limbaj de asamblare", "Instrucțiuni foarte mici, scrise pe limba procesorului: mută un număr, adună, sari la altă instrucțiune."],
+    codmasina: ["cod mașină", "Instrucțiunile procesorului scrise ca numere (octeți). Asta execută procesorul de fapt."],
+    legare: ["legare (linking)", "Pasul în care codul tău e lipit cu bibliotecile de care are nevoie, ca să iasă un singur program."],
+    executabil: ["executabil", "Fișierul final, gata de rulat. Îl pornești cu ./numele_lui."],
+    exitcode: ["cod de ieșire", "Numărul pe care îl lasă un program când se termină. 0 = a mers, altceva = eroare. Îl vezi cu echo $?."],
+    optiune: ["opțiune (flag)", "Ce scrii după o comandă și începe cu minus, ca -l sau -Wall. Schimbă felul în care merge comanda."],
+    argument: ["argument", "Ce scrii după numele programului ca să-i spui pe ce să lucreze. În ./exercitiu date.in, argumentul e date.in."],
+    avertisment: ["avertisment (warning)", "Compilatorul zice „aici ar putea fi o problemă”, dar tot creează programul. O eroare, în schimb, îl oprește."],
+    depanare: ["depanare (debugging)", "Căutarea și repararea bug-urilor. Unelte: gdb, valgrind."],
+    ascuns: ["fișier ascuns", "Fișier al cărui nume începe cu punct, ca .bashrc. Nu apare la ls simplu, doar la ls -a."],
+    recursiv: ["recursiv", "Cu tot ce e înăuntru, inclusiv în subfoldere. De aici vine -r la cp și rm."],
+    executie: ["drept de execuție", "Marcajul care îi spune lui Linux că un fișier poate fi rulat ca program. Îl pui cu chmod +x."],
+    schelet: ["schelet", "Codul pe jumătate scris pe care îl completați. Ce e greu de pus la punct e deja acolo."],
+    todo: ["TODO", "Comentariu care marchează locul unde trebuie să scrii tu cod."],
+    argc: ["argc și argv", "argc = câte argumente a primit programul (numele lui inclus). argv = lista lor, ca text."],
+    make: ["make", "Comandă care citește rețeta de compilare din Makefile și o rulează, ca să nu scrii comenzi lungi."]
+  };
+  const gl = str => str.replace(/\[\[([a-z]+)\|([^\]]+)\]\]/g, (m, k, t) => `<span class="t" data-t="${k}">${t}</span>`);
+  const tip = document.createElement("div");
+  tip.className = "tip"; tip.hidden = true; tip.setAttribute("role", "tooltip");
+  let tipFor = null;
+  function showTip(el) {
+    const def = G[el.dataset.t], slide = el.closest(".slide");
+    if (!def || !slide) return;
+    slide.appendChild(tip);
+    tip.innerHTML = `<b>${esc(def[0])}</b>${esc(def[1])}`;
+    tip.hidden = false; tipFor = el;
+    const sr = slide.getBoundingClientRect(), r = el.getBoundingClientRect(), k = sr.width / slide.offsetWidth || 1;
+    const W = slide.offsetWidth, H = slide.offsetHeight, tw = tip.offsetWidth, th = tip.offsetHeight;
+    let x = (r.left - sr.left) / k, y = (r.bottom - sr.top) / k + 8;
+    x = Math.max(8, Math.min(x, W - tw - 8));
+    if (y + th > H - 8) y = (r.top - sr.top) / k - th - 8;
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+  }
+  function hideTip() { tip.hidden = true; tipFor = null; }
+  function prepTerms(root) { $$(".t", root).forEach(t => { t.tabIndex = 0; t.setAttribute("role", "button"); }); }
+  document.addEventListener("mouseover", e => { const t = e.target.closest(".t"); if (t && t !== tipFor) showTip(t); });
+  document.addEventListener("mouseout", e => { const t = e.target.closest(".t"); if (t && !t.contains(e.relatedTarget)) hideTip(); });
+  document.addEventListener("focusin", e => { const t = e.target.closest(".t"); if (t) showTip(t); });
+  document.addEventListener("focusout", e => { if (e.target.closest(".t")) hideTip(); });
+  document.addEventListener("click", e => { const t = e.target.closest(".t"); if (t) showTip(t); else hideTip(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") hideTip(); });
+
+  /* ---------- 2. Vocabular ---------- */
+  const vBtns = $$("#vocabBtns .btn");
+  function showVocab(k) { const [t, d] = G[k]; $("#vocabDef").innerHTML = `<b>${esc(t)}</b><span>${esc(d)}</span>`; pressOne(vBtns, vBtns.find(b => b.dataset.v === k)); }
+  vBtns.forEach(b => b.onclick = () => showVocab(b.dataset.v));
+  showVocab("os");
+
   /* ---------- 1. Copertă: text tastat ---------- */
   const typedText = 'echo "Salut, USO!"';
   const typed = $("#typed");
@@ -845,15 +964,15 @@ p { margin: 0; }
   /* ---------- 3. Straturi ---------- */
   const layers = {
     app: ["Etajul de sus", "Aplicațiile", "Tot ce pornești tu: browserul, editorul, programele scrise în C. Ele știu ce vor să facă, dar nu știu cum se vorbește cu discul sau cu placa de rețea.", "clientul care comandă din meniu."],
-    shell: ["Interpretul de comenzi", "Shell-ul și utilitarele", "Shell-ul (de obicei bash) citește ce scrii, înțelege comanda și pornește programul potrivit. Utilitarele ca ls, cp sau gcc sunt programe obișnuite.", "ospătarul care preia comanda și o duce mai departe."],
-    sys: ["Granița", "Apelurile de sistem", "Singurul drum legal dintre aplicații și kernel. Când un program vrea să citească un fișier sau să scrie pe ecran, face un apel de sistem, de exemplu read() sau write().", "ghișeul dintre sală și bucătărie. Clienții nu intră în bucătărie."],
-    kernel: ["Inima sistemului", "Kernelul", "Nucleul sistemului de operare. Împarte procesorul între programe, ține evidența memoriei și a fișierelor, vorbește cu dispozitivele prin drivere.", "bucătarul-șef: doar el folosește aragazul și cuțitele."],
-    hw: ["Etajul de jos", "Hardware-ul", "Piesele fizice: procesorul execută instrucțiuni, RAM-ul ține datele cât rulează programele, discul le păstrează și după ce închizi calculatorul.", "bucătăria însăși: aragazul, frigiderul, ingredientele."]
+    shell: ["Interpretul de comenzi", "Shell-ul și utilitarele", "[[shell|Shell-ul]] (de obicei bash) citește ce scrii, înțelege [[comanda|comanda]] și pornește programul potrivit. [[utilitar|Utilitarele]] ca ls, cp sau gcc sunt programe obișnuite.", "ospătarul care preia comanda și o duce mai departe."],
+    sys: ["Granița", "Apelurile de sistem", "Singurul drum legal dintre aplicații și kernel. Când un program vrea să citească un fișier sau să scrie pe ecran, face un [[syscall|apel de sistem]], de exemplu read() sau write().", "ghișeul dintre sală și bucătărie. Clienții nu intră în bucătărie."],
+    kernel: ["Inima sistemului", "Kernelul", "Nucleul [[os|sistemului de operare]]. Împarte [[cpu|procesorul]] între programe, ține evidența memoriei și a fișierelor, vorbește cu [[dispozitiv|dispozitivele]] prin [[driver|drivere]].", "bucătarul-șef: doar el folosește aragazul și cuțitele."],
+    hw: ["Etajul de jos", "Hardware-ul", "Piesele fizice: [[cpu|procesorul]] execută instrucțiuni, RAM-ul ține datele cât rulează programele, discul le păstrează și după ce închizi calculatorul.", "bucătăria însăși: aragazul, frigiderul, ingredientele."]
   };
   const lyBtns = $$("#straturi [data-layer]");
   function showLayer(k) {
     const [tag, title, text, an] = layers[k];
-    $("#lyTag").textContent = tag; $("#lyTitle").textContent = title; $("#lyText").textContent = text; $("#lyAnalogy").textContent = an;
+    $("#lyTag").textContent = tag; $("#lyTitle").textContent = title; $("#lyText").innerHTML = gl(text); $("#lyAnalogy").textContent = an;
     pressOne(lyBtns, lyBtns.find(b => b.dataset.layer === k));
   }
   lyBtns.forEach(b => b.onclick = () => showLayer(b.dataset.layer));
@@ -874,18 +993,18 @@ p { margin: 0; }
 
   /* ---------- 5. Arbore ---------- */
   const dirs = {
-    bin: ["/bin · comenzile de bază", "Programele de care are nevoie orice sistem ca să pornească și să fie folosit. Când scrii ls, rulezi de fapt un fișier de aici.", ["ls", "cp", "mv", "cat", "bash"]],
+    bin: ["/bin · comenzile de bază", "Programele de care are nevoie orice sistem ca să pornească și să fie folosit. Când scrii ls, rulezi de fapt un fișier de aici: fiecare [[comanda|comandă]] e un program.", ["ls", "cp", "mv", "cat", "bash"]],
     etc: ["/etc · setările sistemului", "Fișiere text cu configurări. Le citești liniștit, dar le modifici doar dacă știi ce faci.", ["passwd", "hosts", "hostname", "fstab"]],
-    home: ["/home · casele utilizatorilor", "Fiecare utilizator are aici folderul lui. Al tău este /home/student, pe scurt ~. Aici lucrezi aproape tot timpul.", ["student/", "student/Desktop", "student/tutoriat-01"]],
-    dev: ["/dev · dispozitivele, ca fișiere", "În Linux, „totul e fișier”: discul, terminalul, chiar și o gaură neagră pentru date. Poți scrie în ele ca într-un fișier obișnuit.", ["null", "sda", "tty1", "pts/0"]],
-    usr: ["/usr · programele instalate", "Majoritatea aplicațiilor și bibliotecilor. Compilatorul gcc stă în /usr/bin.", ["bin/gcc", "bin/python3", "lib/", "include/stdio.h"]],
+    home: ["/home · casele utilizatorilor", "Fiecare utilizator are aici folderul lui. Al tău este /home/student, pe scurt [[home|~]]. Aici lucrezi aproape tot timpul.", ["student/", "student/Desktop", "student/tutoriat-01"]],
+    dev: ["/dev · dispozitivele, ca fișiere", "În Linux, „totul e fișier”: fiecare [[dispozitiv|dispozitiv]] are un fișier aici, chiar și terminalul. /dev/null e o gaură neagră: ce scrii acolo dispare.", ["null", "sda", "tty1", "pts/0"]],
+    usr: ["/usr · programele instalate", "Majoritatea aplicațiilor și [[biblioteca|bibliotecilor]]. [[compilator|Compilatorul]] gcc stă în /usr/bin.", ["bin/gcc", "bin/python3", "lib/", "include/stdio.h"]],
     tmp: ["/tmp · fișiere temporare", "Oricine poate scrie aici, iar conținutul se poate șterge la repornire. Nu-ți ține tema aici.", ["test.txt", "build-123/"]],
     var: ["/var · date care se tot schimbă", "Jurnale (loguri), cozi de printare, cache. Fișiere care cresc cât timp sistemul rulează.", ["log/syslog", "cache/", "spool/"]]
   };
   const dBtns = $$("#arbore .dir");
   function showDir(k) {
     const [t, x, f] = dirs[k];
-    $("#dTitle").textContent = t; $("#dText").textContent = x;
+    $("#dTitle").textContent = t; $("#dText").innerHTML = gl(x);
     $("#dFiles").innerHTML = f.map(n => `<code>${esc(n)}</code>`).join("");
     pressOne(dBtns, dBtns.find(b => b.dataset.dir === k));
   }
@@ -1023,20 +1142,20 @@ p { margin: 0; }
   const stages = [
     ["prog.c", "codul tău", "Codul sursă", "Ce ai scris tu: text simplu, pe care îl citește un om.",
       `<span class="b">#include</span> &lt;stdio.h&gt;\n\n<span class="d">// primul program</span>\nint main(void) {\n    printf("Salut!\\n");\n    return 0;\n}`, "nano prog.c"],
-    ["prog.i", "preprocesare", "1 · Preprocesarea", "#include e înlocuit cu tot conținutul lui stdio.h, iar comentariile dispar. Fișierul crește la sute de linii.",
+    ["prog.i", "preprocesare", "1 · Preprocesarea", "#include e înlocuit cu tot conținutul [[header|header-ului]] stdio.h, iar comentariile dispar. Fișierul crește la sute de linii.",
       `<span class="d"># ... ~700 de linii venite din stdio.h ...</span>\nextern int printf(const char *, ...);\n<span class="d"># ...</span>\nint main(void) {\n    printf("Salut!\\n");\n    return 0;\n}`, "gcc -E prog.c -o prog.i"],
-    ["prog.s", "compilare", "2 · Compilarea", "Codul C devine limbaj de asamblare: instrucțiuni mici, specifice procesorului (aici x86-64).",
+    ["prog.s", "compilare", "2 · Compilarea", "Codul C devine [[asamblare|limbaj de asamblare]]: instrucțiuni mici, specifice procesorului (aici x86-64).",
       `main:\n    push    rbp\n    mov     rbp, rsp\n    lea     rdi, .LC0[rip]   <span class="d"># adresa lui "Salut!"</span>\n    call    puts\n    mov     eax, 0           <span class="d"># return 0</span>\n    pop     rbp\n    ret`, "gcc -S prog.c"],
-    ["prog.o", "asamblare", "3 · Asamblarea", "Asamblarea devine cod mașină: doar octeți. Nu mai e text și nu-l mai poți citi cu ochiul liber.",
+    ["prog.o", "asamblare", "3 · Asamblarea", "Asamblarea devine [[codmasina|cod mașină]]: doar octeți. Nu mai e text și nu-l mai poți citi cu ochiul liber.",
       `7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00\n01 00 3e 00 01 00 00 00  00 00 00 00 00 00 00 00\n55 48 89 e5 48 8d 05 00  00 00 00 48 89 c7 e8 00\n<span class="d"># ... lipsește încă codul pentru printf</span>`, "gcc -c prog.c"],
-    ["program", "legare", "4 · Legarea (linking)", "Se adaugă codul pentru printf din biblioteca standard C. Rezultatul e un executabil pe care îl poți rula.",
+    ["program", "legare", "4 · Legarea (linking)", "Se adaugă codul pentru printf din [[biblioteca|biblioteca]] standard C. Rezultatul e un [[executabil|executabil]] pe care îl poți rula.",
       `<span class="p">$</span> ./program\nSalut!\n<span class="p">$</span> echo $?\n0`, "gcc prog.c -o program"]
   ];
   $("#pipe").innerHTML = stages.map(([f, s], k) => `<button class="stg" data-k="${k}"><code>${f}</code><span>${s}</span></button>`).join("");
   const sBtns = $$("#pipe .stg");
   function showStage(k) {
     const [, , t, x, view, cmd] = stages[k];
-    $("#pipeTitle").textContent = t; $("#pipeText").textContent = x; $("#pipeView").innerHTML = view;
+    $("#pipeTitle").textContent = t; $("#pipeText").innerHTML = gl(x); $("#pipeView").innerHTML = view;
     $("#pipeCmd").innerHTML = `<span class="p">$</span> ${esc(cmd)}`;
     pressOne(sBtns, sBtns[k]);
   }
@@ -1045,14 +1164,14 @@ p { margin: 0; }
 
   /* ---------- 11. Flag-uri și rulare ---------- */
   const flags = {
-    wall: "<b>-Wall -Wextra</b> · Compilatorul te avertizează despre lucruri suspecte: variabile nefolosite, comparații ciudate. Citește avertismentele, de obicei au dreptate.",
+    wall: "<b>-Wall -Wextra</b> · Compilatorul te [[avertisment|avertizează]] despre lucruri suspecte: variabile nefolosite, comparații ciudate. Citește avertismentele, de obicei au dreptate.",
     std: "<b>-std=c11</b> · Folosim versiunea C11 a limbajului, aceeași pentru toată lumea. Codul se comportă la fel pe orice calculator.",
     ped: "<b>-pedantic</b> · Te atenționează când folosești ceva ce nu e C standard, ci doar un „truc” al lui gcc.",
-    g: "<b>-g</b> · Păstrează în executabil informații pentru depanare. Fără el, gdb și valgrind nu-ți pot arăta linia cu problema.",
+    g: "<b>-g</b> · Păstrează în executabil informații pentru [[depanare|depanare]]. Fără el, gdb și valgrind nu-ți pot arăta linia cu problema.",
     o: "<b>-o exercitiu</b> · Numele fișierului rezultat. Fără el, gcc îl numește <code>a.out</code>."
   };
   const fBtns = $$("#flagBtns .btn");
-  function showFlag(k) { $("#flagText").innerHTML = flags[k]; pressOne(fBtns, fBtns.find(b => b.dataset.f === k)); }
+  function showFlag(k) { $("#flagText").innerHTML = gl(flags[k]); pressOne(fBtns, fBtns.find(b => b.dataset.f === k)); }
   fBtns.forEach(b => b.onclick = () => showFlag(b.dataset.f));
   showFlag("wall");
   const P = `<span class="p">$</span> `;
@@ -1068,24 +1187,24 @@ p { margin: 0; }
 
   /* ---------- 12. Comenzi ---------- */
   const cmds = [
-    ["pwd", "unde sunt", "Afișează calea completă a folderului în care ești.", "pwd\n/home/student/tutoriat-01"],
-    ["ls -la", "ce e aici", "Listează tot din folder, inclusiv fișierele ascunse (cele care încep cu punct), cu detalii.", "ls -la\ndrwxr-xr-x  schelet\ndrwxr-xr-x  solutii\n-rw-r--r--  README.md"],
+    ["pwd", "unde sunt", "Afișează [[cale|calea]] completă a folderului în care ești.", "pwd\n/home/student/tutoriat-01"],
+    ["ls -la", "ce e aici", "Listează tot din folder, inclusiv [[ascuns|fișierele ascunse]] (cele care încep cu punct), cu detalii.", "ls -la\ndrwxr-xr-x  schelet\ndrwxr-xr-x  solutii\n-rw-r--r--  README.md"],
     ["cd", "schimbă folderul", "Te mută în alt folder. Singur, fără nimic după, te duce acasă (~).", "cd schelet\ncd ..\ncd ~/tutoriat-01"],
     ["mkdir", "folder nou", "Creează un folder. Cu -p creează și folderele intermediare care lipsesc.", "mkdir teme\nmkdir -p teme/lab1/src"],
     ["touch", "fișier gol", "Creează un fișier gol, dacă nu există deja.", "touch notite.txt"],
     ["cat", "arată conținutul", "Afișează tot conținutul unui fișier în terminal.", "cat date.in\nLinux este un nucleu de sistem de operare..."],
-    ["cp", "copiază", "Copiază un fișier. Cu -r copiază un folder întreg.", "cp exercitiu.c backup.c\ncp -r schelet copie"],
+    ["cp", "copiază", "Copiază un fișier. Cu -r ([[recursiv|recursiv]]) copiază un folder întreg.", "cp exercitiu.c backup.c\ncp -r schelet copie"],
     ["mv", "mută / redenumește", "Mută un fișier în alt loc sau îi schimbă numele. E aceeași operație.", "mv backup.c vechi.c\nmv vechi.c ~/teme/"],
     ["rm", "șterge", "Șterge fișiere. Nu există coș de gunoi! Cu -r șterge foldere întregi, deci atenție.", "rm vechi.c\nrm -r copie"],
     ["rmdir", "șterge folder gol", "Șterge doar foldere goale. Dacă e ceva înăuntru, refuză.", "rmdir teme/lab1/src"],
-    ["echo", "afișează text", "Scrie textul primit. Util ca să vezi valoarea unei variabile.", "echo $HOME\n/home/student"],
-    ["which", "unde e programul", "Îți spune în ce folder din $PATH a găsit o comandă.", "which gcc\n/usr/bin/gcc"]
+    ["echo", "afișează text", "Scrie textul primit. Util ca să vezi valoarea unei [[varmediu|variabile de mediu]].", "echo $HOME\n/home/student"],
+    ["which", "unde e programul", "Îți spune în ce folder din [[path|$PATH]] a găsit o comandă.", "which gcc\n/usr/bin/gcc"]
   ];
   $("#cmdGrid").innerHTML = cmds.map(([c, s], k) => `<button class="cmd" data-k="${k}"><code>${c}</code><span>${s}</span></button>`).join("");
   const cBtns = $$("#cmdGrid .cmd");
   function showCmd(k) {
     const [c, , x, ex] = cmds[k];
-    $("#cmdTitle").innerHTML = `<code>${c}</code>`; $("#cmdText").textContent = x;
+    $("#cmdTitle").innerHTML = `<code>${c}</code>`; $("#cmdText").innerHTML = gl(x);
     const lines = ex.split("\n"), firstWord = c.split(" ")[0];
     $("#cmdTerm").innerHTML = lines.map(l => l.startsWith(firstWord) ? `${P}${esc(l)}` : `<span class="d">${esc(l)}</span>`).join("\n");
     pressOne(cBtns, cBtns[k]);
@@ -1095,15 +1214,15 @@ p { margin: 0; }
 
   /* ---------- 13. Capcane ---------- */
   const traps = [
-    ["bash: ./program: Permission denied", "Fișierul nu are dreptul de execuție (x). Linux nu rulează orice fișier, doar pe cele marcate ca executabile.", "chmod +x program"],
-    ["bash: program: command not found", "Ai scris doar numele. Shell-ul l-a căutat în $PATH, iar folderul curent nu e acolo.", "./program"],
+    ["bash: ./program: Permission denied", "Fișierul nu are [[executie|dreptul de execuție]] (x). Linux nu rulează orice fișier, doar pe cele marcate ca executabile.", "chmod +x program"],
+    ["bash: program: command not found", "Ai scris doar numele. Shell-ul l-a căutat în [[path|$PATH]], iar [[cwd|folderul curent]] nu e acolo.", "./program"],
     ["rmdir: failed to remove 'teme': Directory not empty", "rmdir șterge doar foldere goale, ca să nu pierzi date din greșeală.", "rm -r teme   (verifică de două ori!)"],
     ["cat: Date.in: No such file or directory", "Linux face diferența între litere mari și mici. date.in și Date.in sunt fișiere diferite.", "ls  ca să vezi numele exact, apoi cat date.in"],
     ["cd: tutoriat-01: No such file or directory", "Calea relativă pornește din folderul în care ești acum. Probabil ești în alt loc decât crezi.", "pwd  ca să vezi unde ești, apoi cd ~/tutoriat-01"]
   ];
   $("#traps").innerHTML = traps.map(([e, w, f], k) =>
     `<div class="trap${k === 0 ? " open" : ""}"><button aria-expanded="${k === 0}"><code>${esc(e)}</code><span class="chev">›</span></button>` +
-    `<div class="body"><div><b>De ce</b>${esc(w)}</div><div><b>Rezolvare</b><code>${esc(f)}</code></div></div></div>`).join("");
+    `<div class="body"><div><b>De ce</b>${gl(esc(w))}</div><div><b>Rezolvare</b><code>${esc(f)}</code></div></div></div>`).join("");
   $$("#traps .trap").forEach(t => $("button", t).onclick = () => {
     $$("#traps .trap").forEach(o => { const on = o === t && !o.classList.contains("open"); o.classList.toggle("open", on); $("button", o).setAttribute("aria-expanded", on); });
   });
@@ -1127,6 +1246,8 @@ p { margin: 0; }
   });
 
   /* ---------- Start ---------- */
+  new MutationObserver(() => prepTerms(stage)).observe(stage, { childList: true, subtree: true });
+  prepTerms(stage);
   const fromHash = slides.findIndex(s => "#" + s.id === location.hash);
   fit();
   go(fromHash >= 0 ? fromHash : 0);
