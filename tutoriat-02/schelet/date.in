@@ -1,0 +1,12 @@
+Linux este un nucleu de sistem de operare scris in C.
+Shell-ul citeste comenzile si porneste programele.
+Comanda grep cauta un tipar in fiecare linie de text.
+Comanda sort ordoneaza liniile, iar uniq elimina dublurile vecine.
+Kernelul Linux gestioneaza procesele si memoria.
+Un pipe leaga iesirea unei comenzi de intrarea urmatoarei.
+Mesajele de eroare merg pe stderr, nu pe stdout.
+Distributiile linux populare sunt Debian, Ubuntu si Fedora.
+Comanda wc numara liniile, cuvintele si octetii.
+Redirectarea > suprascrie fisierul, iar >> adauga la final.
+In LINUX literele mari si mici conteaza.
+Shell-ul face expandarea mastilor inainte sa porneasca grep.
