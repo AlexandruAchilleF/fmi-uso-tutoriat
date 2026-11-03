@@ -495,9 +495,9 @@ p { margin: 0; }
 <section class="slide cover" id="start" data-title="Start">
   <div class="cover-stack">
     <div class="eyebrow">USO · Tutoriat 02 din 10</div>
-    <h1>Text care curge prin țevi</h1>
-    <p class="lead">Unde scrie un program, cum mutăm ce scrie în fișiere și cum legăm comenzi mici într-o <span class="t" data-t="pipe">conductă</span> care rezolvă probleme mari.</p>
-    <figure class="photo"><div class="shot"><div class="bar"><i></i><i></i><i></i><span>student@fmi: ~/tutoriat-02/solutii</span></div><img src="img/t2-cover.png" alt="Captură reală dintr-un terminal Linux: grep -c și o conductă cut | sort | uniq -c | sort -nr | head"></div><figcaption>Captură reală. La finalul orei veți scrie singuri conducta de jos și veți ști ce face fiecare bucată.</figcaption></figure>
+    <h1>Redirectări, pipe-uri și filtre</h1>
+    <p class="lead">Unde își scrie un program rezultatul și erorile, cum le salvezi în fișiere și cum legi mai multe comenzi cu un <span class="t" data-t="pipe">pipe</span> ca să afli ce vrei dintr-un fișier text.</p>
+    <figure class="photo"><div class="shot"><div class="bar"><i></i><i></i><i></i><span>student@fmi: ~/tutoriat-02/solutii</span></div><img src="img/t2-cover.png" alt="Captură reală dintr-un terminal Linux: grep -c și un pipe cut | sort | uniq -c | sort -nr | head"></div><figcaption>Captură reală. Până la finalul orei o să puteți scrie singuri ultima comandă și o să știți ce face fiecare parte din ea.</figcaption></figure>
     <div class="meta"><span>FMI · Universitatea din București</span><span>← → pentru navigare · cuvintele subliniate au explicații</span></div>
   </div>
 </section>
@@ -513,7 +513,7 @@ p { margin: 0; }
     <div class="stop"><b>2</b><h3>Cum trimit rezultatul într-un fișier?</h3><p><span class="t" data-t="redirectare">Redirectări</span>: <code>&gt;</code>, <code>&gt;&gt;</code>, <code>2&gt;</code>.</p></div>
     <div class="stop"><b>3</b><h3>Cum leg două comenzi?</h3><p><span class="t" data-t="pipe">Pipe-ul</span> <code>|</code> și filosofia UNIX.</p></div>
     <div class="stop"><b>4</b><h3>Ce unelte am pentru text?</h3><p><span class="t" data-t="filtru">Filtre</span>: <code>grep</code>, <code>sort</code>, <code>uniq</code>, <code>cut</code>.</p></div>
-    <div class="stop"><b>5</b><h3>Când îmi „mănâncă” shell-ul caracterele?</h3><p><span class="t" data-t="quoting">Ghilimele</span> și backslash.</p></div>
+    <div class="stop"><b>5</b><h3>De ce contează ghilimelele?</h3><p><span class="t" data-t="quoting">Ghilimele</span> și backslash.</p></div>
   </div>
   <div class="col">
     <p class="small muted">Cuvinte pe care le vom folosi des. Apasă pe unul:</p>
@@ -547,7 +547,7 @@ p { margin: 0; }
   <button class="btn real" data-img="img/t2-fluxuri.png" data-cap="Captură reală: eroarea rămâne pe ecran, iar în rez.txt ajunge doar date.in">Vezi în terminalul real</button>
   <div class="head">
     <div class="eyebrow">1 · Unde scrie un program</div>
-    <h2>Orice program pornește cu trei „țevi” deja montate</h2>
+    <h2>Orice program are o intrare și două ieșiri</h2>
     <p class="lead">Fiecare are un număr, numit <span class="t" data-t="descriptor">descriptor</span>. Apasă pe un număr.</p>
   </div>
   <div class="flow" role="group" aria-label="Fluxurile standard ale unui proces">
@@ -577,7 +577,7 @@ p { margin: 0; }
   <button class="btn real" data-img="img/t2-redir.png" data-cap="Captură reală: 2> /dev/null, apoi cele două ordini pentru 2>&1">Vezi în terminalul real</button>
   <div class="head">
     <div class="eyebrow">2 · Redirectări</div>
-    <h2>Mută o țeavă: de pe ecran într-un fișier</h2>
+    <h2>Trimite rezultatul într-un fișier, nu pe ecran</h2>
     <p class="lead">Comanda e mereu <code>ls date.in lipsa.txt</code>: primul fișier există, al doilea nu. Alege ce adaugi la final.</p>
   </div>
   <div class="btns mbtns" id="redBtns"></div>
@@ -596,7 +596,7 @@ p { margin: 0; }
   <button class="btn real" data-img="img/t2-redir.png" data-cap="Captură reală: > tot.txt 2>&1 pune totul în fișier; 2>&1 > rez.txt lasă eroarea pe ecran">Vezi în terminalul real</button>
   <div class="head">
     <div class="eyebrow">2 · Redirectări</div>
-    <h2>Ambele țevi în același fișier: <code>2&gt;&amp;1</code></h2>
+    <h2>Rezultatul și erorile în același fișier: <code>2&gt;&amp;1</code></h2>
     <p class="lead">Citește-l „2 devine o <b>copie</b> a lui 1, așa cum e 1 <b>acum</b>”, de la stânga la dreapta.</p>
   </div>
   <div class="btns mbtns" id="ordBtns"></div>
@@ -633,11 +633,11 @@ p { margin: 0; }
 
 <!-- 7 · Pipe -->
 <section class="slide" id="pipe" data-title="Pipe">
-  <button class="btn real" data-img="img/t2-pipe.png" data-cap="Captură reală: conducta construită bucată cu bucată pe jurnal.txt">Vezi în terminalul real</button>
+  <button class="btn real" data-img="img/t2-pipe.png" data-cap="Captură reală: pipe-ul construit pas cu pas pe jurnal.txt">Vezi în terminalul real</button>
   <div class="head">
-    <div class="eyebrow">3 · Conducte</div>
-    <h2>Construiește o conductă, bucată cu bucată</h2>
-    <p class="lead"><code>a | b</code> dă <code>stdout</code>-ul lui <code>a</code> ca <code>stdin</code> lui <code>b</code>. Alege o întrebare, apoi adaugă câte o bucată.</p>
+    <div class="eyebrow">3 · Pipe-uri</div>
+    <h2>Leagă comenzile între ele, pas cu pas</h2>
+    <p class="lead">Alege o întrebare și adaugă câte o comandă după <code>|</code>.</p>
   </div>
   <div class="btns" id="presets"></div>
   <div class="pipeline" id="pipeLine" aria-live="polite"></div>
@@ -707,8 +707,8 @@ p { margin: 0; }
 <section class="slide" id="reteta" data-title="Rețeta">
   <div class="head">
     <div class="eyebrow">4 · Filtre</div>
-    <h2>Rețeta „cele mai dese valori, primele”</h2>
-    <p class="lead">O vei folosi la aproape orice întrebare de tipul „cine apare cel mai des?”.</p>
+    <h2>Cine apare cel mai des? Rețeta completă</h2>
+    <p class="lead">Combinația asta apare la aproape orice exercițiu de tipul „care e cel mai frecvent…?”.</p>
   </div>
   <div class="recipe">
     <div><code>cut -d' ' -f3</code><span>ia doar <span class="t" data-t="camp">câmpul</span> care te interesează (aici, numele)</span></div>
@@ -760,8 +760,8 @@ p { margin: 0; }
   <button class="btn real" data-img="img/t2-args.png" data-cap="Captură reală: fără ghilimele, login e luat drept fișier; cu ghilimele, tiparul e întreg">Vezi în terminalul real</button>
   <div class="head">
     <div class="eyebrow">5 · Despecializare</div>
-    <h2>Spațiul taie textul în argumente</h2>
-    <p class="lead">Fiecare spațiu neprotejat începe un argument nou. Uneori nu e ce voiai.</p>
+    <h2>Fiecare spațiu desparte argumentele</h2>
+    <p class="lead">Shell-ul împarte comanda în cuvinte la fiecare spațiu. Dacă vrei un text cu spații ca un singur argument, pune-l între ghilimele.</p>
   </div>
   <div class="row grow">
     <div class="vbtns" id="sBtns" style="width:400px;flex:none"></div>
@@ -779,7 +779,7 @@ p { margin: 0; }
   <button class="btn real" data-img="img/t2-coduri.png" data-cap="Captură reală: && și || după grep -q, și codul unui pipe">Vezi în terminalul real</button>
   <div class="head">
     <div class="eyebrow">Coduri de ieșire</div>
-    <h2>Comenzi care decid singure: <code>&amp;&amp;</code> și <code>||</code></h2>
+    <h2>Când rulează a doua comandă: <code>&amp;&amp;</code> și <code>||</code></h2>
     <p class="lead"><code>grep</code> lasă un <span class="t" data-t="exitcode">cod de ieșire</span>: <code>0</code> a găsit, <code>1</code> n-a găsit, <code>2</code> eroare. Următoarea comandă poate ține cont de el.</p>
   </div>
   <div class="ops">
@@ -800,7 +800,7 @@ p { margin: 0; }
 <section class="slide" id="reguli" data-title="Exercițiul">
   <div class="head">
     <div class="eyebrow">Exercițiul de azi</div>
-    <h2>Scriem în C un mini-<code>grep</code> care se poartă frumos</h2>
+    <h2>Scriem în C un mini-<code>grep</code></h2>
     <p class="lead"><code>./exercitiu [-i] [-v] [-n] [-c] &lt;tipar&gt; [fisier]</code> · patru reguli pentru un program bun de pus într-un pipe:</p>
   </div>
   <div class="rules grow">
@@ -816,7 +816,7 @@ p { margin: 0; }
   <button class="btn real" data-img="img/t2-exercitiu.png" data-cap="Captură reală: make, apoi soluția rulată cu fișier, din pipe și cu un fișier lipsă">Vezi în terminalul real</button>
   <div class="head">
     <div class="eyebrow">Exercițiul de azi</div>
-    <h2>Rulează soluția și vezi cele patru reguli în acțiune</h2>
+    <h2>Soluția, rulată în cinci feluri</h2>
   </div>
   <div class="row grow">
     <div class="runbtns" id="runBtns2" style="width:560px;flex:none"></div>
@@ -1086,7 +1086,7 @@ Shell-ul face expandarea mastilor inainte sa porneasca grep.`.split("\n");
       `${P}sort\n${D("(scrii tu, de la tastatură)")}\npere\nmere\nbanane\n${D("^D")}\n${O("banane")}\n${O("mere")}\n${O("pere")}`],
     1: ["1 · stdout, ieșirea standard", "Aici scrie programul rezultatul, datele. Asta poți trimite într-un fișier cu > sau mai departe printr-un pipe.", "În C: stdout, printf(), puts()",
       `${P}ls date.in lipsa.txt\n${R("ls: cannot access 'lipsa.txt': No such file or directory")}\n${O("date.in")}`],
-    2: ["2 · stderr, ieșirea de eroare", "Aici merg mesajele de eroare. Pe ecran arată la fel, dar e altă țeavă: când trimiți rezultatul într-un fișier, erorile rămân pe ecran, unde le vede omul.", "În C: stderr, fprintf(stderr, ...), perror()",
+    2: ["2 · stderr, ieșirea de eroare", "Aici merg mesajele de eroare. Pe ecran arată la fel, dar e altă ieșire: când trimiți rezultatul într-un fișier, erorile rămân pe ecran, unde le vede omul.", "În C: stderr, fprintf(stderr, ...), perror()",
       `${P}ls date.in lipsa.txt > rez.txt\n${R("ls: cannot access 'lipsa.txt': No such file or directory")}\n${P}cat rez.txt\n${O("date.in")}`]
   };
   const wires = $$("#fluxuri .wire");
@@ -1109,7 +1109,7 @@ Shell-ul face expandarea mastilor inainte sa porneasca grep.`.split("\n");
 
   /* ---------- 4. Redirectări ---------- */
   const reds = [
-    ["", { 1: "ecran", 2: "ecran" }, [R(ERR), O(OUT)], {}, "Fără redirectare, ambele țevi duc la ecran și nu le mai deosebești cu ochiul liber."],
+    ["", { 1: "ecran", 2: "ecran" }, [R(ERR), O(OUT)], {}, "Fără redirectare, ambele ieșiri ajung pe ecran și nu le mai deosebești cu ochiul liber."],
     ["> rez.txt", { 1: "rez.txt", 2: "ecran" }, [R(ERR)], { "rez.txt": [OUT] }, "Doar stdout s-a mutat în fișier. Eroarea a rămas pe ecran, ca s-o vezi."],
     ["2> err.txt", { 1: "ecran", 2: "err.txt" }, [O(OUT)], { "err.txt": [ERR] }, "Doar stderr s-a mutat. Pe ecran rămâne rezultatul curat."],
     ["2> /dev/null", { 1: "ecran", 2: "/dev/null" }, [O(OUT)], { "/dev/null": null }, "Erorile sunt aruncate: [[devnull|/dev/null]] înghite tot."]
@@ -1204,7 +1204,7 @@ Shell-ul face expandarea mastilor inainte sa porneasca grep.`.split("\n");
     $("#pipeOut").innerHTML = `${P}${esc(["cat jurnal.txt", ...chain.map(k => ST[k][0])].join(" | "))}\n` + shown.join("\n");
     $("#pipeSteps").innerHTML = counts.map(([c, n], i) => `<div class="${i === counts.length - 1 ? "last" : ""}"><code>${esc(c)}</code><span>${n} ${n === 1 ? "linie" : "linii"}</span></div>`).join("");
     $("#pipeNext").disabled = !next;
-    $("#pipeNext").textContent = next ? `Adaugă | ${ST[next][0]}` : "Conducta e gata";
+    $("#pipeNext").textContent = next ? `Adaugă | ${ST[next][0]}` : "Gata, pipe-ul e complet";
     pressOne(pBtns, pBtns[pk]);
   }
   pBtns.forEach(b => b.onclick = () => { pk = +b.dataset.k; pn = 0; showPipe(); });
@@ -1368,7 +1368,7 @@ Shell-ul face expandarea mastilor inainte sa porneasca grep.`.split("\n");
     ["tee", "ramificație", "Copiază fluxul și pe ecran (sau mai departe în pipe), și într-un fișier.", "grep esuat jurnal.txt | tee esuate.out | wc -l\n9"],
     ["less", "paginează", "Afișează un text lung pagină cu pagină. Săgeți, /caută, q iese.", "man grep | less"],
     ["diff", "compară", "Arată liniile care diferă între două fișiere. Nimic afișat = identice.", "diff al_meu.out grep.out && echo Identic!\nIdentic!"],
-    ["/dev/null", "gaura neagră", "Ce scrii acolo dispare. Folosit cu 2> ca să ascunzi erorile.", "find / -name passwd 2> /dev/null\n/etc/passwd\n/usr/bin/passwd"]
+    ["/dev/null", "aruncă tot", "Ce scrii acolo dispare. Folosit cu 2> ca să ascunzi erorile.", "find / -name passwd 2> /dev/null\n/etc/passwd\n/usr/bin/passwd"]
   ];
   $("#cmdGrid").innerHTML = cmds.map(([c, s], k) => `<button class="cmd" data-k="${k}"><code>${c}</code><span>${s}</span></button>`).join("");
   const cBtns = $$("#cmdGrid .cmd");
