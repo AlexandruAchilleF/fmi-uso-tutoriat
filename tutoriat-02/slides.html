@@ -1,0 +1,1293 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>USO Tutoriat 02</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: o scenă 16:9 (1280×720) scalată pe ecran; sub 760px slide-urile se așază unul sub altul. */
+:root {
+  --bg: #eef1f0;          /* fundal liniștit, gri cu o tentă de verde */
+  --surface: #ffffff;
+  --surface-2: #f6f8f7;
+  --ink: #1d282c;
+  --muted: #5d6b6f;
+  --line: #d9e0de;
+  --accent: #2c7a74;      /* user space, acțiuni */
+  --accent-soft: #dcefec;
+  --kernel: #a8701c;      /* kernel / zona privilegiată */
+  --kernel-soft: #f6ead6;
+  --ok: #3a8455;
+  --ok-soft: #e0f0e5;
+  --bad: #b04f45;
+  --bad-soft: #f6e1de;
+  --term-bg: #1f2a2e;
+  --term-ink: #dfe7e5;
+  --term-dim: #8fa19f;
+  --term-green: #8fd4a6;
+  --term-blue: #8cc2e6;
+  --font-ui: "Onest", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151b1d; --surface: #1d2629; --surface-2: #192124; --ink: #e3eae8; --muted: #95a4a6; --line: #2e3a3d;
+    --accent: #62b6ae; --accent-soft: #1e3633; --kernel: #d6a552; --kernel-soft: #352c1c;
+    --ok: #6fbf8a; --ok-soft: #1d3326; --bad: #e08378; --bad-soft: #3a2422;
+    --term-bg: #0f1517; --term-ink: #dfe7e5; --term-dim: #7f9290; --term-green: #8fd4a6; --term-blue: #8cc2e6;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #151b1d; --surface: #1d2629; --surface-2: #192124; --ink: #e3eae8; --muted: #95a4a6; --line: #2e3a3d;
+  --accent: #62b6ae; --accent-soft: #1e3633; --kernel: #d6a552; --kernel-soft: #352c1c;
+  --ok: #6fbf8a; --ok-soft: #1d3326; --bad: #e08378; --bad-soft: #3a2422;
+  --term-bg: #0f1517; --term-ink: #dfe7e5; --term-dim: #7f9290; --term-green: #8fd4a6; --term-blue: #8cc2e6;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 20px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; }
+code, kbd, .mono { font-family: var(--font-mono); font-size: .9em; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+/* ---------- Scena ---------- */
+.viewport {
+  position: fixed; inset: 0;
+  display: grid; place-items: center;
+  overflow: hidden;
+}
+.stage {
+  width: 1280px; height: 720px;
+  position: relative;
+  transform-origin: center center;
+  flex: none;
+}
+.slide {
+  position: absolute; inset: 0;
+  padding: 56px 72px 76px;
+  display: flex; flex-direction: column; gap: 22px;
+  opacity: 0; visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity .35s ease, transform .35s ease, visibility 0s linear .35s;
+}
+.slide.active {
+  opacity: 1; visibility: visible; transform: none;
+  transition: opacity .35s ease, transform .35s ease;
+}
+.eyebrow {
+  font-size: 14px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent);
+}
+h1, h2, h3 { margin: 0; text-wrap: balance; letter-spacing: -.015em; }
+h1 { font-size: 64px; line-height: 1.05; font-weight: 700; }
+h2 { font-size: 40px; line-height: 1.15; font-weight: 700; }
+h3 { font-size: 22px; line-height: 1.3; font-weight: 600; }
+p { margin: 0; }
+.lead { font-size: 22px; color: var(--muted); max-width: 60ch; }
+.muted { color: var(--muted); }
+.small { font-size: 16px; }
+.head { display: flex; flex-direction: column; gap: 8px; }
+.grow { flex: 1; min-height: 0; }
+.row { display: flex; gap: 24px; min-width: 0; }
+.col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.hint { font-size: 15px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.hint::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+
+.panel {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 22px 26px;
+}
+.note {
+  border-left: 3px solid var(--accent); padding: 4px 0 4px 16px; font-size: 18px;
+}
+.note.k { border-color: var(--kernel); }
+
+/* butoane, chip-uri */
+.btn {
+  border: 1px solid var(--line); background: var(--surface); border-radius: 999px;
+  padding: 8px 18px; font-size: 17px; cursor: pointer; font-weight: 500;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.btn[aria-pressed="true"], .btn.on { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn code { font-size: .95em; }
+.btns { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* terminal */
+.term {
+  background: var(--term-bg); color: var(--term-ink);
+  border-radius: 12px; padding: 18px 22px;
+  font-family: var(--font-mono); font-size: 16px; line-height: 1.6;
+  white-space: pre-wrap; overflow: auto; min-width: 0;
+}
+.term .p { color: var(--term-green); }
+.term .d { color: var(--term-dim); }
+.term .b { color: var(--term-blue); }
+.term .e { color: #f0a49b; }
+
+/* termeni explicați (hover / click) */
+.t { text-decoration: underline dotted var(--accent); text-decoration-thickness: 2px; text-underline-offset: 5px; cursor: help; border-radius: 4px; }
+.t:hover, .t:focus-visible { background: var(--accent-soft); }
+.tip {
+  position: absolute; z-index: 4; width: max-content; max-width: 360px;
+  background: var(--ink); color: var(--bg); border-radius: 10px; padding: 10px 14px;
+  font-size: 16px; line-height: 1.45; font-weight: 400; text-transform: none; letter-spacing: 0;
+  box-shadow: 0 6px 24px rgba(0,0,0,.18); pointer-events: none;
+}
+.tip b { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; opacity: .7; margin-bottom: 2px; }
+.vocab { display: flex; flex-wrap: wrap; gap: 8px; }
+.vocab .btn { font-size: 16px; padding: 6px 14px; }
+.vocabdef { min-height: 54px; display: flex; align-items: center; gap: 12px; font-size: 18px; padding: 12px 18px; }
+.vocabdef b { color: var(--accent); white-space: nowrap; }
+
+/* ---------- Bara de navigare ---------- */
+.nav {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  display: flex; align-items: center; gap: 14px;
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  font-size: 14px; color: var(--muted);
+  z-index: 5;
+}
+.nav .bar { flex: 1; height: 3px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.nav .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+.nav button {
+  border: 1px solid var(--line); background: var(--surface); border-radius: 999px;
+  width: 36px; height: 36px; cursor: pointer; display: grid; place-items: center; font-size: 16px;
+}
+.nav .count { font-variant-numeric: tabular-nums; min-width: 56px; text-align: center; }
+.nav .theme { width: auto; padding: 0 14px; font-size: 13px; }
+
+/* ---------- 1. Copertă ---------- */
+.cover { justify-content: center; gap: 30px; }
+.cover .term { max-width: 640px; font-size: 18px; }
+.cursor { display: inline-block; width: .6em; height: 1.1em; background: var(--term-green); vertical-align: -3px; animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.cover .meta { display: flex; gap: 28px; font-size: 16px; color: var(--muted); }
+
+/* ---------- 2. Agenda ---------- */
+.route { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.stop { display: flex; flex-direction: column; gap: 10px; padding-top: 18px; border-top: 3px solid var(--line); }
+.stop b { font-size: 14px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.stop h3 { font-size: 21px; }
+.stop p { font-size: 16px; color: var(--muted); }
+.timeline { display: flex; height: 44px; border-radius: 10px; overflow: hidden; font-size: 15px; font-weight: 500; }
+.timeline div { display: flex; align-items: center; padding: 0 14px; white-space: nowrap; overflow: hidden; }
+.tl-a { background: var(--accent-soft); flex: 15; }
+.tl-b { background: var(--accent); color: var(--surface); flex: 60; }
+.tl-c { background: var(--kernel-soft); flex: 10; }
+.tl-d { background: var(--surface); border: 1px solid var(--line); flex: 5; }
+
+/* ---------- 3. Straturi ---------- */
+.layers { display: flex; flex-direction: column; gap: 8px; width: 520px; flex: none; }
+.layer {
+  text-align: left; border: 1px solid var(--line); background: var(--surface);
+  border-radius: 12px; padding: 14px 20px; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  transition: border-color .15s, background .15s, transform .15s;
+}
+.layer span { font-size: 15px; color: var(--muted); }
+.layer:hover { border-color: var(--accent); }
+.layer[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); transform: translateX(6px); }
+.layer.kz { background: var(--kernel-soft); border-color: transparent; }
+.layer.kz[aria-pressed="true"] { border-color: var(--kernel); }
+.layer.hw { background: var(--surface-2); }
+.border-line {
+  display: flex; align-items: center; gap: 12px; font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--kernel); font-weight: 600; padding: 2px 4px; background: none; border: 0; cursor: pointer; text-align: left;
+}
+.border-line::before, .border-line::after { content: ""; flex: 1; border-top: 2px dashed var(--kernel); opacity: .6; }
+.border-line[aria-pressed="true"] { color: var(--ink); }
+.explain { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+.explain .tag { font-size: 14px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.analogy { display: flex; gap: 14px; align-items: flex-start; background: var(--surface-2); border-radius: 12px; padding: 16px 18px; font-size: 18px; }
+.analogy svg { flex: none; }
+
+/* ---------- 4. User / Kernel ---------- */
+.modes { position: relative; display: grid; grid-template-rows: 1fr 54px 1fr; gap: 0; height: 380px; }
+.zone { border-radius: 14px; padding: 18px 22px; display: flex; gap: 22px; align-items: center; position: relative; }
+.zone.user { background: var(--accent-soft); }
+.zone.kern { background: var(--kernel-soft); }
+.zone .label { width: 210px; flex: none; }
+.zone .label b { display: block; font-size: 22px; }
+.zone .label > span { font-size: 15px; color: var(--muted); }
+.box {
+  background: var(--surface); border: 2px solid transparent; border-radius: 12px;
+  padding: 12px 18px; font-size: 17px; min-width: 150px; text-align: center;
+  transition: border-color .25s, box-shadow .25s, opacity .25s;
+}
+.box small { display: block; font-size: 13px; color: var(--muted); }
+.box.lit { border-color: var(--accent); box-shadow: 0 0 0 6px var(--accent-soft); }
+.zone.kern .box.lit { border-color: var(--kernel); box-shadow: 0 0 0 6px color-mix(in srgb, var(--kernel) 22%, transparent); }
+.door {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  font-size: 15px; color: var(--muted); position: relative;
+}
+.door::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 2px dashed var(--line); }
+.door > span { position: relative; background: var(--bg); padding: 4px 14px; border-radius: 999px; border: 2px solid var(--line); transition: border-color .25s, color .25s; }
+.door.lit > span { border-color: var(--kernel); color: var(--ink); }
+.steps { display: flex; flex-direction: column; gap: 10px; width: 380px; flex: none; }
+.step { display: flex; gap: 12px; padding: 10px 14px; border-radius: 10px; font-size: 17px; color: var(--muted); transition: background .2s, color .2s; }
+.step i { font-style: normal; font-weight: 600; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); flex: none; font-size: 14px; }
+.step.on { background: var(--surface); color: var(--ink); }
+.step.on i { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+.crash { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.crash div { border-radius: 12px; padding: 12px 16px; font-size: 16px; background: var(--surface); border: 1px solid var(--line); }
+.crash b { display: block; font-size: 15px; }
+
+/* ---------- 5. Arbore ---------- */
+.tree5 { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.rootnode { font-family: var(--font-mono); font-size: 22px; font-weight: 600; background: var(--ink); color: var(--bg); border-radius: 10px; padding: 6px 20px; }
+.stem { width: 2px; height: 22px; background: var(--line); }
+.kids { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; width: 100%; position: relative; padding-top: 22px; }
+.kids::before { content: ""; position: absolute; top: 0; left: calc(100% / 14); right: calc(100% / 14); border-top: 2px solid var(--line); }
+.dir {
+  position: relative; border: 1px solid var(--line); background: var(--surface); border-radius: 12px;
+  padding: 10px 8px; cursor: pointer; text-align: center; transition: border-color .15s, background .15s;
+}
+.dir::before { content: ""; position: absolute; top: -23px; left: 50%; height: 22px; border-left: 2px solid var(--line); }
+.dir b { font-family: var(--font-mono); font-size: 19px; display: block; }
+.dir span { font-size: 13px; color: var(--muted); display: block; }
+.dir:hover { border-color: var(--accent); }
+.dir[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.dirinfo { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: start; }
+.files { display: flex; flex-wrap: wrap; gap: 8px; }
+.files code { background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 3px 10px; font-size: 15px; }
+
+/* ---------- 6. Căi ---------- */
+.fs { font-family: var(--font-mono); font-size: 17px; display: flex; flex-direction: column; gap: 2px; width: 420px; flex: none; }
+.node {
+  display: flex; align-items: center; gap: 10px; border: 1px solid transparent; background: none; text-align: left;
+  border-radius: 8px; padding: 5px 10px; cursor: pointer; font-family: inherit; font-size: inherit;
+}
+.node:hover { background: var(--surface); }
+.node .ic { width: 16px; height: 13px; border-radius: 3px; background: var(--accent); opacity: .55; flex: none; }
+.node.file .ic { width: 12px; height: 15px; background: var(--muted); opacity: .4; border-radius: 2px; }
+.node.target { background: var(--surface); border-color: var(--accent); }
+.node .here { font-family: var(--font-ui); font-size: 12px; font-weight: 600; background: var(--kernel); color: var(--surface); padding: 1px 8px; border-radius: 999px; }
+.pathcard { display: grid; grid-template-columns: 130px 1fr; gap: 10px 16px; align-items: baseline; font-size: 18px; }
+.pathcard .k { font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-weight: 600; }
+.pathcard .v { font-family: var(--font-mono); font-size: 20px; word-break: break-all; }
+.pathcard .v.abs { color: var(--accent); }
+.pathcard .v.rel { color: var(--kernel); }
+.legend { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.legend div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; font-size: 15px; }
+.legend code { font-size: 20px; font-weight: 600; display: block; }
+
+/* ---------- 7. Wildcards ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.fchip {
+  font-family: var(--font-mono); font-size: 17px; padding: 8px 14px; border-radius: 10px;
+  background: var(--surface); border: 1px solid var(--line); transition: background .2s, border-color .2s, opacity .2s;
+}
+.fchip.hit { background: var(--ok-soft); border-color: var(--ok); }
+.fchip.miss { opacity: .45; }
+.patin { display: flex; align-items: center; gap: 10px; }
+.patin input {
+  font-family: var(--font-mono); font-size: 18px; padding: 8px 14px; border-radius: 10px; width: 220px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+}
+
+/* ---------- 8. Terminale ---------- */
+.twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.mini { display: flex; gap: 16px; align-items: center; }
+.cmdlist { display: flex; flex-direction: column; gap: 8px; }
+.cmdlist .btn { text-align: left; }
+#globBtns .btn { font-family: var(--font-mono); font-size: 16px; }
+
+/* ---------- 9. PATH ---------- */
+.pathrow { display: flex; align-items: stretch; gap: 10px; }
+.pdir {
+  flex: 1; border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 6px; transition: border-color .2s, background .2s, opacity .2s;
+}
+.pdir code { font-size: 17px; }
+.pdir .st { font-size: 15px; color: var(--muted); min-height: 1.5em; }
+.pdir.checking { border-color: var(--kernel); }
+.pdir.no { opacity: .55; }
+.pdir.yes { border-color: var(--ok); background: var(--ok-soft); }
+.pdir.skip { opacity: .35; border-style: dashed; }
+.sep { align-self: center; font-family: var(--font-mono); color: var(--muted); font-size: 22px; }
+.result { border-radius: 12px; padding: 14px 18px; font-size: 18px; background: var(--surface); border: 1px solid var(--line); min-height: 58px; }
+.result.ok { background: var(--ok-soft); border-color: var(--ok); }
+.result.bad { background: var(--bad-soft); border-color: var(--bad); }
+
+/* ---------- 10. GCC ---------- */
+.pipe { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; align-items: stretch; }
+.stg {
+  position: relative; border: 1px solid var(--line); background: var(--surface); padding: 12px 14px; cursor: pointer; text-align: left;
+  display: flex; flex-direction: column; gap: 2px; margin-right: 18px; border-radius: 12px; transition: border-color .15s, background .15s;
+}
+.stg:not(:last-child)::after {
+  content: "→"; position: absolute; right: -17px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 18px;
+}
+.stg:last-child { margin-right: 0; }
+.stg code { font-size: 18px; font-weight: 600; }
+.stg span { font-size: 14px; color: var(--muted); }
+.stg:hover { border-color: var(--accent); }
+.stg[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.flag { font-family: var(--font-mono); }
+
+/* ---------- 12. Comenzi ---------- */
+.cmdgrid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+.cmd {
+  border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 10px 12px; cursor: pointer; text-align: left;
+  display: flex; flex-direction: column; gap: 2px; transition: border-color .15s, background .15s;
+}
+.cmd code { font-size: 18px; font-weight: 600; }
+.cmd span { font-size: 14px; color: var(--muted); line-height: 1.3; }
+.cmd:hover { border-color: var(--accent); }
+.cmd[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+
+/* ---------- 13. Capcane ---------- */
+.traps { display: flex; flex-direction: column; gap: 10px; }
+.trap { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; overflow: hidden; }
+.trap > button {
+  width: 100%; display: flex; align-items: center; gap: 14px; background: none; border: 0; padding: 12px 18px; cursor: pointer; text-align: left;
+}
+.trap > button code { color: var(--bad); font-size: 16px; flex: 1; }
+.trap > button .chev { color: var(--muted); transition: transform .2s; }
+.trap.open > button .chev { transform: rotate(90deg); }
+.trap .body { display: none; padding: 0 18px 14px 18px; font-size: 17px; gap: 24px; grid-template-columns: 1fr 1fr; }
+.trap.open .body { display: grid; }
+.trap .body b { display: block; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* ---------- 14. Quiz ---------- */
+.quiz { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.q { display: flex; flex-direction: column; gap: 12px; }
+.q h3 { font-size: 20px; min-height: 3.9em; }
+.opt {
+  border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 9px 14px; text-align: left; cursor: pointer; font-size: 17px;
+  transition: background .15s, border-color .15s;
+}
+.opt:hover { border-color: var(--accent); }
+.opt.right { background: var(--ok-soft); border-color: var(--ok); }
+.opt.wrong { background: var(--bad-soft); border-color: var(--bad); }
+.q .why { font-size: 15px; color: var(--muted); min-height: 3em; }
+
+/* ---------- 15. Final ---------- */
+.todo { display: flex; flex-direction: column; gap: 10px; }
+.todo label { display: flex; gap: 14px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; cursor: pointer; font-size: 18px; }
+.todo input { width: 20px; height: 20px; accent-color: var(--accent); }
+.todo label:has(input:checked) { opacity: .55; }
+.todo label:has(input:checked) code { text-decoration: line-through; }
+
+/* ---------- Telefon / fereastră îngustă: slide-urile în flux ---------- */
+@media (max-width: 760px) {
+  body { font-size: 17px; }
+  .viewport { position: static; display: block; place-items: normal; overflow: visible; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px 40px; }
+  .stage { width: auto; height: auto; transform: none !important; }
+  .slide { position: static; opacity: 1; visibility: visible; transform: none; padding: 28px 0; border-bottom: 1px solid var(--line); }
+  .nav { display: none; }
+  h1 { font-size: 40px; } h2 { font-size: 28px; }
+  .row, .dirinfo, .twocol, .crash, .trap .body { display: flex; flex-direction: column; }
+  .layers, .fs, .steps, .row > .col { width: auto !important; }
+  .route, .quiz { grid-template-columns: 1fr; }
+  .kids { grid-template-columns: repeat(2, 1fr); padding-top: 12px; }
+  .kids::before, .dir::before, .stem { display: none; }
+  .modes { height: auto; grid-template-rows: auto 54px auto; }
+  .zone { flex-wrap: wrap; }
+  .pipe { grid-template-columns: 1fr; gap: 10px; }
+  .stg { margin-right: 0; }
+  .stg::after { display: none; }
+  .pathrow { flex-wrap: wrap; } .sep { display: none; } .pdir { flex: 1 1 40%; }
+  .cmdgrid { grid-template-columns: repeat(2, 1fr); }
+  .legend { grid-template-columns: repeat(2, 1fr); }
+  .timeline { font-size: 12px; } .timeline div { padding: 0 6px; }
+  .q h3 { min-height: 0; }
+  .slide { position: relative; }
+  .tip { max-width: 300px; }
+}
+
+/* ---------- Print / PDF: câte un slide pe pagină ---------- */
+@media print {
+  @page { size: 1280px 720px; margin: 0; }
+  html, body { height: auto; }
+  .viewport { position: static; display: block; place-items: normal; overflow: visible; }
+  .stage { transform: none !important; width: 1280px; height: auto; }
+  .slide { position: relative; width: 1280px; height: 720px; opacity: 1; visibility: visible; transform: none; break-after: page; background: var(--bg); }
+  .nav { display: none; }
+  .cursor { animation: none; }
+  .tip { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+/* ================= Tutoriat 02: componente noi ================= */
+:root { --err: #b4572a; --err-soft: #f7e4d8; }
+:root[data-theme="dark"] { --err: #e39a6c; --err-soft: #3a291e; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --err: #e39a6c; --err-soft: #3a291e; } }
+.term .o { color: var(--term-ink); }
+.term .r { color: #f2b48a; }           /* text venit pe stderr */
+.term mark { background: #6b5a1e; color: #fff3c4; border-radius: 3px; padding: 0 1px; }
+
+/* ---------- 3. Fluxuri ---------- */
+.flow { display: grid; grid-template-columns: 200px 120px 240px 120px 220px; grid-template-rows: 1fr 1fr; align-items: center; row-gap: 26px; }
+.src, .dst { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 12px 16px; font-size: 17px; text-align: center; }
+.src small, .dst small { display: block; font-size: 13px; color: var(--muted); }
+.proc { grid-row: 1 / span 2; grid-column: 3; height: 100%; background: var(--ink); color: var(--bg); border-radius: 16px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; font-size: 22px; font-weight: 600; }
+.proc small { font-size: 14px; font-weight: 400; opacity: .7; font-family: var(--font-mono); }
+.wire { position: relative; height: 40px; display: grid; place-items: center; background: none; border: 0; cursor: pointer; padding: 0; }
+.wire::before { content: ""; position: absolute; left: 6px; right: 14px; top: 50%; border-top: 3px solid var(--line); transition: border-color .2s; }
+.wire::after { content: ""; position: absolute; right: 4px; top: calc(50% - 7px); border: 7px solid transparent; border-left: 11px solid var(--line); border-right: 0; transition: border-color .2s; }
+.wire span { position: relative; font-family: var(--font-mono); font-weight: 700; font-size: 18px; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--bg); border: 2px solid var(--line); transition: border-color .2s, background .2s; }
+.wire[aria-pressed="true"]::before { border-color: var(--accent); }
+.wire[aria-pressed="true"]::after { border-left-color: var(--accent); }
+.wire[aria-pressed="true"] span { border-color: var(--accent); background: var(--accent-soft); }
+.wire.w2[aria-pressed="true"]::before { border-color: var(--err); }
+.wire.w2[aria-pressed="true"]::after { border-left-color: var(--err); }
+.wire.w2[aria-pressed="true"] span { border-color: var(--err); background: var(--err-soft); }
+.fdinfo { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+.legend2 { display: flex; gap: 18px; font-size: 15px; color: var(--muted); align-items: center; flex-wrap: wrap; }
+.legend2 i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+/* ---------- 4. Redirectări ---------- */
+.redir { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.fdmap { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; align-items: center; font-size: 17px; }
+.fdmap b { font-family: var(--font-mono); width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--accent); background: var(--accent-soft); }
+.fdmap b.e2 { border-color: var(--err); background: var(--err-soft); }
+.fdmap code { font-size: 17px; }
+.files2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.fbox { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+.fbox > div:first-child { font-family: var(--font-mono); font-size: 14px; padding: 6px 12px; background: var(--surface-2); border-bottom: 1px solid var(--line); color: var(--muted); }
+.fbox pre { margin: 0; padding: 10px 12px; font-family: var(--font-mono); font-size: 14.5px; min-height: 64px; white-space: pre-wrap; }
+.fbox.lit { border-color: var(--accent); }
+.fbox .none { color: var(--muted); font-style: italic; font-family: var(--font-ui); }
+.redbtns .btn { font-family: var(--font-mono); font-size: 15px; padding: 6px 14px; }
+
+/* ---------- 5. Pipe builder ---------- */
+.stages { display: flex; flex-wrap: wrap; gap: 8px; }
+.stages .btn { font-family: var(--font-mono); font-size: 14px; padding: 4px 11px; }
+.pipeline { font-family: var(--font-mono); font-size: 17px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; min-height: 50px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.pipeline .seg { background: var(--accent-soft); border-radius: 8px; padding: 2px 10px; }
+.pipeline .bar { color: var(--kernel); font-weight: 700; }
+.pipeline .ph { color: var(--muted); font-family: var(--font-ui); font-size: 16px; }
+.presets .btn { font-size: 15px; padding: 5px 14px; }
+.steplist { display: flex; flex-direction: column; gap: 3px; font-size: 14px; }
+.steplist div { display: flex; justify-content: space-between; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 2px 10px; }
+.steplist code { font-size: 14px; }
+.steplist span { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* ---------- 6. grep ---------- */
+.grepbar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.grepbar input { font-family: var(--font-mono); font-size: 18px; padding: 7px 12px; border-radius: 10px; width: 170px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.grepbar .btn { font-family: var(--font-mono); font-size: 16px; padding: 6px 14px; }
+.lines { font-family: var(--font-mono); font-size: 14.5px; display: flex; flex-direction: column; gap: 2px; }
+.lines div { padding: 2px 10px; border-radius: 6px; display: flex; gap: 10px; transition: background .15s, opacity .15s; }
+.lines div i { font-style: normal; color: var(--muted); width: 22px; text-align: right; flex: none; }
+.lines div.hit { background: var(--ok-soft); }
+.lines div.miss { opacity: .45; }
+.lines mark { background: color-mix(in srgb, var(--kernel) 35%, transparent); color: inherit; border-radius: 3px; }
+
+/* ---------- 7. sort / uniq ---------- */
+.su { display: grid; grid-template-columns: 1.4fr 1fr; gap: 26px; }
+.colpair { display: grid; grid-template-columns: 1fr 34px 1fr; gap: 8px; align-items: start; }
+.colpair .arrow { align-self: center; text-align: center; color: var(--muted); font-size: 22px; }
+.wlist { display: flex; flex-direction: column; gap: 3px; font-family: var(--font-mono); font-size: 14.5px; }
+.wlist span { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 0 10px; white-space: pre; }
+.wlist span.dup { border-color: var(--kernel); background: var(--kernel-soft); }
+.subtns .btn { font-family: var(--font-mono); font-size: 15px; padding: 6px 12px; }
+
+/* ---------- 8. Ghilimele ---------- */
+.qbtns { display: flex; flex-direction: column; gap: 8px; }
+.qbtns .btn { font-family: var(--font-mono); font-size: 16px; text-align: left; border-radius: 10px; }
+.argv { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; min-height: 44px; }
+.argv span { font-family: var(--font-mono); font-size: 17px; background: var(--surface); border: 1px solid var(--accent); border-radius: 8px; padding: 4px 10px; white-space: pre; }
+.argv span small { font-family: var(--font-ui); font-size: 11px; color: var(--muted); margin-right: 6px; }
+.argv span.prog { border-color: var(--line); background: var(--surface-2); }
+.qtable { display: grid; grid-template-columns: 110px 1fr; gap: 8px 14px; font-size: 16px; align-items: baseline; }
+.qtable code { font-size: 17px; font-weight: 600; }
+
+/* ---------- 9. Rulare exercițiu ---------- */
+.rules { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.rules div { display: flex; gap: 12px; align-items: flex-start; font-size: 14.5px; line-height: 1.35; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+.rules b { flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: var(--surface); display: grid; place-items: center; font-size: 13px; }
+#runBtns2 { gap: 6px; }
+#runBtns2 .btn { font-size: 13.5px; padding: 5px 12px; text-align: left; white-space: nowrap; }
+#runBtns2 .btn code { font-size: 13.5px; }
+
+@media (max-width: 760px) {
+  .flow { grid-template-columns: 1fr; grid-template-rows: none; row-gap: 8px; }
+  .proc { grid-row: auto; grid-column: auto; padding: 20px; }
+  .wire { transform: rotate(90deg); width: 40px; justify-self: center; }
+  .wire span { transform: rotate(-90deg); }
+  .fdinfo, .redir, .files2, .su, .colpair { display: flex; flex-direction: column; }
+  .colpair .arrow { transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+
+<div class="viewport">
+<main class="stage" id="stage">
+
+<!-- 1 · Copertă -->
+<section class="slide cover" id="start" data-title="Start">
+  <div class="eyebrow">USO · Tutoriat 02 din 10</div>
+  <h1>Text care curge prin țevi</h1>
+  <p class="lead">Unde scrie un program, cum mutăm ce scrie în fișiere și cum legăm comenzi mici într-o <span class="t" data-t="pipe">conductă</span> care rezolvă probleme mari.</p>
+  <div class="term" aria-label="Exemplu de terminal" style="max-width:720px"><span class="p">student@fmi</span>:<span class="b">~/tutoriat-02</span>$ <span id="typed"></span><span class="cursor"></span></div>
+  <div class="meta"><span>FMI · Universitatea din București</span><span>Folosește ← → sau butoanele de jos · cuvintele subliniate au explicații</span></div>
+</section>
+
+<!-- 2 · Agenda -->
+<section class="slide" id="azi" data-title="Azi">
+  <div class="head">
+    <div class="eyebrow">Planul de azi</div>
+    <h2>Cinci întrebări, apoi trecem la terminal</h2>
+  </div>
+  <div class="route">
+    <div class="stop"><b>1</b><h3>Unde scrie un program?</h3><p>Cele trei <span class="t" data-t="flux">fluxuri</span>: <code>stdin</code>, <code>stdout</code>, <code>stderr</code>.</p></div>
+    <div class="stop"><b>2</b><h3>Cum trimit rezultatul într-un fișier?</h3><p><span class="t" data-t="redirectare">Redirectări</span>: <code>&gt;</code>, <code>&gt;&gt;</code>, <code>&lt;</code>, <code>2&gt;</code>.</p></div>
+    <div class="stop"><b>3</b><h3>Cum leg două comenzi?</h3><p><span class="t" data-t="pipe">Pipe-ul</span> <code>|</code> și filosofia UNIX.</p></div>
+    <div class="stop"><b>4</b><h3>Ce unelte am pentru text?</h3><p><span class="t" data-t="filtru">Filtre</span>: <code>grep</code>, <code>sort</code>, <code>uniq</code>, <code>wc</code>, <code>cut</code>.</p></div>
+    <div class="stop"><b>5</b><h3>Când îmi „mănâncă” shell-ul caracterele?</h3><p><span class="t" data-t="quoting">Ghilimele</span> și backslash.</p></div>
+  </div>
+  <div class="col">
+    <p class="small muted">Cuvinte pe care le vom folosi des. Apasă pe unul:</p>
+    <div class="vocab" id="vocabBtns">
+      <button class="btn" data-v="flux">flux</button>
+      <button class="btn" data-v="descriptor">descriptor</button>
+      <button class="btn" data-v="stdin">stdin</button>
+      <button class="btn" data-v="stdout">stdout</button>
+      <button class="btn" data-v="stderr">stderr</button>
+      <button class="btn" data-v="redirectare">redirectare</button>
+      <button class="btn" data-v="pipe">pipe</button>
+      <button class="btn" data-v="filtru">filtru</button>
+      <button class="btn" data-v="tipar">tipar</button>
+    </div>
+    <div class="panel vocabdef" id="vocabDef" aria-live="polite"></div>
+  </div>
+  <div class="grow"></div>
+  <div class="col">
+    <p class="small muted">Cum împărțim cele 90 de minute</p>
+    <div class="timeline">
+      <div class="tl-a">15′ idei</div>
+      <div class="tl-b">60′ lucrăm în terminal</div>
+      <div class="tl-c">10′ Kahoot</div>
+      <div class="tl-d">5′</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · Fluxuri -->
+<section class="slide" id="fluxuri" data-title="Fluxuri">
+  <div class="head">
+    <div class="eyebrow">1 · Unde scrie un program</div>
+    <h2>Orice program pornește cu trei „țevi” deja montate</h2>
+    <p class="lead">Fiecare are un număr, numit <span class="t" data-t="descriptor">descriptor</span>. Apasă pe un număr ca să vezi la ce folosește.</p>
+  </div>
+  <div class="flow" role="group" aria-label="Fluxurile standard ale unui proces">
+    <div class="src" style="grid-row:1 / span 2">tastatura<small>terminalul</small></div>
+    <button class="wire" data-fd="0" style="grid-row:1 / span 2" aria-label="descriptorul 0, stdin"><span>0</span></button>
+    <div class="proc">un proces<small>grep · sort · ./exercitiu</small></div>
+    <button class="wire" data-fd="1" style="grid-column:4;grid-row:1" aria-label="descriptorul 1, stdout"><span>1</span></button>
+    <div class="dst" style="grid-column:5;grid-row:1">ecranul<small>rezultatul</small></div>
+    <button class="wire w2" data-fd="2" style="grid-column:4;grid-row:2" aria-label="descriptorul 2, stderr"><span>2</span></button>
+    <div class="dst" style="grid-column:5;grid-row:2">tot ecranul<small>mesajele de eroare</small></div>
+  </div>
+  <div class="fdinfo panel grow" aria-live="polite">
+    <div class="col">
+      <h3 id="fdTitle"></h3>
+      <p id="fdText" class="small"></p>
+      <p class="small muted" id="fdC"></p>
+    </div>
+    <div class="col">
+      <div class="term" id="fdTerm" style="font-size:14.5px;padding:14px 18px"></div>
+      <div class="legend2"><span><i style="background:var(--term-ink)"></i>venit pe stdout</span><span><i style="background:#f2b48a"></i>venit pe stderr</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · Redirectări -->
+<section class="slide" id="redirectari" data-title="Redirectări">
+  <div class="head">
+    <div class="eyebrow">2 · Redirectări</div>
+    <h2>Mută o țeavă: de pe ecran într-un fișier</h2>
+    <p class="lead">Comanda e mereu aceeași: <code>ls date.in lipsa.txt</code> (primul fișier există, al doilea nu). Alege ce adaugi la final.</p>
+  </div>
+  <div class="btns redbtns" id="redBtns"></div>
+  <div class="redir grow">
+    <div class="col">
+      <div class="term" id="redCmd" style="padding:12px 16px"></div>
+      <div class="panel fdmap" id="redMap"></div>
+      <p class="small" id="redNote" style="min-height:3em"></p>
+    </div>
+    <div class="col">
+      <div class="fbox" id="redScreen"><div>ecranul</div><pre></pre></div>
+      <div class="files2" id="redFiles"></div>
+    </div>
+  </div>
+  <div class="row" style="align-items:center">
+    <div class="note k grow small"><b><code>&gt;</code> golește fișierul întâi.</b> <code>&gt;&gt;</code> adaugă la final. Încearcă:</div>
+    <button class="btn" id="appOne"><code>echo pas &gt; f.txt</code></button>
+    <button class="btn" id="appTwo"><code>echo pas &gt;&gt; f.txt</code></button>
+    <div class="fbox" style="width:220px"><div>f.txt</div><pre id="fTxt" style="min-height:0;max-height:96px;overflow:auto"></pre></div>
+  </div>
+</section>
+
+<!-- 5 · Pipe builder -->
+<section class="slide" id="pipe" data-title="Pipe">
+  <div class="head">
+    <div class="eyebrow">3 · Conducte</div>
+    <h2>Construiește o conductă, bucată cu bucată</h2>
+    <p class="lead">Datele: <code>jurnal.txt</code>, 25 de conectări. Fiecare <code>|</code> dă ieșirea din stânga ca intrare celei din dreapta.</p>
+  </div>
+  <div class="btns presets" id="presets"></div>
+  <div class="stages" id="stageBtns"></div>
+  <div class="pipeline" id="pipeLine" aria-live="polite"></div>
+  <div class="row grow">
+    <div class="term grow" id="pipeOut" style="font-size:14px;height:236px"></div>
+    <div class="col" style="width:330px;flex:none">
+      <div class="steplist" id="pipeSteps"></div>
+      <div class="btns"><button class="btn" id="pipeUndo">Scoate ultima</button><button class="btn" id="pipeReset">De la capăt</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · grep -->
+<section class="slide" id="grep" data-title="grep">
+  <div class="head">
+    <div class="eyebrow">4 · Filtre: <code>grep</code></div>
+    <h2>Păstrează doar liniile care conțin un <span class="t" data-t="tipar">tipar</span></h2>
+  </div>
+  <div class="grepbar">
+    <span class="mono" style="color:var(--muted)">$ grep</span>
+    <div class="btns" id="grepFlags">
+      <button class="btn" data-g="i" aria-pressed="false">-i</button>
+      <button class="btn" data-g="v" aria-pressed="false">-v</button>
+      <button class="btn" data-g="n" aria-pressed="false">-n</button>
+      <button class="btn" data-g="c" aria-pressed="false">-c</button>
+    </div>
+    <label for="grepIn" hidden>Tipar</label>
+    <input id="grepIn" value="linux" spellcheck="false" autocomplete="off">
+    <span class="mono" style="color:var(--muted)">date.in</span>
+    <span class="small muted" id="grepFlagText"></span>
+  </div>
+  <div class="row grow">
+    <div class="col grow">
+      <p class="small muted">Intrarea (<code>date.in</code>). Verde = linia trece prin filtru.</p>
+      <div class="lines" id="grepLines"></div>
+    </div>
+    <div class="col" style="width:440px;flex:none">
+      <p class="small muted">Ce afișează <code>grep</code>:</p>
+      <div class="term grow" id="grepOut" style="font-size:13.5px"></div>
+      <p class="small"><code>^</code> la începutul tiparului = „linia începe cu”. Încearcă <code>^comanda</code> cu <code>-i</code>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · sort și uniq -->
+<section class="slide" id="sortuniq" data-title="sort | uniq">
+  <div class="head">
+    <div class="eyebrow">4 · Filtre: <code>sort</code> și <code>uniq</code></div>
+    <h2>De ce scriem mereu <code>sort | uniq</code>?</h2>
+    <p class="lead"><code>uniq</code> se uită doar la linia de dinainte. Dublurile care nu stau una lângă alta îi scapă.</p>
+  </div>
+  <div class="su grow">
+    <div class="col">
+      <div class="btns subtns" id="suBtns"></div>
+      <div class="colpair">
+        <div class="col"><p class="small muted">intrarea</p><div class="wlist" id="suIn"></div></div>
+        <div class="arrow">→</div>
+        <div class="col"><p class="small muted" id="suOutLbl">ieșirea</p><div class="wlist" id="suOut"></div></div>
+      </div>
+    </div>
+    <div class="col">
+      <h3>Numere: <code>sort</code> vs <code>sort -n</code></h3>
+      <p class="small">Fără <code>-n</code>, <code>sort</code> compară text, caracter cu caracter: <code>"10"</code> începe cu <code>1</code>, deci vine înaintea lui <code>"9"</code>.</p>
+      <div class="btns subtns" id="numBtns"></div>
+      <div class="colpair">
+        <div class="wlist" id="numIn"></div>
+        <div class="arrow">→</div>
+        <div class="wlist" id="numOut"></div>
+      </div>
+    </div>
+  </div>
+  <div class="note">Rețeta de reținut: <code>... | sort | uniq -c | sort -nr | head</code> = „cele mai dese valori, primele”.</div>
+</section>
+
+<!-- 8 · Ghilimele -->
+<section class="slide" id="ghilimele" data-title="Ghilimele">
+  <div class="head">
+    <div class="eyebrow">5 · <span class="t" data-t="quoting">Despecializare</span></div>
+    <h2>Ce primește de fapt programul?</h2>
+    <p class="lead">Înainte să pornească o comandă, <span class="t" data-t="shell">shell-ul</span> înlocuiește variabilele (<code>$HOME</code>), măștile (<code>*.c</code>) și taie textul la spații. Ghilimelele îl opresc.</p>
+  </div>
+  <div class="row grow">
+    <div class="qbtns" id="qBtns" style="width:400px;flex:none"></div>
+    <div class="col grow">
+      <p class="small muted">Argumentele primite de program (<span class="t" data-t="argv"><code>argv</code></span>), după ce a lucrat shell-ul:</p>
+      <div class="argv" id="qArgv" aria-live="polite"></div>
+      <div class="term" id="qOut" style="padding:12px 16px;min-height:80px"></div>
+      <p class="small" id="qNote" style="min-height:3em"></p>
+      <div class="panel qtable">
+        <code>"..."</code><span>păstrează spațiile și <code>*</code>, dar <b>înlocuiește</b> <code>$VAR</code></span>
+        <code>'...'</code><span>nu înlocuiește <b>nimic</b>: textul rămâne exact cum l-ai scris</span>
+        <code>\</code><span>oprește un <b>singur</b> caracter: <code>\$</code>, <code>\*</code>, <code>\ </code> (spațiu)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · Exercițiul C -->
+<section class="slide" id="exercitiu" data-title="Exercițiul">
+  <div class="head">
+    <div class="eyebrow">Exercițiul de azi</div>
+    <h2>Scriem în C un mini-<code>grep</code> care se poartă frumos</h2>
+    <p class="lead">Patru reguli pentru un program bun de pus într-un pipe. Apoi rulează-l:</p>
+  </div>
+  <div class="row grow">
+    <div class="col" style="width:470px;flex:none">
+      <div class="rules">
+        <div><b>1</b><span>Citește din fișierul primit sau, dacă lipsește, din <code>stdin</code>.</span></div>
+        <div><b>2</b><span>Liniile găsite pe <code>stdout</code>. Erorile și statistica pe <code>stderr</code>.</span></div>
+        <div><b>3</b><span><span class="t" data-t="exitcode">Cod de ieșire</span> ca la <code>grep</code>: <code>0</code> găsit, <code>1</code> negăsit, <code>2</code> eroare.</span></div>
+        <div><b>4</b><span>Închide cu <code>fclose()</code> doar ce a deschis cu <code>fopen()</code>.</span></div>
+      </div>
+      <div class="cmdlist" id="runBtns2"></div>
+    </div>
+    <div class="col grow">
+      <div class="term grow" id="runTerm2" aria-live="polite" style="font-size:14px"></div>
+      <div class="legend2"><span><i style="background:var(--term-ink)"></i>stdout</span><span><i style="background:#f2b48a"></i>stderr</span><span id="runNote2"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · Comenzi -->
+<section class="slide" id="comenzi" data-title="Comenzi">
+  <div class="head">
+    <div class="eyebrow">Fișă rapidă</div>
+    <h2>Filtrele pe care le folosești azi</h2>
+    <p class="lead">Apasă pe o comandă ca să vezi un exemplu pe <code>jurnal.txt</code>.</p>
+  </div>
+  <div class="cmdgrid" id="cmdGrid"></div>
+  <div class="row grow">
+    <div class="term grow" id="cmdTerm" aria-live="polite" style="height:200px;flex:1 1 auto"></div>
+    <div class="col" style="width:380px;flex:none">
+      <h3 id="cmdTitle"></h3>
+      <p class="small" id="cmdText"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · Capcane -->
+<section class="slide" id="capcane" data-title="Capcane">
+  <div class="head">
+    <div class="eyebrow">Greșeli frecvente</div>
+    <h2>Capcanele clasice cu pipe-uri și redirectări</h2>
+    <p class="lead">Apasă pe una: vezi de ce se întâmplă și cum o eviți.</p>
+  </div>
+  <div class="traps" id="traps"></div>
+</section>
+
+<!-- 12 · Verificare -->
+<section class="slide" id="verifica" data-title="Verifică-te">
+  <div class="head">
+    <div class="eyebrow">Încălzire înainte de Kahoot</div>
+    <h2>Trei întrebări rapide</h2>
+  </div>
+  <div class="quiz" id="quiz"></div>
+</section>
+
+<!-- 13 · La treabă -->
+<section class="slide" id="practica" data-title="La treabă">
+  <div class="head">
+    <div class="eyebrow">Acum e rândul tău</div>
+    <h2>Deschide terminalul și urmează pașii</h2>
+    <p class="lead">Întâi exercițiile cu pipe-uri din <code>pipeline.sh</code>, apoi <span class="t" data-t="todo"><code>TODO</code></span>-urile din <span class="t" data-t="schelet">scheletul</span> <code>exercitiu.c</code>. Bifează pe măsură ce avansezi.</p>
+  </div>
+  <div class="row grow">
+    <div class="todo grow">
+      <label><input type="checkbox"><code>cd tutoriat-02/schelet</code><span class="small muted">intră în folder</span></label>
+      <label><input type="checkbox"><code>bash pipeline.sh</code><span class="small muted">exercițiile 1–11, cu pipe-uri</span></label>
+      <label><input type="checkbox"><code>nano exercitiu.c</code><span class="small muted">rezolvă TODO 1–9</span></label>
+      <label><input type="checkbox"><code>make &amp;&amp; make test</code><span class="small muted">compilează și testează</span></label>
+      <label><input type="checkbox"><code>make pipeline</code><span class="small muted">exercițiile 12–13, cu programul tău</span></label>
+      <label><input type="checkbox"><code>make valgrind</code><span class="small muted">bonus: nimic uitat deschis?</span></label>
+    </div>
+    <div class="col" style="width:400px;flex:none">
+      <div class="panel col">
+        <h3>Ce exersezi</h3>
+        <p class="small">Citești din fișier <i>sau</i> din <code>stdin</code>, separi datele (<code>stdout</code>) de mesaje (<code>stderr</code>) și întorci un <span class="t" data-t="exitcode">cod de ieșire</span> cu care se pot face <code>&amp;&amp;</code> și <code>||</code>.</p>
+      </div>
+      <div class="panel col">
+        <h3>Bonus: <span class="t" data-t="valgrind">Valgrind</span></h3>
+        <p class="small">Comentează <code>fclose(in)</code>, rulează <code>make valgrind</code> și citește ce ți-a rămas deschis. Îl folosim pe larg în Tutoriatul 04.</p>
+      </div>
+      <p class="small muted">Te-ai blocat? Soluțiile sunt în <code>tutoriat-02/solutii/</code>. Încearcă întâi singur.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<nav class="nav" aria-label="Navigare slide-uri">
+  <button id="prev" aria-label="Slide-ul anterior">←</button>
+  <span class="count" id="count">1 / 13</span>
+  <button id="next" aria-label="Slide-ul următor">→</button>
+  <div class="bar"><i id="bar"></i></div>
+  <span id="slideName"></span>
+  <button class="theme" id="theme">Temă</button>
+</nav>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const pressOne = (group, el) => group.forEach(b => b.setAttribute("aria-pressed", b === el ? "true" : "false"));
+
+  /* ---------- Navigare ---------- */
+  const slides = $$(".slide");
+  const stage = $("#stage");
+  let cur = 0;
+  function fit() {
+    if (matchMedia("(max-width: 760px)").matches) { stage.style.transform = ""; return; }
+    const s = Math.min(innerWidth / 1280, (innerHeight - 56) / 720);
+    stage.style.transform = `scale(${s})`;
+    stage.style.marginBottom = "56px";
+  }
+  function go(i) {
+    cur = Math.max(0, Math.min(slides.length - 1, i));
+    if (typeof hideTip === "function") hideTip();
+    slides.forEach((s, k) => { s.classList.toggle("active", k === cur); s.setAttribute("aria-hidden", k === cur ? "false" : "true"); });
+    $("#count").textContent = `${cur + 1} / ${slides.length}`;
+    $("#bar").style.width = `${(cur + 1) / slides.length * 100}%`;
+    $("#slideName").textContent = slides[cur].dataset.title;
+    $("#prev").disabled = cur === 0; $("#next").disabled = cur === slides.length - 1;
+    try { history.replaceState(null, "", "#" + slides[cur].id); } catch (e) {}
+  }
+  $("#prev").onclick = () => go(cur - 1);
+  $("#next").onclick = () => go(cur + 1);
+  addEventListener("keydown", e => {
+    if (e.target.closest("input, textarea")) return;
+    if (["ArrowRight", "PageDown"].includes(e.key) || (e.key === " " && !e.target.closest("button"))) { e.preventDefault(); go(cur + 1); }
+    else if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); go(cur - 1); }
+    else if (e.key === "Home") go(0);
+    else if (e.key === "End") go(slides.length - 1);
+  });
+  let tx = null;
+  addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, { passive: true });
+  addEventListener("touchend", e => {
+    if (tx === null || matchMedia("(max-width: 760px)").matches) return;
+    const dx = e.changedTouches[0].clientX - tx; tx = null;
+    if (Math.abs(dx) > 60) go(cur + (dx < 0 ? 1 : -1));
+  });
+  addEventListener("resize", fit);
+  $("#theme").onclick = () => {
+    const root = document.documentElement;
+    const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+  };
+
+
+
+  /* ---------- Termeni explicați ---------- */
+  const G = {
+    flux: ["flux (stream)", "Un șir de octeți care curge într-o singură direcție: dinspre o sursă (tastatură, fișier) spre o destinație (ecran, fișier, alt program)."],
+    descriptor: ["descriptor de fișier", "Un număr mic (0, 1, 2, 3…) prin care un proces se referă la un fișier deschis. Kernelul ține lista; programul știe doar numărul."],
+    stdin: ["stdin (0)", "Intrarea standard: de unde citește programul. Implicit tastatura. Cu < sau cu un pipe, poate fi un fișier sau alt program."],
+    stdout: ["stdout (1)", "Ieșirea standard: unde scrie programul rezultatul. Implicit ecranul. Asta e ce merge mai departe printr-un pipe."],
+    stderr: ["stderr (2)", "Ieșirea de eroare: unde scrie programul mesajele de eroare. Tot pe ecran implicit, dar separată de stdout, ca să nu se amestece cu datele."],
+    redirectare: ["redirectare", "Shell-ul leagă un descriptor de un fișier înainte să pornească comanda. Programul scrie ca de obicei, dar textul ajunge în fișier."],
+    pipe: ["pipe (conductă)", "Simbolul | leagă stdout-ul comenzii din stânga de stdin-ul comenzii din dreapta. Ambele rulează în același timp."],
+    filtru: ["filtru", "Program care citește text, îl transformă și scrie rezultatul pe stdout. grep, sort, uniq, wc, cut, tr sunt filtre."],
+    tipar: ["tipar (pattern)", "Textul căutat de grep. De fapt e o expresie regulată: unele caractere ca ^ $ . * au sens special."],
+    quoting: ["despecializare (quoting)", "Îi spui shell-ului să nu interpreteze anumite caractere: cu ghilimele simple, duble sau cu backslash."],
+    shell: ["shell", "Programul din terminal care citește ce scrii, face înlocuirile ($VAR, *.c), aplică redirectările și pornește comenzile."],
+    argv: ["argv", "Lista de argumente (cuvinte) pe care o primește programul. argv[0] e numele programului, argv[1] primul argument și tot așa."],
+    exitcode: ["cod de ieșire", "Numărul pe care îl lasă un program când se termină. 0 = a mers, altceva = nu. Îl vezi cu echo $?."],
+    devnull: ["/dev/null", "Un fișier special care înghite tot ce scrii în el. Bun pentru a arunca mesaje de care nu ai nevoie."],
+    buffer: ["buffer", "O zonă de memorie în care printf adună textul înainte să-l scrie efectiv. Pe ecran se golește la fiecare Enter; într-un fișier, mult mai rar."],
+    regex: ["expresie regulată", "Un mini-limbaj pentru tipare: ^ = început de linie, $ = sfârșit, . = orice caracter. Îl vei folosi cu grep, sed, awk."],
+    glob: ["mască (wildcard)", "*.c, ?, [abc]: shell-ul le înlocuiește cu numele fișierelor potrivite, înainte să pornească comanda. Ai văzut în Tutoriatul 01."],
+    camp: ["câmp", "O coloană dintr-o linie de text. Câmpurile sunt despărțite de un separator, de exemplu spațiu sau :. Le alegi cu cut -d -f."],
+    valgrind: ["Valgrind", "Unealtă care rulează programul sub supraveghere și îți spune ce memorie n-ai eliberat și ce fișiere ai lăsat deschise."],
+    schelet: ["schelet", "Codul pe jumătate scris pe care îl completați. Ce e greu de pus la punct e deja acolo."],
+    todo: ["TODO", "Comentariu care marchează locul unde trebuie să scrii tu cod."]
+  };
+  const gl = str => str.replace(/\[\[([a-z]+)\|([^\]]+)\]\]/g, (m, k, t) => `<span class="t" data-t="${k}">${t}</span>`);
+  const tip = document.createElement("div");
+  tip.className = "tip"; tip.hidden = true; tip.setAttribute("role", "tooltip");
+  let tipFor = null;
+  function showTip(el) {
+    const def = G[el.dataset.t], slide = el.closest(".slide");
+    if (!def || !slide) return;
+    slide.appendChild(tip);
+    tip.innerHTML = `<b>${esc(def[0])}</b>${esc(def[1])}`;
+    tip.hidden = false; tipFor = el;
+    const sr = slide.getBoundingClientRect(), r = el.getBoundingClientRect(), k = sr.width / slide.offsetWidth || 1;
+    const W = slide.offsetWidth, H = slide.offsetHeight, tw = tip.offsetWidth, th = tip.offsetHeight;
+    let x = (r.left - sr.left) / k, y = (r.bottom - sr.top) / k + 8;
+    x = Math.max(8, Math.min(x, W - tw - 8));
+    if (y + th > H - 8) y = (r.top - sr.top) / k - th - 8;
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+  }
+  function hideTip() { tip.hidden = true; tipFor = null; }
+  window.hideTip = hideTip;
+  function prepTerms(root) { $$(".t", root).forEach(t => { t.tabIndex = 0; t.setAttribute("role", "button"); }); }
+  document.addEventListener("mouseover", e => { const t = e.target.closest(".t"); if (t && t !== tipFor) showTip(t); });
+  document.addEventListener("mouseout", e => { const t = e.target.closest(".t"); if (t && !t.contains(e.relatedTarget)) hideTip(); });
+  document.addEventListener("focusin", e => { const t = e.target.closest(".t"); if (t) showTip(t); });
+  document.addEventListener("focusout", e => { if (e.target.closest(".t")) hideTip(); });
+  document.addEventListener("click", e => { const t = e.target.closest(".t"); if (t) showTip(t); else hideTip(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") hideTip(); });
+
+  const P = `<span class="p">$</span> `;
+  const O = s => `<span class="o">${esc(s)}</span>`;   // linie venită pe stdout
+  const R = s => `<span class="r">${esc(s)}</span>`;   // linie venită pe stderr
+  const D = s => `<span class="d">${esc(s)}</span>`;   // comentariu
+
+  /* ---------- Datele din tutoriat (identice cu fișierele din schelet/) ---------- */
+  const JURNAL = `2026-10-27 08:02:11 ana login ok
+2026-10-27 08:05:47 bogdan login ok
+2026-10-27 08:06:02 root ssh esuat
+2026-10-27 08:06:05 root ssh esuat
+2026-10-27 08:06:09 root ssh esuat
+2026-10-27 08:15:30 cristi login esuat
+2026-10-27 08:15:41 cristi login ok
+2026-10-27 09:01:12 ana sudo ok
+2026-10-27 09:30:55 diana login ok
+2026-10-27 10:12:03 bogdan sudo esuat
+2026-10-27 11:45:19 ana logout ok
+2026-10-27 12:00:00 bogdan logout ok
+2026-10-28 07:58:34 diana login ok
+2026-10-28 08:01:16 ana login ok
+2026-10-28 08:03:50 root ssh esuat
+2026-10-28 08:03:52 root ssh esuat
+2026-10-28 08:20:07 elena login esuat
+2026-10-28 08:20:15 elena login esuat
+2026-10-28 08:20:31 elena login ok
+2026-10-28 09:10:44 diana sudo ok
+2026-10-28 10:05:29 cristi login ok
+2026-10-28 10:40:12 ana sudo ok
+2026-10-28 13:22:08 cristi logout ok
+2026-10-28 14:00:41 diana logout ok
+2026-10-28 16:30:00 ana logout ok`.split("\n");
+  const DATE = `Linux este un nucleu de sistem de operare scris in C.
+Shell-ul citeste comenzile si porneste programele.
+Comanda grep cauta un tipar in fiecare linie de text.
+Comanda sort ordoneaza liniile, iar uniq elimina dublurile vecine.
+Kernelul Linux gestioneaza procesele si memoria.
+Un pipe leaga iesirea unei comenzi de intrarea urmatoarei.
+Mesajele de eroare merg pe stderr, nu pe stdout.
+Distributiile linux populare sunt Debian, Ubuntu si Fedora.
+Comanda wc numara liniile, cuvintele si octetii.
+Redirectarea > suprascrie fisierul, iar >> adauga la final.
+In LINUX literele mari si mici conteaza.
+Shell-ul face expandarea mastilor inainte sa porneasca grep.`.split("\n");
+
+  /* mini-implementări ale filtrelor (comportament ca GNU coreutils, locale C) */
+  const cmp = (a, b) => a < b ? -1 : a > b ? 1 : 0;
+  const F = {
+    sort: L => [...L].sort(cmp),
+    sortn: L => [...L].sort((a, b) => (parseFloat(a) || 0) - (parseFloat(b) || 0) || cmp(a, b)),
+    sortnr: L => [...L].sort((a, b) => (parseFloat(b) || 0) - (parseFloat(a) || 0) || cmp(b, a)),
+    sortu: L => [...new Set(L)].sort(cmp),
+    uniq: L => L.filter((x, i) => i === 0 || x !== L[i - 1]),
+    uniqc: L => { const r = []; L.forEach((x, i) => { if (i && x === L[i - 1]) r[r.length - 1][0]++; else r.push([1, x]); }); return r.map(([n, x]) => String(n).padStart(7) + " " + x); },
+    cut: (L, f) => L.map(l => l.includes(" ") ? (l.split(" ")[f - 1] ?? "") : l),
+    grep: (L, p) => L.filter(l => l.includes(p)),
+    head: (L, n) => L.slice(0, n),
+    wcl: L => [String(L.length)]
+  };
+
+  /* ---------- 2. Vocabular ---------- */
+  const vBtns = $$("#vocabBtns .btn");
+  function showVocab(k) { const [t, d] = G[k]; $("#vocabDef").innerHTML = `<b>${esc(t)}</b><span>${esc(d)}</span>`; pressOne(vBtns, vBtns.find(b => b.dataset.v === k)); }
+  vBtns.forEach(b => b.onclick = () => showVocab(b.dataset.v));
+  showVocab("flux");
+
+  /* ---------- 1. Copertă: text tastat ---------- */
+  const typedText = "grep -i linux date.in | wc -l";
+  const typed = $("#typed");
+  if (reduced) typed.textContent = typedText;
+  else { let k = 0; const t = setInterval(() => { typed.textContent = typedText.slice(0, ++k); if (k >= typedText.length) clearInterval(t); }, 70); }
+
+  /* ---------- 3. Fluxuri ---------- */
+  const fds = {
+    0: ["0 · stdin, intrarea standard", "De aici citește programul. Implicit e tastatura: scrii, apeși Enter, programul primește linia. Termini intrarea cu Ctrl+D.", "În C: stdin, scanf(), fgets(buf, n, stdin), read(0, ...)",
+      `${P}sort\n${D("(scrii tu, de la tastatură)")}\npere\nmere\nbanane\n${D("^D")}\n${O("banane")}\n${O("mere")}\n${O("pere")}`],
+    1: ["1 · stdout, ieșirea standard", "Aici scrie programul rezultatul, datele. Asta e ce poți trimite într-un fișier cu > sau mai departe printr-un pipe.", "În C: stdout, printf(), puts(), write(1, ...)",
+      `${P}ls date.in lipsa.txt\n${R("ls: cannot access 'lipsa.txt': No such file or directory")}\n${O("date.in")}`],
+    2: ["2 · stderr, ieșirea de eroare", "Aici merg mesajele de eroare. Pe ecran arată la fel, dar e altă țeavă: când trimiți rezultatul într-un fișier, erorile rămân pe ecran, unde le vede omul.", "În C: stderr, fprintf(stderr, ...), perror(), write(2, ...)",
+      `${P}ls date.in lipsa.txt > rezultat.txt\n${R("ls: cannot access 'lipsa.txt': No such file or directory")}\n${P}cat rezultat.txt\n${O("date.in")}`]
+  };
+  const wires = $$("#fluxuri .wire");
+  function showFd(k) {
+    const [t, x, c, term] = fds[k];
+    $("#fdTitle").textContent = t; $("#fdText").textContent = x; $("#fdC").textContent = c; $("#fdTerm").innerHTML = term;
+    pressOne(wires, wires.find(w => w.dataset.fd === String(k)));
+  }
+  wires.forEach(w => w.onclick = () => showFd(+w.dataset.fd));
+  showFd(1);
+
+  /* ---------- 4. Redirectări ---------- */
+  const ERR = "ls: cannot access 'lipsa.txt': No such file or directory", OUT = "date.in";
+  const reds = [
+    ["", { 1: "ecran", 2: "ecran" }, [R(ERR), O(OUT)], {}, "Fără redirectare, ambele țevi duc la ecran și nu le mai poți deosebi cu ochiul liber."],
+    ["> rez.txt", { 1: "rez.txt", 2: "ecran" }, [R(ERR)], { "rez.txt": [OUT] }, "Doar stdout s-a mutat în fișier. Eroarea a rămas pe ecran, ca s-o vezi."],
+    ["2> err.txt", { 1: "ecran", 2: "err.txt" }, [O(OUT)], { "err.txt": [ERR] }, "Doar stderr s-a mutat. Pe ecran rămâne rezultatul curat."],
+    ["2> /dev/null", { 1: "ecran", 2: "/dev/null" }, [O(OUT)], { "/dev/null": null }, "Erorile sunt aruncate: [[devnull|/dev/null]] înghite tot."],
+    ["> rez.txt 2>&1", { 1: "rez.txt", 2: "rez.txt" }, [], { "rez.txt": [ERR, OUT] }, "Întâi 1 → rez.txt, apoi 2 → „unde e 1 acum”, adică tot rez.txt. Ecranul rămâne gol."],
+    ["2>&1 > rez.txt", { 1: "rez.txt", 2: "ecran" }, [R(ERR)], { "rez.txt": [OUT] }, "Capcană! Întâi 2 → „unde e 1 acum”, adică ecranul. Abia apoi 1 → rez.txt. Ordinea contează."],
+    ["&> tot.txt", { 1: "tot.txt", 2: "tot.txt" }, [], { "tot.txt": [ERR, OUT] }, "Prescurtarea Bash pentru > tot.txt 2>&1."],
+    ["| wc -l", { 1: "pipe → wc", 2: "ecran" }, [R(ERR), O("1")], {}, "Pipe-ul duce doar stdout. wc a numărat o linie (date.in); eroarea a trecut pe lângă, direct pe ecran."]
+  ];
+  $("#redBtns").innerHTML = reds.map(([r], k) => `<button class="btn" data-k="${k}">${r ? esc(r) : "(nimic)"}</button>`).join("");
+  const rBtns = $$("#redBtns .btn");
+  function showRed(k) {
+    const [r, map, screen, files, note] = reds[k];
+    $("#redCmd").innerHTML = `${P}ls date.in lipsa.txt ${esc(r)}`;
+    $("#redMap").innerHTML = `<b>1</b><span>stdout → <code>${esc(map[1])}</code></span><b class="e2">2</b><span>stderr → <code>${esc(map[2])}</code></span>`;
+    $("#redNote").innerHTML = gl(note);
+    $("#redScreen pre").innerHTML = screen.length ? screen.join("\n") : `<span class="none">(nimic pe ecran)</span>`;
+    $("#redScreen").classList.toggle("lit", screen.length > 0);
+    const names = Object.keys(files);
+    $("#redFiles").innerHTML = names.map(n => `<div class="fbox lit"><div>${esc(n)}</div><pre>${files[n] ? files[n].map(esc).join("\n") : '<span class="none">ce intră aici dispare</span>'}</pre></div>`).join("") ||
+      `<div class="fbox"><div>fișiere create</div><pre><span class="none">niciunul</span></pre></div>`;
+    pressOne(rBtns, rBtns[k]);
+  }
+  rBtns.forEach(b => b.onclick = () => showRed(+b.dataset.k));
+  showRed(1);
+  let fLines = [], fRun = 0;
+  const fShow = () => { $("#fTxt").innerHTML = fLines.length ? fLines.map(esc).join("\n") : '<span class="none">(nu există încă)</span>'; };
+  $("#appOne").onclick = () => { fLines = [`pas ${++fRun}`]; fShow(); };
+  $("#appTwo").onclick = () => { fLines.push(`pas ${++fRun}`); fShow(); };
+  fLines = ["pas 1", "pas 2"]; fRun = 2; fShow();
+
+  /* ---------- 5. Pipe builder ---------- */
+  const ST = {
+    cut3: ["cut -d' ' -f3", L => F.cut(L, 3)],
+    cut1: ["cut -d' ' -f1", L => F.cut(L, 1)],
+    grepE: ["grep esuat", L => F.grep(L, "esuat")],
+    grepR: ["grep root", L => F.grep(L, "root")],
+    sort: ["sort", F.sort],
+    uniq: ["uniq", F.uniq],
+    uniqc: ["uniq -c", F.uniqc],
+    sortnr: ["sort -nr", F.sortnr],
+    head3: ["head -n 3", L => F.head(L, 3)],
+    wcl: ["wc -l", F.wcl]
+  };
+  const presets = [
+    ["Câte încercări au eșuat?", ["grepE", "wcl"]],
+    ["Cine apare cel mai des?", ["cut3", "sort", "uniqc", "sortnr", "head3"]],
+    ["Cine greșește parola?", ["grepE", "cut3", "sort", "uniqc", "sortnr"]],
+    ["Câte intrări pe zi?", ["cut1", "uniqc"]],
+    ["Fără sort, uniq -c greșește", ["cut3", "uniqc"]]
+  ];
+  $("#presets").innerHTML = presets.map(([t], k) => `<button class="btn" data-k="${k}">${esc(t)}</button>`).join("");
+  $("#stageBtns").innerHTML = Object.entries(ST).map(([k, [c]]) => `<button class="btn" data-s="${k}">| ${esc(c)}</button>`).join("");
+  let chain = [];
+  function showPipe() {
+    let L = JURNAL; const counts = [["cat jurnal.txt", L.length]];
+    chain.forEach(k => { L = ST[k][1](L); counts.push([ST[k][0], L.length]); });
+    $("#pipeLine").innerHTML = `<span class="seg">cat jurnal.txt</span>` + chain.map(k => `<span class="bar">|</span><span class="seg">${esc(ST[k][0])}</span>`).join("") +
+      (chain.length ? "" : ` <span class="ph">← alege o întrebare sau adaugă etape</span>`);
+    const MAX = 11, shown = L.slice(0, MAX).map(O);
+    if (L.length > MAX) shown.push(D(`... încă ${L.length - MAX} linii`));
+    if (!L.length) shown.push(D("(nicio linie: filtrul n-a lăsat nimic să treacă)"));
+    $("#pipeOut").innerHTML = `${P}${esc(["cat jurnal.txt", ...chain.map(k => ST[k][0])].join(" | "))}\n` + shown.join("\n");
+    $("#pipeSteps").innerHTML = counts.map(([c, n]) => `<div><code>${esc(c)}</code><span>${n} ${n === 1 ? "linie" : "linii"}</span></div>`).join("");
+    $("#pipeUndo").disabled = !chain.length;
+    $$("#presets .btn").forEach((b, k) => b.classList.toggle("on", presets[k][1].join() === chain.join()));
+  }
+  $$("#presets .btn").forEach(b => b.onclick = () => { chain = [...presets[+b.dataset.k][1]]; showPipe(); });
+  $$("#stageBtns .btn").forEach(b => b.onclick = () => { if (chain.length < 7) chain.push(b.dataset.s); showPipe(); });
+  $("#pipeUndo").onclick = () => { chain.pop(); showPipe(); };
+  $("#pipeReset").onclick = () => { chain = []; showPipe(); };
+  chain = [...presets[1][1]]; showPipe();
+
+  /* ---------- 6. grep ---------- */
+  const gf = { i: false, v: false, n: false, c: false };
+  const gfText = { i: "-i ignoră literele mari/mici", v: "-v inversează", n: "-n numerotează", c: "-c doar numără" };
+  function hl(line, pat, ci) {
+    if (!pat) return esc(line);
+    const anch = pat.startsWith("^"), p = anch ? pat.slice(1) : pat;
+    const L = ci ? line.toLowerCase() : line, Q = ci ? p.toLowerCase() : p;
+    if (anch) return L.startsWith(Q) ? `<mark>${esc(line.slice(0, p.length))}</mark>${esc(line.slice(p.length))}` : esc(line);
+    if (!Q) return esc(line);
+    let out = "", i = 0, j;
+    while ((j = L.indexOf(Q, i)) !== -1) { out += esc(line.slice(i, j)) + `<mark>${esc(line.slice(j, j + p.length))}</mark>`; i = j + p.length; }
+    return out + esc(line.slice(i));
+  }
+  function match(line, pat, ci) {
+    const anch = pat.startsWith("^"), p = anch ? pat.slice(1) : pat;
+    const L = ci ? line.toLowerCase() : line, Q = ci ? p.toLowerCase() : p;
+    return anch ? L.startsWith(Q) : L.includes(Q);
+  }
+  function runGrep() {
+    const pat = $("#grepIn").value;
+    const res = DATE.map((l, k) => { const m = match(l, pat, gf.i); return [k + 1, l, gf.v ? !m : m]; });
+    $("#grepLines").innerHTML = res.map(([n, l, ok]) => `<div class="${ok ? "hit" : "miss"}"><i>${n}</i><span>${gf.v ? esc(l) : hl(l, pat, gf.i)}</span></div>`).join("");
+    const hits = res.filter(r => r[2]);
+    const flags = Object.keys(gf).filter(k => gf[k]);
+    const cmdline = `grep ${flags.length ? "-" + flags.join("") + " " : ""}${/[\s^$*]/.test(pat) || !pat ? `'${pat}'` : pat} date.in`;
+    let body = gf.c ? [O(String(hits.length))] : hits.map(([n, l]) => O((gf.n ? n + ":" : "") + l));
+    $("#grepOut").innerHTML = `${P}${esc(cmdline)}\n` + body.join("\n") + `${body.length ? "\n" : ""}${P}echo $?\n${O(hits.length ? "0" : "1")}  ${D(hits.length ? "# a găsit ceva" : "# n-a găsit nimic")}`;
+    $("#grepFlagText").textContent = flags.map(k => gfText[k]).join(" · ");
+  }
+  $$("#grepFlags .btn").forEach(b => b.onclick = () => { gf[b.dataset.g] = !gf[b.dataset.g]; b.setAttribute("aria-pressed", gf[b.dataset.g]); runGrep(); });
+  $("#grepIn").addEventListener("input", runGrep);
+  runGrep();
+
+  /* ---------- 7. sort / uniq ---------- */
+  const NAMES = F.cut(JURNAL.slice(0, 10), 3);
+  const su = [["uniq", F.uniq], ["uniq -c", F.uniqc], ["sort", F.sort], ["sort | uniq", L => F.uniq(F.sort(L))], ["sort | uniq -c", L => F.uniqc(F.sort(L))], ["sort -u", F.sortu]];
+  $("#suBtns").innerHTML = su.map(([c], k) => `<button class="btn" data-k="${k}">${esc(c)}</button>`).join("");
+  const suB = $$("#suBtns .btn");
+  const wl = (L, mark) => L.map((x, i) => `<span class="${mark && ((i && L[i - 1] === x) || L[i + 1] === x) ? "dup" : ""}">${esc(x)}</span>`).join("");
+  function showSu(k) {
+    const [c, f] = su[k];
+    $("#suIn").innerHTML = wl(NAMES, true);
+    $("#suOut").innerHTML = wl(f(NAMES), false);
+    $("#suOutLbl").textContent = `după ${c}`;
+    pressOne(suB, suB[k]);
+  }
+  suB.forEach(b => b.onclick = () => showSu(+b.dataset.k));
+  showSu(1);
+  const NUMS = ["9", "10", "2", "100", "25"];
+  const nu = [["sort", F.sort], ["sort -n", F.sortn], ["sort -nr", F.sortnr]];
+  $("#numBtns").innerHTML = nu.map(([c], k) => `<button class="btn" data-k="${k}">${c}</button>`).join("");
+  const nuB = $$("#numBtns .btn");
+  function showNu(k) { $("#numIn").innerHTML = wl(NUMS, false); $("#numOut").innerHTML = wl(nu[k][1](NUMS), false); pressOne(nuB, nuB[k]); }
+  nuB.forEach(b => b.onclick = () => showNu(+b.dataset.k));
+  showNu(0);
+
+  /* ---------- 8. Ghilimele ---------- */
+  const qs = [
+    ["echo $HOME *.c", ["echo", "/home/student", "exercitiu.c"], [O("/home/student exercitiu.c")], "Fără ghilimele: $HOME devine calea, *.c devine lista de fișiere .c din folder ([[glob|masca]] din Tutoriatul 01)."],
+    ['echo "$HOME *.c"', ["echo", "/home/student *.c"], [O("/home/student *.c")], "Între ghilimele duble: variabila e înlocuită, dar steluța și spațiul rămân. Un singur argument."],
+    ["echo '$HOME *.c'", ["echo", "$HOME *.c"], [O("$HOME *.c")], "Între ghilimele simple nu se înlocuiește nimic. Exact ce ai scris."],
+    ["echo \\$HOME \\*.c", ["echo", "$HOME", "*.c"], [O("$HOME *.c")], "Backslash oprește câte un caracter. Spațiul dintre ele tot taie: două argumente."],
+    ["grep ana login jurnal.txt", ["grep", "ana", "login", "jurnal.txt"], [R("grep: login: No such file or directory"), O("jurnal.txt:2026-10-27 08:02:11 ana login ok"), O("jurnal.txt:...")], "grep a primit tiparul „ana” și DOUĂ fișiere: login (care nu există) și jurnal.txt."],
+    ["grep 'ana login' jurnal.txt", ["grep", "ana login", "jurnal.txt"], [O("2026-10-27 08:02:11 ana login ok"), O("2026-10-28 08:01:16 ana login ok")], "Cu ghilimele, „ana login” e un singur argument: tiparul complet."],
+    ["touch fisier nou.txt", ["touch", "fisier", "nou.txt"], [P + "ls", O("fisier  nou.txt")], "Spațiul a tăiat numele: au apărut două fișiere. Corect: touch \"fisier nou.txt\"."]
+  ];
+  $("#qBtns").innerHTML = qs.map(([c], k) => `<button class="btn" data-k="${k}">${esc(c)}</button>`).join("");
+  const qB = $$("#qBtns .btn");
+  function showQ(k) {
+    const [c, argv, out, note] = qs[k];
+    $("#qArgv").innerHTML = argv.map((a, i) => `<span class="${i ? "" : "prog"}"><small>argv[${i}]</small>${esc(a)}</span>`).join("");
+    $("#qOut").innerHTML = `${P}${esc(c)}\n` + out.join("\n");
+    $("#qNote").innerHTML = gl(note);
+    pressOne(qB, qB[k]);
+  }
+  qB.forEach(b => b.onclick = () => showQ(+b.dataset.k));
+  showQ(0);
+
+  /* ---------- 9. Rulare exercițiu (ieșiri reale ale soluției) ---------- */
+  const STAT = (a, b, s) => R(`[filtru] ${a} din ${b} linii potrivite (sursa: ${s})`);
+  const runs2 = [
+    ["./exercitiu -n Linux date.in", [O("1:Linux este un nucleu de sistem de operare scris in C."), O("5:Kernelul Linux gestioneaza procesele si memoria."), STAT(2, 12, "date.in")], 0, "fișier ca argument"],
+    ["cat date.in | ./exercitiu -c -i linux", [O("4"), STAT(4, 12, "stdin")], 0, "fără fișier: citește din pipe"],
+    ["./exercitiu -i linux date.in > gasite.out", [STAT(4, 12, "date.in")], 0, "liniile sunt în gasite.out, statistica a rămas pe ecran"],
+    ["./exercitiu -v -i linux < date.in 2> /dev/null | wc -l", [O("8")], 0, "stderr aruncat, wc numără doar datele"],
+    ["./exercitiu windows date.in", [STAT(0, 12, "date.in")], 1, "n-a găsit nimic"],
+    ["./exercitiu linux lipsa.txt", [R("./exercitiu: lipsa.txt: No such file or directory")], 2, "eroare: perror() explică ce s-a întâmplat"],
+    ["./exercitiu -q linux date.in", [R("./exercitiu: optiune necunoscuta: -q"), R("Utilizare: ./exercitiu [-i] [-v] [-n] [-c] <tipar> [fisier]"), D("...")], 2, "argumente greșite"]
+  ];
+  $("#runBtns2").innerHTML = runs2.map(([c], k) => `<button class="btn" data-k="${k}"><code>${esc(c)}</code></button>`).join("");
+  const r2B = $$("#runBtns2 .btn");
+  function showRun2(k) {
+    const [c, out, code, note] = runs2[k];
+    $("#runTerm2").innerHTML = `${P}${esc(c)}\n${out.join("\n")}\n${P}echo $?\n${code ? `<span class="e">${code}</span>` : `<span class="p">0</span>`}`;
+    $("#runNote2").textContent = "· " + note;
+    pressOne(r2B, r2B[k]);
+  }
+  r2B.forEach(b => b.onclick = () => showRun2(+b.dataset.k));
+  showRun2(0);
+
+  /* ---------- 10. Comenzi ---------- */
+  const cmds = [
+    ["grep", "caută", "Păstrează liniile care conțin [[tipar|tiparul]]. -i fără majuscule, -v invers, -n cu număr, -c doar numără.", "grep -c esuat jurnal.txt\n9"],
+    ["sort", "ordonează", "Ordonează liniile. -n numeric, -r invers, -u fără dubluri, -k3 după [[camp|câmpul]] 3.", "sort -k3 jurnal.txt | head -n 2\n2026-10-27 08:02:11 ana login ok\n2026-10-28 08:01:16 ana login ok"],
+    ["uniq", "fără dubluri", "Elimină liniile identice vecine. -c le și numără. Aproape mereu după sort.", "cut -d' ' -f4 jurnal.txt | sort | uniq -c\n     11 login\n      5 logout\n      5 ssh\n      4 sudo"],
+    ["wc", "numără", "Linii (-l), cuvinte (-w), octeți (-c). Cu < nu mai afișează numele fișierului.", "wc date.in\n 12  99 654 date.in\nwc -l < jurnal.txt\n25"],
+    ["cut", "taie coloane", "Alege [[camp|câmpuri]]: -d separatorul, -f numărul câmpului. -c alege caractere.", "cut -d: -f1,7 /etc/passwd | head -n 2\nroot:/bin/bash\ndaemon:/usr/sbin/nologin"],
+    ["tr", "înlocuiește caractere", "Traduce caracter cu caracter. Citește doar din stdin! -d șterge caracterele.", "echo salut | tr 'a-z' 'A-Z'\nSALUT"],
+    ["head", "începutul", "Primele N linii (implicit 10).", "head -n 2 jurnal.txt\n2026-10-27 08:02:11 ana login ok\n2026-10-27 08:05:47 bogdan login ok"],
+    ["tail", "finalul", "Ultimele N linii. tail -f urmărește un fișier care crește (log-uri).", "tail -n 1 jurnal.txt\n2026-10-28 16:30:00 ana logout ok"],
+    ["tee", "ramificație", "Copiază stdin și pe ecran, și într-un fișier. Bun ca să salvezi o etapă din pipe.", "grep esuat jurnal.txt | tee esuate.out | wc -l\n9"],
+    ["less", "paginează", "Afișează un text lung pagină cu pagină. Săgeți, /caută, q iese.", "man grep | less"],
+    ["diff", "compară", "Arată liniile care diferă între două fișiere. Nimic afișat = identice.", "diff al_meu.out grep.out && echo Identic!\nIdentic!"],
+    ["/dev/null", "gaura neagră", "Ce scrii acolo dispare. Folosit cu 2> ca să ascunzi erorile.", "find / -name passwd 2> /dev/null\n/etc/passwd\n/usr/bin/passwd"]
+  ];
+  $("#cmdGrid").innerHTML = cmds.map(([c, s], k) => `<button class="cmd" data-k="${k}"><code>${c}</code><span>${s}</span></button>`).join("");
+  const cBtns = $$("#cmdGrid .cmd");
+  function showCmd(k) {
+    const [c, , x, ex] = cmds[k];
+    $("#cmdTitle").innerHTML = `<code>${c}</code>`; $("#cmdText").innerHTML = gl(x);
+    const isCmd = l => /^(grep|sort|cut|wc|tr|head|tail|echo|man|diff|find)\b/.test(l);
+    $("#cmdTerm").innerHTML = ex.split("\n").map(l => isCmd(l) ? `${P}${esc(l)}` : `<span class="d">${esc(l)}</span>`).join("\n");
+    pressOne(cBtns, cBtns[k]);
+  }
+  cBtns.forEach(b => b.onclick = () => showCmd(+b.dataset.k));
+  showCmd(2);
+
+  /* ---------- 11. Capcane ---------- */
+  const traps = [
+    ["sort date.txt > date.txt   # fișierul rămâne gol!", "Shell-ul pregătește redirectarea înainte să pornească sort: deschide date.txt și îl golește. sort citește apoi un fișier gol.", "sort date.txt > tmp.txt && mv tmp.txt date.txt"],
+    ["cut -d' ' -f3 jurnal.txt | uniq -c   # ana apare pe 6 rânduri separate", "uniq compară doar linii vecine. Dublurile care nu stau una lângă alta nu sunt numărate împreună.", "cut -d' ' -f3 jurnal.txt | sort | uniq -c"],
+    ["make 2>&1 > log.txt   # erorile tot pe ecran", "Redirectările se aplică de la stânga la dreapta. 2>&1 a copiat destinația lui stdout de dinainte, adică ecranul.", "make > log.txt 2>&1   (sau make &> log.txt)"],
+    ["grep: login: No such file or directory", "Ai scris grep ana login jurnal.txt. Spațiul a separat tiparul în două argumente, iar al doilea a fost luat drept fișier.", "grep 'ana login' jurnal.txt"],
+    ["sort numere.txt  →  10 100 2 25 9", "Fără -n, sort compară textul caracter cu caracter, ca în dicționar.", "sort -n numere.txt"],
+    ["Erorile programului meu apar în fișierul cu rezultate", "Le-ai scris cu printf(), adică pe stdout. Redirectarea > le-a luat odată cu datele.", "fprintf(stderr, ...) sau perror(...)"]
+  ];
+  $("#traps").innerHTML = traps.map(([e, w, f], k) =>
+    `<div class="trap${k === 0 ? " open" : ""}"><button aria-expanded="${k === 0}"><code>${esc(e)}</code><span class="chev">›</span></button>` +
+    `<div class="body"><div><b>De ce</b>${gl(esc(w))}</div><div><b>Rezolvare</b><code>${esc(f)}</code></div></div></div>`).join("");
+  $$("#traps .trap").forEach(t => $("button", t).onclick = () => {
+    $$("#traps .trap").forEach(o => { const on = o === t && !o.classList.contains("open"); o.classList.toggle("open", on); $("button", o).setAttribute("aria-expanded", on); });
+  });
+
+  /* ---------- 12. Quiz ---------- */
+  const quiz = [
+    ["Fișierul f.txt are 10 linii. Câte are după echo gata > f.txt?", ["11", "1", "10"], 1, "> golește fișierul înainte să scrie. Doar >> adaugă la final."],
+    ["Pe ce descriptor trebuie să scrie un program mesajele de eroare?", ["0 (stdin)", "1 (stdout)", "2 (stderr)"], 2, "Așa nu se amestecă cu datele când stdout e redirectat sau trimis printr-un pipe."],
+    ["Ce afișează echo '$HOME'?", ["/home/student", "$HOME", "nimic"], 1, "Ghilimelele simple opresc orice înlocuire. Cu ghilimele duble ar fi apărut calea."]
+  ];
+  $("#quiz").innerHTML = quiz.map(([q, o], k) =>
+    `<div class="q panel" data-k="${k}"><h3>${esc(q)}</h3>${o.map((x, j) => `<button class="opt" data-j="${j}">${esc(x)}</button>`).join("")}<p class="why" aria-live="polite"></p></div>`).join("");
+  $$("#quiz .q").forEach(q => {
+    const [, , ans, why] = quiz[+q.dataset.k];
+    $$(".opt", q).forEach(b => b.onclick = () => {
+      const j = +b.dataset.j;
+      $$(".opt", q).forEach(o => o.classList.remove("right", "wrong"));
+      b.classList.add(j === ans ? "right" : "wrong");
+      $(".why", q).textContent = j === ans ? "Corect. " + why : "Nu chiar. Mai încearcă.";
+    });
+  });
+
+  /* ---------- Start ---------- */
+  new MutationObserver(() => prepTerms(stage)).observe(stage, { childList: true, subtree: true });
+  prepTerms(stage);
+  const fromHash = slides.findIndex(s => "#" + s.id === location.hash);
+  fit();
+  go(fromHash >= 0 ? fromHash : 0);
+})();
+</script>
+</body>
+</html>
