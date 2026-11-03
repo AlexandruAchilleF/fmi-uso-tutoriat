@@ -409,11 +409,11 @@ p { margin: 0; }
 .fboxes { display: flex; flex-direction: column; gap: 14px; }
 .fbox { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
 .fbox > div:first-child { font-family: var(--font-mono); font-size: 15px; padding: 7px 14px; background: var(--surface-2); border-bottom: 1px solid var(--line); color: var(--muted); }
-.fbox pre { margin: 0; padding: 12px 14px; font-family: var(--font-mono); font-size: 16px; min-height: 72px; white-space: pre-wrap; }
+.fbox pre { margin: 0; padding: 10px 14px; font-family: var(--font-mono); font-size: 15px; min-height: 52px; white-space: pre-wrap; }
 .fbox.lit { border-color: var(--accent); }
 .fbox .none { color: var(--muted); font-style: italic; font-family: var(--font-ui); }
 .steps2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.step2 { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; display: flex; flex-direction: column; gap: 10px; }
+.step2 { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 16px; display: flex; flex-direction: column; gap: 6px; }
 .step2 h3 { font-size: 18px; font-family: var(--font-mono); font-weight: 600; }
 .step2 h3 small { font-family: var(--font-ui); font-weight: 500; color: var(--muted); font-size: 14px; margin-right: 8px; }
 
@@ -427,6 +427,21 @@ p { margin: 0; }
 .steplist div.last { border-color: var(--accent); background: var(--accent-soft); }
 .steplist code { font-size: 15px; }
 .steplist span { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* ---------- Linia de asamblare (pipe) ---------- */
+.asm { display: flex; align-items: stretch; min-height: 118px; }
+.stn { flex: 0 1 180px; min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; animation: stnIn .35s ease; }
+.stn .nm { font-family: var(--font-mono); font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stn .ct { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.stn .pv { font-family: var(--font-mono); font-size: 13.5px; line-height: 1.45; color: var(--muted); white-space: pre; overflow: hidden; text-overflow: ellipsis; }
+.stn.last { border-color: var(--accent); background: var(--accent-soft); }
+.stn.last .pv { color: var(--ink); }
+.stn.next { border-style: dashed; background: none; justify-content: center; align-items: center; color: var(--muted); }
+.lnk { flex: none; width: 36px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--kernel); font-family: var(--font-mono); font-weight: 700; font-size: 20px; line-height: 1; }
+.lnk i { font-style: normal; font-size: 14px; color: var(--muted); }
+@keyframes stnIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+.analog { flex: none; display: flex; gap: 12px; align-items: baseline; background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 8px 16px; font-size: 16px; }
+.analog b { color: var(--kernel); white-space: nowrap; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; }
 
 /* ---------- grep ---------- */
 .grepbar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 19px; }
@@ -481,6 +496,9 @@ p { margin: 0; }
   .colpair .arrow { transform: rotate(90deg); }
   .recipe div { grid-template-columns: 1fr; gap: 2px; }
   .runbtns .btn, .vbtns .btn { white-space: normal; overflow-wrap: anywhere; }
+  .asm { flex-direction: column; }
+  .lnk { width: auto; height: 30px; flex-direction: row; gap: 6px; }
+  .lnk i { transform: rotate(90deg); }
   .row > * { width: auto !important; }
   .flow > * { grid-column: auto !important; grid-row: auto !important; }
 }
@@ -570,6 +588,7 @@ p { margin: 0; }
       <div class="legend2"><span><i style="background:var(--term-ink)"></i>venit pe stdout</span><span><i style="background:#f2b48a"></i>venit pe stderr</span></div>
     </div>
   </div>
+  <div class="analog"><b>Ca și cum</b><span>o fabrică mică: pe banda 0 intră materialele, pe banda 1 ies produsele, pe banda 2 ies biletele cu „ceva n-a mers”. Acum ambele benzi se varsă pe aceeași masă, ecranul.</span></div>
 </section>
 
 <!-- 4 · Redirectări -->
@@ -578,7 +597,7 @@ p { margin: 0; }
   <div class="head">
     <div class="eyebrow">2 · Redirectări</div>
     <h2>Trimite rezultatul într-un fișier, nu pe ecran</h2>
-    <p class="lead">Comanda e mereu <code>ls date.in lipsa.txt</code>: primul fișier există, al doilea nu. Alege ce adaugi la final.</p>
+    <p class="lead">Comanda e mereu <code>ls date.in lipsa.txt</code> (al doilea fișier nu există).</p>
   </div>
   <div class="btns mbtns" id="redBtns"></div>
   <div class="term" id="redCmd" style="font-size:18px;padding:12px 18px"></div>
@@ -589,6 +608,7 @@ p { margin: 0; }
     </div>
     <div class="fboxes" id="redBoxes"></div>
   </div>
+  <div class="analog"><b>Ca și cum</b><span>îi spui fabricii „produsele nu le mai pune pe masă, pune-le în cutia asta”. Fabrica lucrează la fel, doar banda duce în altă parte. <code>/dev/null</code> e un tocător.</span></div>
 </section>
 
 <!-- 5 · 2>&1 -->
@@ -602,8 +622,9 @@ p { margin: 0; }
   <div class="btns mbtns" id="ordBtns"></div>
   <div class="term" id="ordCmd" style="font-size:18px;padding:12px 18px"></div>
   <div class="steps2" id="ordSteps"></div>
-  <p id="ordNote" style="font-size:19px"></p>
+  <p id="ordNote" style="font-size:18px"></p>
   <div class="fboxes side" id="ordBoxes"></div>
+  <div class="analog"><b>Ca și cum</b><span>„du-te la adresa la care stă Andrei acum”. Dacă Andrei se mută după aceea, tu tot la adresa veche ajungi. De asta fișierul se pune primul, <code>2&gt;&amp;1</code> la final.</span></div>
 </section>
 
 <!-- 6 · > vs >> -->
@@ -637,18 +658,18 @@ p { margin: 0; }
   <div class="head">
     <div class="eyebrow">3 · Pipe-uri</div>
     <h2>Leagă comenzile între ele, pas cu pas</h2>
-    <p class="lead">Alege o întrebare și adaugă câte o comandă după <code>|</code>.</p>
+    <p class="lead">Ca la o linie de asamblare: fiecare comandă face un singur lucru și dă mai departe.</p>
   </div>
   <div class="btns" id="presets"></div>
-  <div class="pipeline" id="pipeLine" aria-live="polite"></div>
+  <div class="asm" id="asmLine" aria-live="polite"></div>
   <div class="row grow">
     <div class="term grow" id="pipeOut" style="font-size:15px"></div>
-    <div class="col" style="width:340px;flex:none">
-      <div class="steplist" id="pipeSteps"></div>
-      <div class="btns"><button class="btn primary" id="pipeNext">Următoarea bucată</button><button class="btn" id="pipeReset">De la capăt</button></div>
+    <div class="col" style="width:330px;flex:none">
+      <div class="btns"><button class="btn primary" id="pipeNext">Următoarea comandă</button><button class="btn" id="pipeReset">De la capăt</button></div>
+      <p class="small">„Scrieți programe care fac un singur lucru și îl fac bine, și care lucrează împreună prin text.” <span class="muted">· Doug McIlroy, autorul pipe-ului din UNIX</span></p>
+      <p class="small muted">Pipe-ul duce doar <code>stdout</code>. Erorile trec pe lângă, direct pe ecran.</p>
     </div>
   </div>
-  <div class="note small">„Scrieți programe care fac un singur lucru și îl fac bine, și care lucrează împreună prin text.” · Doug McIlroy, autorul pipe-ului din UNIX. Pipe-ul duce doar <code>stdout</code>: erorile trec pe lângă, direct pe ecran.</div>
 </section>
 
 <!-- 8 · grep -->
@@ -699,6 +720,7 @@ p { margin: 0; }
     </div>
     <div class="col grow" style="justify-content:center">
       <p id="suNote" style="font-size:20px"></p>
+      <div class="analog"><b>Ca și cum</b><span>un paznic la coadă care se uită doar la cel din fața fiecăruia. Gemenii care stau unul după altul îi observă; dacă între ei e altcineva, nu. <code>sort</code> îi așază pe toți în ordine, ca gemenii să ajungă alături.</span></div>
     </div>
   </div>
 </section>
@@ -737,18 +759,18 @@ p { margin: 0; }
   <div class="head">
     <div class="eyebrow">5 · <span class="t" data-t="quoting">Despecializare</span></div>
     <h2>Ce primește de fapt programul?</h2>
-    <p class="lead">Înainte să pornească o comandă, <span class="t" data-t="shell">shell-ul</span> înlocuiește variabilele (<code>$HOME</code>) și măștile (<code>*.c</code>). Ghilimelele îl opresc.</p>
+    <p class="lead"><span class="t" data-t="shell">Shell-ul</span> e ca un secretar: înainte să pornească comanda, completează singur <code>$HOME</code> și <code>*.c</code>. Ghilimelele îi spun ce să nu atingă.</p>
   </div>
   <div class="row grow">
     <div class="vbtns" id="qBtns" style="width:340px;flex:none"></div>
     <div class="col grow">
       <p class="small muted">Argumentele primite de program (<span class="t" data-t="argv"><code>argv</code></span>):</p>
       <div class="argv" id="qArgv" aria-live="polite"></div>
-      <div class="term" id="qOut" style="font-size:17px;padding:12px 18px"></div>
+      <div class="term" id="qOut" style="font-size:17px;padding:12px 18px;flex:none"></div>
       <p id="qNote" style="font-size:18px;min-height:3em"></p>
-      <div class="panel qtable">
-        <code>"..."</code><span>înlocuiește <code>$VAR</code>, dar păstrează spațiile și <code>*</code></span>
-        <code>'...'</code><span>nu înlocuiește <b>nimic</b></span>
+<div class="panel qtable">
+        <code>"..."</code><span>înlocuiește doar <code>$VAR</code> (plic cu fereastră)</span>
+        <code>'...'</code><span>nu înlocuiește <b>nimic</b> (plic sigilat)</span>
         <code>\</code><span>oprește un <b>singur</b> caracter</span>
       </div>
     </div>
@@ -792,6 +814,7 @@ p { margin: 0; }
     <div class="col grow">
       <div class="term" id="cOut" style="font-size:17px;padding:14px 18px"></div>
       <p id="cNote" style="font-size:18px"></p>
+      <div class="analog"><b>Ca și cum</b><span>„dacă iau examenul, merg la mare” e <code>examen &amp;&amp; mare</code>. „Dacă nu-l iau, învăț în vară” e <code>examen || invat</code>.</span></div>
     </div>
   </div>
 </section>
@@ -1192,17 +1215,19 @@ Shell-ul face expandarea mastilor inainte sa porneasca grep.`.split("\n");
   $("#presets").innerHTML = presets.map(([t], k) => `<button class="btn" data-k="${k}">${esc(t)}</button>`).join("");
   const pBtns = $$("#presets .btn");
   let pk = 1, pn = 0;
+  const pv = (L) => L.slice(0, 3).map(x => x.trim()).map(x => x.length > 18 ? "…" + x.slice(-17) : x).join("\n") + (L.length > 3 ? "\n…" : "");
   function showPipe() {
     const full = presets[pk][1], chain = full.slice(0, pn);
-    let L = JURNAL; const counts = [["cat jurnal.txt", L.length]];
-    chain.forEach(k => { L = ST[k][1](L); counts.push([ST[k][0], L.length]); });
+    let L = JURNAL;
+    const stations = [["cat jurnal.txt", L]];
+    chain.forEach(k => { L = ST[k][1](L); stations.push([ST[k][0], L]); });
     const next = full[pn];
-    $("#pipeLine").innerHTML = `<span class="seg">cat jurnal.txt</span>` + chain.map(k => `<span class="bar">|</span><span class="seg">${esc(ST[k][0])}</span>`).join("") +
-      (next ? `<span class="bar">|</span><span class="seg next">${esc(ST[next][0])} ?</span>` : "");
-    const MAX = 6, shown = L.slice(0, MAX).map(O);
-    if (L.length > MAX) shown.push(D(`... încă ${L.length - MAX} linii`));
+    $("#asmLine").innerHTML = stations.map(([c, X], i) =>
+      `${i ? '<div class="lnk">|<i>→</i></div>' : ""}<div class="stn${i === stations.length - 1 ? " last" : ""}"><div class="nm">${esc(c)}</div><div class="ct">${X.length} ${X.length === 1 ? "linie" : "linii"}</div><div class="pv">${esc(pv(X))}</div></div>`).join("") +
+      (next ? `<div class="lnk">|<i>→</i></div><div class="stn next"><div class="nm">${esc(ST[next][0])}</div><div class="ct">?</div></div>` : "");
+    const MAX = 5, shown = L.slice(0, MAX).map(O);
+    if (L.length > MAX) shown.push(D(`... încă ${L.length - MAX} ${L.length - MAX === 1 ? "linie" : "linii"}`));
     $("#pipeOut").innerHTML = `${P}${esc(["cat jurnal.txt", ...chain.map(k => ST[k][0])].join(" | "))}\n` + shown.join("\n");
-    $("#pipeSteps").innerHTML = counts.map(([c, n], i) => `<div class="${i === counts.length - 1 ? "last" : ""}"><code>${esc(c)}</code><span>${n} ${n === 1 ? "linie" : "linii"}</span></div>`).join("");
     $("#pipeNext").disabled = !next;
     $("#pipeNext").textContent = next ? `Adaugă | ${ST[next][0]}` : "Gata, pipe-ul e complet";
     pressOne(pBtns, pBtns[pk]);
