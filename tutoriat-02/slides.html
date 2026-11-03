@@ -952,10 +952,10 @@ p { margin: 0; }
   <div class="row grow">
     <div class="todo grow">
       <label><input type="checkbox" id="t1"><code>cd tutoriat-02/schelet</code><span class="small muted">intră în folder</span></label>
-      <label><input type="checkbox" id="t2"><code>bash pipeline.sh</code><span class="small muted">exercițiile 1–11, cu pipe-uri</span></label>
+      <label><input type="checkbox" id="t2"><code>bash pipeline.sh</code><span class="small muted">exercițiile 1–3, cu pipe-uri</span></label>
       <label><input type="checkbox" id="t3"><code>nano exercitiu.c</code><span class="small muted">rezolvă TODO 1–9</span></label>
       <label><input type="checkbox" id="t4"><code>make &amp;&amp; make test</code><span class="small muted">compilează și testează</span></label>
-      <label><input type="checkbox" id="t5"><code>make pipeline</code><span class="small muted">exercițiile 12–13, cu programul tău</span></label>
+      <label><input type="checkbox" id="t5"><code>make pipeline</code><span class="small muted">exercițiile 4–5, cu programul tău</span></label>
       <label><input type="checkbox" id="t6"><code>make valgrind</code><span class="small muted">bonus: nimic uitat deschis?</span></label>
     </div>
     <div class="col" style="width:400px;flex:none">
@@ -1261,7 +1261,7 @@ Shell-ul face expandarea mastilor inainte sa porneasca grep.`.split("\n");
     ["J", [3], "-f3", "Al treilea câmp: utilizatorul. Exact ce folosim pe slide-ul următor, în pipe."],
     ["J", [1], "-f1", "Doar data. Fiecare linie păstrează un singur câmp."],
     ["J", [4, 5], "-f4,5", "Mai multe câmpuri se scriu cu virgulă. cut păstrează separatorul dintre ele."],
-    ["P", [1, 7], "-f1,7", "În /etc/passwd separatorul e două puncte. Câmpul 1 e numele, câmpul 7 e shell-ul. E exercițiul 8 din pipeline.sh."],
+    ["P", [1, 7], "-f1,7", "În /etc/passwd separatorul e două puncte. Câmpul 1 e numele, câmpul 7 e shell-ul cu care pornește."],
     ["P", [6], "-f6", "Câmpul 6: folderul home al fiecărui utilizator."]
   ];
   function fieldGrid(set, sel, lines) {
