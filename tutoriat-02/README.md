@@ -271,7 +271,7 @@ $ ./exercitiu windows date.in; echo $?
 1
 ```
 
-Pe lângă programul C, fișierul `pipeline.sh` conține **13 exerciții cu pipe-uri și redirectări** pe `jurnal.txt` și `date.in`, fiecare cu un indiciu. Înlocuiți fiecare `todo` cu comanda voastră și rulați scriptul cu `bash pipeline.sh`.
+Pe lângă programul C, fișierul `pipeline.sh` conține **5 exerciții cu pipe-uri și redirectări**: 3 pe `jurnal.txt` și 2 care folosesc programul vostru, fiecare cu un indiciu. Înlocuiți fiecare `todo` cu comanda voastră și rulați scriptul cu `bash pipeline.sh`.
 
 ---
 
@@ -285,13 +285,13 @@ tutoriat-02/
 ├── schelet/                       # Codul de lucru pentru studenți
 │   ├── Makefile                   # Compilare, teste, pipeline, valgrind
 │   ├── exercitiu.c                # Mini-grep cu instrucțiuni /* TODO */
-│   ├── pipeline.sh                # 13 exerciții cu pipe-uri și redirectări (de completat)
+│   ├── pipeline.sh                # 5 exerciții cu pipe-uri și redirectări (de completat)
 │   ├── date.in                    # Text de test pentru exercitiu.c
 │   └── jurnal.txt                 # Jurnal de autentificări pentru exercițiile cu pipe-uri
 ├── solutii/                       # Soluțiile complete demonstrate la tablă
 │   ├── Makefile
 │   ├── exercitiu.c                # Mini-grep complet implementat și documentat
-│   ├── pipeline.sh                # Toate cele 13 exerciții rezolvate și explicate
+│   ├── pipeline.sh                # Toate cele 5 exerciții rezolvate și explicate
 │   ├── date.in
 │   └── jurnal.txt
 └── kahoot/                        # Quiz-ul săptămânal (păstrat local, nu e public)
@@ -303,7 +303,7 @@ tutoriat-02/
    ```bash
    cd tutoriat-02/schelet
    ```
-2. **Încălzire cu pipe-uri:** deschideți `pipeline.sh`, rezolvați exercițiile 1–11 și rulați:
+2. **Încălzire cu pipe-uri:** deschideți `pipeline.sh`, rezolvați exercițiile 1–3 și rulați:
    ```bash
    bash pipeline.sh
    ```
@@ -312,7 +312,7 @@ tutoriat-02/
    ```bash
    make            # compilează cu -Wall -Wextra -std=c11 -pedantic -g
    make test       # 6 teste: fără argumente, fișier, pipe, redirectări, negăsit, fișier lipsă
-   make pipeline   # rulează pipeline.sh, inclusiv exercițiile 12–13 care folosesc programul vostru
+   make pipeline   # rulează pipeline.sh, inclusiv exercițiile 4–5 care folosesc programul vostru
    ```
 5. **Comparați cu ce face `grep`:** rezultatul vostru trebuie să fie identic.
    ```bash
