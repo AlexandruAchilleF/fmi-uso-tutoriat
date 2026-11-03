@@ -443,6 +443,38 @@ p { margin: 0; }
 .analog { flex: none; display: flex; gap: 12px; align-items: baseline; background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 8px 16px; font-size: 16px; }
 .analog b { color: var(--kernel); white-space: nowrap; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; }
 
+/* ---------- cut: câmpuri ---------- */
+.fgrid { display: grid; gap: 8px 4px; align-items: center; font-family: var(--font-mono); font-size: 17px; justify-content: start; }
+.fgrid .fh { font-family: var(--font-ui); font-size: 12.5px; color: var(--muted); text-align: center; line-height: 1.2; }
+.fgrid .fh.on { color: var(--accent); font-weight: 600; }
+.fgrid .fc { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 4px 10px; white-space: nowrap; text-align: center; transition: background .2s, border-color .2s, opacity .2s; }
+.fgrid .fc.on { background: var(--accent-soft); border-color: var(--accent); }
+.fgrid .fc.off { opacity: .4; }
+.fgrid .sp { color: var(--kernel); font-weight: 700; text-align: center; min-width: 14px; }
+
+/* ---------- Scheme mici pe fișa de comenzi ---------- */
+.vis { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; min-width: 0; overflow: hidden; }
+.vrow { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.vcap { font-size: 14px; color: var(--muted); text-align: center; }
+.va { color: var(--muted); font-size: 22px; }
+.vb { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 8px 14px; font-family: var(--font-mono); font-size: 15px; white-space: nowrap; }
+.vb.on { border-color: var(--accent); background: var(--accent-soft); }
+.chs { display: flex; gap: 6px; }
+.chs span { font-family: var(--font-mono); font-size: 20px; width: 36px; height: 42px; border-radius: 8px; display: grid; place-items: center; background: var(--surface-2); border: 1px solid var(--line); }
+.chs.up span { background: var(--accent-soft); border-color: var(--accent); }
+.bars { display: flex; flex-direction: column; gap: 5px; width: 340px; }
+.bars span { font-family: var(--font-mono); font-size: 13px; padding: 2px 10px; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--line); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bars span.on { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
+.bars span.del { background: var(--bad-soft); border-color: var(--bad); color: var(--ink); }
+.bars span.add { background: var(--ok-soft); border-color: var(--ok); color: var(--ink); }
+.tee { display: grid; grid-template-columns: auto 34px auto 34px auto; grid-template-rows: auto 30px auto; align-items: center; justify-items: center; }
+.tee .down { grid-column: 3; grid-row: 2; color: var(--muted); font-size: 22px; }
+.tee .file { grid-column: 3; grid-row: 3; }
+.pager { position: relative; }
+.pager .win { position: absolute; left: -8px; right: -8px; top: -6px; height: 112px; border: 2px solid var(--accent); border-radius: 10px; }
+.pager .win b { position: absolute; right: 8px; top: -11px; background: var(--surface); padding: 0 6px; font-size: 12px; color: var(--accent); }
+.wcbox { font-family: var(--font-mono); font-size: 15px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; white-space: pre; }
+
 /* ---------- grep ---------- */
 .grepbar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 19px; }
 .grepbar input { font-family: var(--font-mono); font-size: 19px; padding: 7px 12px; border-radius: 10px; width: 180px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
@@ -497,6 +529,7 @@ p { margin: 0; }
   .recipe div { grid-template-columns: 1fr; gap: 2px; }
   .runbtns .btn, .vbtns .btn { white-space: normal; overflow-wrap: anywhere; }
   .asm { flex-direction: column; }
+  .fgrid { max-width: 100%; overflow-x: auto; font-size: 14px; padding-bottom: 6px; }
   .lnk { width: auto; height: 30px; flex-direction: row; gap: 6px; }
   .lnk i { transform: rotate(90deg); }
   .row > * { width: auto !important; }
@@ -650,6 +683,27 @@ p { margin: 0; }
       <div class="term" id="apLog" style="font-size:15px;padding:12px 16px;min-height:90px"></div>
     </div>
   </div>
+</section>
+
+<!-- 7 · cut -->
+<section class="slide" id="cut" data-title="cut">
+  <button class="btn real" data-img="img/t2-cut.png" data-cap="Captură reală: cut -d' ' -f3 pe jurnal.txt și cut -d: -f1,7 pe /etc/passwd">Vezi în terminalul real</button>
+  <div class="head">
+    <div class="eyebrow">3 · Prima unealtă: <code>cut</code></div>
+    <h2><code>cut</code> păstrează doar coloanele de care ai nevoie</h2>
+    <p class="lead">Separatorul (<code>-d</code>) împarte linia în <span class="t" data-t="camp">câmpuri</span>, iar tu alegi ce rămâne (<code>-f</code>).</p>
+  </div>
+  <div class="btns mbtns" id="cutBtns"></div>
+  <div class="row grow">
+    <div class="col grow" style="justify-content:center">
+      <div class="fgrid" id="cutGrid"></div>
+    </div>
+    <div class="col" style="width:380px;flex:none">
+      <div class="term" id="cutOut" style="font-size:13.5px;padding:12px 16px"></div>
+      <p id="cutNote" style="font-size:17px"></p>
+    </div>
+  </div>
+  <div class="analog"><b>Ca și cum</b><span>tai o foaie cu foarfeca pe liniile punctate (separatorul) și păstrezi doar fâșiile de care ai nevoie. Restul le arunci.</span></div>
 </section>
 
 <!-- 7 · Pipe -->
@@ -859,10 +913,11 @@ p { margin: 0; }
   </div>
   <div class="cmdgrid" id="cmdGrid"></div>
   <div class="row grow">
-    <div class="term grow" id="cmdTerm" aria-live="polite" style="height:200px;flex:1 1 auto"></div>
-    <div class="col" style="width:380px;flex:none">
+    <div class="panel vis grow" id="cmdVis" aria-live="polite"></div>
+    <div class="col" style="width:420px;flex:none">
       <h3 id="cmdTitle"></h3>
       <p class="small" id="cmdText"></p>
+      <div class="term" id="cmdTerm" style="font-size:14px;padding:12px 16px"></div>
     </div>
   </div>
 </section>
@@ -1195,6 +1250,45 @@ Shell-ul face expandarea mastilor inainte sa porneasca grep.`.split("\n");
   });
   apLines = ["pas 1", "pas 2"]; apN = 2; apLog = ["echo pas > f.txt", "echo pas >> f.txt"]; apShow("a");
 
+
+  /* ---------- cut: câmpuri ---------- */
+  const PASSWD = ["root:x:0:0:root:/root:/bin/bash", "daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin", "bin:x:2:2:bin:/bin:/usr/sbin/nologin"];
+  const CUTSETS = {
+    J: { lines: JURNAL.slice(0, 4), d: " ", names: ["data", "ora", "utilizator", "acțiune", "status"], src: "head -n 4 jurnal.txt", dopt: "-d' '" },
+    P: { lines: PASSWD, d: ":", names: ["nume", "parolă", "UID", "GID", "descriere", "home", "shell"], src: "head -n 3 /etc/passwd", dopt: "-d:" }
+  };
+  const cuts = [
+    ["J", [3], "-f3", "Al treilea câmp: utilizatorul. Exact ce folosim pe slide-ul următor, în pipe."],
+    ["J", [1], "-f1", "Doar data. Fiecare linie păstrează un singur câmp."],
+    ["J", [4, 5], "-f4,5", "Mai multe câmpuri se scriu cu virgulă. cut păstrează separatorul dintre ele."],
+    ["P", [1, 7], "-f1,7", "În /etc/passwd separatorul e două puncte. Câmpul 1 e numele, câmpul 7 e shell-ul. E exercițiul 8 din pipeline.sh."],
+    ["P", [6], "-f6", "Câmpul 6: folderul home al fiecărui utilizator."]
+  ];
+  function fieldGrid(set, sel, lines) {
+    const n = set.names.length, cols = [];
+    for (let i = 0; i < n; i++) { if (i) cols.push("auto"); cols.push("auto"); }
+    let h = "";
+    set.names.forEach((nm, i) => { if (i) h += "<span></span>"; h += `<span class="fh${sel.includes(i + 1) ? " on" : ""}">f${i + 1}<br>${esc(nm)}</span>`; });
+    (lines || set.lines).forEach(l => l.split(set.d).forEach((f, i) => {
+      if (i) h += `<span class="sp">${set.d === " " ? "␣" : esc(set.d)}</span>`;
+      h += `<span class="fc ${sel.includes(i + 1) ? "on" : "off"}">${esc(f)}</span>`;
+    }));
+    return { html: h, cols: cols.join(" ") };
+  }
+  $("#cutBtns").innerHTML = cuts.map(([k, , f], i) => `<button class="btn" data-k="${i}">cut ${CUTSETS[k].dopt} ${f}</button>`).join("");
+  const cutB = $$("#cutBtns .btn");
+  function showCut(i) {
+    const [k, sel, f, note] = cuts[i], set = CUTSETS[k];
+    const g = fieldGrid(set, sel);
+    $("#cutGrid").style.gridTemplateColumns = g.cols; $("#cutGrid").innerHTML = g.html;
+    const out = set.lines.map(l => { const F = l.split(set.d); return sel.map(x => F[x - 1]).join(set.d); });
+    $("#cutOut").innerHTML = `${P}${esc(set.src)} | cut ${esc(set.dopt)} ${f}\n` + out.map(O).join("\n");
+    $("#cutNote").textContent = note;
+    pressOne(cutB, cutB[i]);
+  }
+  cutB.forEach(b => b.onclick = () => showCut(+b.dataset.k));
+  showCut(0);
+
   /* ---------- 7. Pipe, bucată cu bucată ---------- */
   const ST = {
     cut3: ["cut -d' ' -f3", L => F.cut(L, 3)],
@@ -1380,6 +1474,26 @@ Shell-ul face expandarea mastilor inainte sa porneasca grep.`.split("\n");
   r2B.forEach(b => b.onclick = () => showRun2(+b.dataset.k));
   showRun2(0);
 
+
+  /* ---------- Scheme pentru fișa de comenzi ---------- */
+  const SAMPLE = JURNAL.slice(2, 8).map(l => l.slice(11));
+  const bars = (L, f) => `<div class="bars">${L.map((x, i) => `<span class="${f(x, i) || ""}">${esc(x)}</span>`).join("")}</div>`;
+  const VIS = {
+    "grep": () => bars(SAMPLE, x => x.includes("esuat") ? "on" : "") + `<div class="vcap">grep esuat · trec doar liniile verzi</div>`,
+    "sort": () => `<div class="vrow"><div class="wlist">${wl(["root", "ana", "cristi", "bogdan"], false)}</div><div class="va">→</div><div class="wlist">${wl(["ana", "bogdan", "cristi", "root"], false)}</div></div><div class="vcap">sort · liniile în ordine alfabetică</div>`,
+    "uniq": () => `<div class="vrow"><div class="wlist">${wl(["ana", "ana", "root", "root", "root"], true)}</div><div class="va">→</div><div class="wlist">${wl(F.uniqc(["ana", "ana", "root", "root", "root"]).map(x => x.trim()), false)}</div></div><div class="vcap">uniq -c · dublurile vecine devin o linie, cu numărul lor</div>`,
+    "wc": () => { const t = ["ana login ok", "bogdan login ok", "root ssh esuat"]; const w = t.join(" ").split(" ").length, c = t.join("\n").length + 1;
+      return `<div class="wcbox">${esc(t.join("\n"))}</div><div class="vrow"><span class="vb on">${t.length} linii (-l)</span><span class="vb">${w} cuvinte (-w)</span><span class="vb">${c} octeți (-c)</span></div>`; },
+    "cut": () => { const g = fieldGrid(CUTSETS.J, [3], JURNAL.slice(0, 2)); return `<div class="fgrid" style="grid-template-columns:${g.cols};font-size:15px">${g.html}</div><div class="vcap">cut -d' ' -f3 · păstrează doar coloana 3</div>`; },
+    "tr": () => `<div class="vrow"><div class="chs">${[..."salut"].map(c => `<span>${c}</span>`).join("")}</div><div class="va">→</div><div class="chs up">${[..."SALUT"].map(c => `<span>${c}</span>`).join("")}</div></div><div class="vcap">tr 'a-z' 'A-Z' · fiecare literă mică devine literă mare, una câte una</div>`,
+    "head": () => bars(SAMPLE, (x, i) => i < 2 ? "on" : "") + `<div class="vcap">head -n 2 · primele două linii</div>`,
+    "tail": () => bars(SAMPLE, (x, i) => i >= SAMPLE.length - 2 ? "on" : "") + `<div class="vcap">tail -n 2 · ultimele două linii</div>`,
+    "tee": () => `<div class="tee"><span class="vb">grep esuat</span><span class="va">→</span><span class="vb on">tee esuate.out</span><span class="va">→</span><span class="vb">wc -l</span><span class="down">↓</span><span class="vb file">esuate.out</span></div><div class="vcap">tee · o copie merge în fișier, restul curge mai departe în pipe</div>`,
+    "less": () => `<div class="pager">${bars(JURNAL.slice(0, 7).map(l => l.slice(11)), (x, i) => i < 4 ? "on" : "")}<div class="win"><b>ce vezi acum</b></div></div><div class="vcap">less · o fereastră care se mută cu săgețile; q iese</div>`,
+    "diff": () => `<div class="vrow">${bars(["ana", "bogdan", "root"], (x, i) => i === 2 ? "del" : "").replace('class="bars"', 'class="bars" style="width:150px"')}<div class="va">⇄</div>${bars(["ana", "bogdan", "cristi"], (x, i) => i === 2 ? "add" : "").replace('class="bars"', 'class="bars" style="width:150px"')}</div><div class="vcap">diff · arată doar liniile care diferă: &lt; root, &gt; cristi</div>`,
+    "/dev/null": () => `<div class="vrow"><span class="vb">mesaje de eroare</span><span class="va">→</span><span class="vb on">/dev/null</span><span class="va">→</span><svg width="44" height="48" viewBox="0 0 44 48" aria-hidden="true"><path d="M8 12h28l-3 32H11z" fill="none" stroke="var(--muted)" stroke-width="2.5" stroke-linejoin="round"/><path d="M4 12h36M16 6h12" stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round"/></svg></div><div class="vcap">/dev/null · ce trimiți acolo dispare</div>`
+  };
+
   /* ---------- 16. Comenzi ---------- */
   const cmds = [
     ["grep", "caută", "Păstrează liniile care conțin [[tipar|tiparul]]. -i fără majuscule, -v invers, -n cu număr, -c doar numără.", "grep -c esuat jurnal.txt\n9"],
@@ -1400,6 +1514,7 @@ Shell-ul face expandarea mastilor inainte sa porneasca grep.`.split("\n");
   function showCmd(k) {
     const [c, , x, ex] = cmds[k];
     $("#cmdTitle").innerHTML = `<code>${c}</code>`; $("#cmdText").innerHTML = gl(x);
+    $("#cmdVis").innerHTML = VIS[c] ? VIS[c]() : "";
     const isCmd = l => /^(grep|sort|cut|wc|tr|head|tail|echo|man|diff|find)\b/.test(l);
     $("#cmdTerm").innerHTML = ex.split("\n").map(l => isCmd(l) ? `${P}${esc(l)}` : `<span class="d">${esc(l)}</span>`).join("\n");
     pressOne(cBtns, cBtns[k]);
