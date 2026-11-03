@@ -282,6 +282,7 @@ tutoriat-02/
 ├── README.md                      # Prezentul breviar teoretic și ghid
 ├── slides.html                    # Slide-urile interactive (deschide în browser, navighezi cu ← →)
 ├── slides.pdf                     # Export static al slide-urilor, pentru printat
+├── img/                           # Capturi reale de terminal (t2-*.png), folosite în slide-uri
 ├── schelet/                       # Codul de lucru pentru studenți
 │   ├── Makefile                   # Compilare, teste, pipeline, valgrind
 │   ├── exercitiu.c                # Mini-grep cu instrucțiuni /* TODO */
