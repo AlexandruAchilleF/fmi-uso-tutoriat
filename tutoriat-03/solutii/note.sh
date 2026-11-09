@@ -28,28 +28,19 @@ if [ ! -f "$1" ]; then
 fi
 echo "OK, citesc notele din $1"
 
-ex "2: Cati studenti sunt in fisier?"
-# $( ) ruleaza comanda si pune ce a afisat ea in variabila. Fara spatii la =.
-n=$(wc -l < "$1")
-echo "Sunt $n studenti in $1"
-
-ex "3: Cate linii are fiecare fisier din folder?"
-# for ia pe rand fiecare cuvant din lista; shell-ul transforma *.txt in numele fisierelor
-for f in *.c *.sh *.txt; do
-    echo "$f: $(wc -l < "$f") linii"
-done
-
-ex "4: Media fiecarui student, calculata in bash"
+ex "2: Media fiecarui student, calculata in bash"
 # read imparte fiecare linie in cuvinte: primul in nume, apoi n1, n2, n3.
 # $(( )) face calcule, dar DOAR cu numere intregi: 29 / 3 = 9, nu 9.67.
 while read -r nume n1 n2 n3; do
     echo "$nume: $(( (n1 + n2 + n3) / 3 ))"
 done < "$1"
 
-ex "5: Cine a promovat? Intrebam programul C"
+ex "3: Cine a promovat? Intrebam programul C"
 if [ -x ./exercitiu ]; then
     promovati=0
+    total=0
     while read -r nume n1 n2 n3; do
+        total=$(( total + 1 ))
         media=$(./exercitiu "$n1" "$n2" "$n3")   # stdout-ul programului intra in variabila
         if [ $? -eq 0 ]; then                    # $? = codul de iesire al lui ./exercitiu
             echo "$nume: $media promovat"
@@ -58,7 +49,7 @@ if [ -x ./exercitiu ]; then
             echo "$nume: $media restant"
         fi
     done < "$1"
-    echo "Promovati: $promovati din $n"
+    echo "Promovati: $promovati din $total"
 else
     echo "Compileaza intai programul C cu: make"
 fi

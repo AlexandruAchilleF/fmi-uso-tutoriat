@@ -26,31 +26,23 @@ ex "1: Verifica argumentul primit"
 todo
 echo "OK, citesc notele din $1"
 
-ex "2: Cati studenti sunt in fisier?"
-# TODO: pune in variabila n numarul de linii din "$1" (indiciu: n=$(wc -l < "$1"), fara spatii la =)
-#       apoi afiseaza: Sunt 6 studenti in note.txt
-todo
-
-ex "3: Cate linii are fiecare fisier din folder?"
-# TODO: for f in *.c *.sh *.txt; do ... done
-#       pentru fiecare fisier afiseaza: note.txt: 6 linii
-todo
-
-ex "4: Media fiecarui student, calculata in bash"
+ex "2: Media fiecarui student, calculata in bash"
 # TODO: citeste "$1" linie cu linie:  while read -r nume n1 n2 n3; do ... done < "$1"
 #       si afiseaza media intreaga cu $(( (n1 + n2 + n3) / 3 )), de forma: ana: 9
 #       Observa ce iese la diana (10 9 10). De ce?
 todo
 
-ex "5: Cine a promovat? Intrebam programul C"
+ex "3: Cine a promovat? Intrebam programul C"
 if [ -x ./exercitiu ]; then
     promovati=0
-    # TODO: acelasi while read ca la ex. 4, dar pentru fiecare student:
+    total=0
+    # TODO: acelasi while read ca la ex. 2, dar pentru fiecare student:
     #         media=$(./exercitiu "$n1" "$n2" "$n3")
     #         daca $? este 0 -> "ana: 9.00 promovat" si promovati=$(( promovati + 1 ))
     #         altfel         -> "bogdan: 4.00 restant"
+    #       si la fiecare student: total=$(( total + 1 ))
     todo
-    echo "Promovati: $promovati din $n"
+    echo "Promovati: $promovati din $total"
 else
     echo "Compileaza intai programul C cu: make"
 fi

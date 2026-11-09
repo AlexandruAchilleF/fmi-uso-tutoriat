@@ -219,7 +219,7 @@ $ ./exercitiu 7 abc; echo "cod: $?"
 cod: 2
 ```
 
-Pe lângă programul C, fișierul `note.sh` conține **5 exerciții scurte** de scripting, fiecare cu un indiciu. Ultimul folosește programul vostru: pentru fiecare student din `note.txt` îl apelează pe `./exercitiu` și decide, după `$?`, dacă a promovat.
+Pe lângă programul C, fișierul `note.sh` conține **3 exerciții scurte** de scripting, fiecare cu un indiciu. Ultimul folosește programul vostru: pentru fiecare student din `note.txt` îl apelează pe `./exercitiu` și decide, după `$?`, dacă a promovat.
 
 ---
 
@@ -234,12 +234,12 @@ tutoriat-03/
 ├── schelet/                       # Codul de lucru pentru studenți
 │   ├── Makefile                   # Compilare, teste, script, valgrind
 │   ├── exercitiu.c                # Media notelor, cu instrucțiuni /* TODO */
-│   ├── note.sh                    # 5 exerciții de scripting (de completat)
+│   ├── note.sh                    # 3 exerciții de scripting (de completat)
 │   └── note.txt                   # Un student pe linie: nume nota1 nota2 nota3
 ├── solutii/                       # Soluțiile complete
 │   ├── Makefile
 │   ├── exercitiu.c
-│   ├── note.sh                    # Toate cele 5 exerciții rezolvate și explicate
+│   ├── note.sh                    # Toate cele 3 exerciții rezolvate și explicate
 │   └── note.txt
 └── kahoot/                        # Quiz-ul săptămânal (păstrat local, nu e public)
 ```
@@ -250,7 +250,7 @@ tutoriat-03/
    ```bash
    cd tutoriat-03/schelet
    ```
-2. **Exercițiile 1–4 din `note.sh`** (doar Bash). Rulați după fiecare:
+2. **Exercițiile 1–2 din `note.sh`** (doar Bash). Rulați după fiecare:
    ```bash
    bash note.sh note.txt
    ```
@@ -260,7 +260,7 @@ tutoriat-03/
    make            # compilează cu -Wall -Wextra -std=c11 -pedantic -g
    make test       # 5 teste: fără note, promovat, restant, zecimale, notă invalidă
    ```
-5. **Exercițiul 5 din `note.sh`**, care folosește programul vostru:
+5. **Exercițiul 3 din `note.sh`**, care folosește programul vostru:
    ```bash
    make script     # echivalent cu: bash note.sh note.txt
    ```
