@@ -36,6 +36,8 @@ fmi-uso-tutoriat/
 │
 ├── tutoriat-02/                       # aceeasi structura, plus pipeline.sh (exercitii cu pipe-uri)
 │   └── ...
+├── tutoriat-03/                       # aceeasi structura, plus note.sh (exercitii de scripting)
+│   └── ...
 └── tutoriat-10/
 ```
 ---
@@ -46,7 +48,7 @@ fmi-uso-tutoriat/
 | :--- | :--- | :--- |
 | **[Tutoriat 01](tutoriat-01/)** | Arhitectura Linux, Kernel/User Mode, CLI de Baza | `cd`, `ls -la`, `mkdir`, `cp`, `mv`, `$PATH`, `gcc -Wall` |
 | **[Tutoriat 02](tutoriat-02/)** | Utilitare Text, Filtre, Despecializare si Redirectari (+ bonus: primul contact cu Valgrind) | `grep`, `sort`, `uniq`, `wc`, `cut`, pipe `\|`, redirectari `<`, `>`, `2>`, ghilimele `' '` / `" "`|
-| **Tutoriat 03** | Shell Scripting in Bash: Conditii, Bucle si Automatizari | `if [ ... ]`, `test`, `for`, `while read`, `$1..$n`, `$(( ))`, `$( )`|
+| **[Tutoriat 03](tutoriat-03/)** | Shell Scripting in Bash: Conditii, Bucle si Automatizari | `if [ ... ]`, `test`, `for`, `while read`, `$1..$n`, `$(( ))`, `$( )`|
 | **Tutoriat 04** | Interfata C: Apeluri Sistem vs Biblioteca Standard C, Depanare cu Valgrind | TRAP, `errno`, `perror()`, `open()`, `read()`, `write()`, `FILE*`, `valgrind --leak-check=full --track-fds=yes` |
 | **Tutoriat 05** | Sistemul de Fisiere EXT: I-noduri, Links si Directoare in C | `lseek()`, `dup2()`, `link()`, `symlink()`, `opendir()`, `readdir()`|
 | **Tutoriat 06** | Metadate Fisiere, Drepturi rwx, Biti Speciali si Useri | `stat()`, `chmod()`, SUID, SGID, Sticky bit, `getpwuid()`, `umask()` |

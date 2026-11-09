@@ -1,0 +1,6 @@
+ana 9 10 8
+bogdan 4 5 3
+cristi 7 6 8
+diana 10 9 10
+elena 5 4 5
+florin 6 5 5
