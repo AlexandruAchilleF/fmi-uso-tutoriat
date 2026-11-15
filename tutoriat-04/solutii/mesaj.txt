@@ -1,0 +1,4 @@
+Salut! Acesta este fisierul pe care il copiem.
+Programul nostru il citeste cu read() cate 64 de octeti
+si scrie fiecare bucata cu write() in fisierul nou.
+La final, cmp trebuie sa spuna ca sunt identice.

@@ -38,6 +38,8 @@ fmi-uso-tutoriat/
 │   └── ...
 ├── tutoriat-03/                       # aceeasi structura, plus note.sh (exercitii de scripting)
 │   └── ...
+├── tutoriat-04/                       # aceeasi structura, plus verifica.sh (exercitii Bash cu programul C)
+│   └── ...
 └── tutoriat-10/
 ```
 ---
@@ -49,7 +51,7 @@ fmi-uso-tutoriat/
 | **[Tutoriat 01](tutoriat-01/)** | Arhitectura Linux, Kernel/User Mode, CLI de Baza | `cd`, `ls -la`, `mkdir`, `cp`, `mv`, `$PATH`, `gcc -Wall` |
 | **[Tutoriat 02](tutoriat-02/)** | Utilitare Text, Filtre, Despecializare si Redirectari (+ bonus: primul contact cu Valgrind) | `grep`, `sort`, `uniq`, `wc`, `cut`, pipe `\|`, redirectari `<`, `>`, `2>`, ghilimele `' '` / `" "`|
 | **[Tutoriat 03](tutoriat-03/)** | Shell Scripting in Bash: Conditii, Bucle si Automatizari | `if [ ... ]`, `test`, `for`, `while read`, `$1..$n`, `$(( ))`, `$( )`|
-| **Tutoriat 04** | Interfata C: Apeluri Sistem vs Biblioteca Standard C, Depanare cu Valgrind | TRAP, `errno`, `perror()`, `open()`, `read()`, `write()`, `FILE*`, `valgrind --leak-check=full --track-fds=yes` |
+| **[Tutoriat 04](tutoriat-04/)** | Interfata C: Apeluri Sistem vs Biblioteca Standard C, citirea unui raport Valgrind | descriptori `0/1/2`, `open()`, `read()`, `write()`, `close()`, `errno`, `perror()`, `FILE*` vs `fd`, `valgrind --leak-check=full --track-fds=yes` |
 | **Tutoriat 05** | Sistemul de Fisiere EXT: I-noduri, Links si Directoare in C | `lseek()`, `dup2()`, `link()`, `symlink()`, `opendir()`, `readdir()`|
 | **Tutoriat 06** | Metadate Fisiere, Drepturi rwx, Biti Speciali si Useri | `stat()`, `chmod()`, SUID, SGID, Sticky bit, `getpwuid()`, `umask()` |
 | **Tutoriat 07** | Procese I: Memorie Virtuala, `fork()`, `wait()` si COW | `fork()`, Copy-on-Write, starile proceselor, Zombie, Orfani, `waitpid()`|
@@ -112,7 +114,7 @@ sudo apt install -y build-essential gcc gdb make valgrind tmux manpages-dev manp
 
 * **build-essential, gcc, make**: compilatorul C si utilitarele de asamblare si legare.
 * **manpages-dev, manpages-posix-dev**: documentatia completa offline a apelurilor sistem si functiilor de biblioteca (accesibile prin `man 2 <apel>` sau `man 3 <functie>`).
-* **valgrind**: detecteaza scurgerile de memorie (`malloc` fara `free`), accesele invalide la memorie si descriptorii de fisier lasati deschisi. Il incercam in Tutoriatul 02 (`make valgrind`) si il folosim pe larg din Tutoriatul 04.
+* **valgrind**: detecteaza scurgerile de memorie (`malloc` fara `free`), accesele invalide la memorie si descriptorii de fisier lasati deschisi. Il incercam in Tutoriatul 02 (`make valgrind`), iar in Tutoriatul 04 invatam sa citim raportul. Merge doar pe Linux; exercitiile din Tutoriatul 04 nu au nevoie de el, deci merg si pe macOS.
 * **tmux**: utilitar pentru impartirea ecranului de terminal intre editor si consola.
 
 ---
