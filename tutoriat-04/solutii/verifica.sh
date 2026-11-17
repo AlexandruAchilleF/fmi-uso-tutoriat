@@ -32,14 +32,3 @@ if cmp -s mesaj.txt copie.txt; then
 else
     echo "GRESIT: fisierele difera" >&2
 fi
-
-ex "3: Backup pentru toate fisierele .txt"
-mkdir -p backup
-copii=0
-for f in *.txt; do
-    if ./exercitiu "$f" "backup/$f" > /dev/null; then   # > /dev/null ascunde mesajul "Am copiat"
-        copii=$(( copii + 1 ))
-    fi
-done
-echo "Am facut $copii copii in backup/:"
-ls backup

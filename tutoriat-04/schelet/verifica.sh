@@ -33,13 +33,3 @@ ex "2: Copia este identica?"
 # TODO: verifica cu  if cmp -s mesaj.txt copie.txt; then ... else ... fi
 #       cmp -s nu afiseaza nimic: raspunde doar prin $? (0 = identice)
 todo
-
-ex "3: Backup pentru toate fisierele .txt"
-mkdir -p backup
-copii=0
-# TODO: for f in *.txt; do ... done
-#       pentru fiecare fisier: ./exercitiu "$f" "backup/$f" > /dev/null
-#       daca a reusit (if ./exercitiu ...; then), creste copii=$(( copii + 1 ))
-todo
-echo "Am facut $copii copii in backup/:"
-ls backup

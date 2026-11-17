@@ -203,7 +203,7 @@ lipsa.txt: No such file or directory
 cod: 1
 ```
 
-Pe lângă programul C, `verifica.sh` are **3 exerciții scurte** de Bash care folosesc programul vostru: prind eroarea într-un fișier (`2>`), verifică copia cu `cmp` și fac backup la toate fișierele `.txt`.
+Pe lângă programul C, `verifica.sh` are **2 exerciții scurte** de Bash care folosesc programul vostru: prind eroarea într-un fișier (`2>`) și verifică copia cu `cmp`.
 
 ---
 
@@ -218,7 +218,7 @@ tutoriat-04/
 ├── schelet/                       # Codul de lucru pentru studenți
 │   ├── Makefile                   # Compilare, teste, script
 │   ├── exercitiu.c                # Mini cp, cu instrucțiuni /* TODO */
-│   ├── verifica.sh                # 3 exerciții de Bash (de completat)
+│   ├── verifica.sh                # 2 exerciții de Bash (de completat)
 │   └── mesaj.txt                  # Fișierul pe care îl copiem
 ├── solutii/                       # Soluțiile complete
 │   ├── Makefile
@@ -249,7 +249,7 @@ tutoriat-04/
    ```bash
    make script     # echivalent cu: bash verifica.sh
    ```
-   La final trebuie să vedeți `Am facut 3 copii in backup/`.
+   La final trebuie să vedeți `OK: copie.txt este identic cu mesaj.txt`.
 5. **Curățați fișierele generate:** `make clean`.
 
 ---

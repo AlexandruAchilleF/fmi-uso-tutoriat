@@ -57,4 +57,3 @@ script: all
 
 clean:
 	rm -f $(TARGET) $(OBJS) *.o *.out copie.txt erori.txt
-	rm -rf backup
