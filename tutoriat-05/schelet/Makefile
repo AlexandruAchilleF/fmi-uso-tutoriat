@@ -8,7 +8,7 @@ TARGET = exercitiu
 SRCS = exercitiu.c
 OBJS = $(SRCS:.c=.o)
 
-.PHONY: all run demo clean test script
+.PHONY: all run demo clean test
 
 all: $(TARGET)
 
@@ -63,8 +63,5 @@ test: all demo
 	@echo "=========================================================="
 	-./$(TARGET) Makefile; echo "Cod de retur (echo \$$?): $$?"
 
-script: all demo
-	bash legaturi.sh
-
 clean:
-	rm -rf $(TARGET) $(OBJS) *.o *.out demo lab
+	rm -rf $(TARGET) $(OBJS) *.o *.out demo

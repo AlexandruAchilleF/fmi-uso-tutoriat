@@ -195,7 +195,6 @@ cod: 1
 
 Numerele de i-nod și ordinea liniilor diferă de la un calculator la altul.
 
-Pe lângă programul C, `legaturi.sh` are **2 exerciții scurte** de Bash: unul cu `ln` / `ln -s` (ce rămâne după ce ștergi originalul) și unul care găsește hard link-urile din `demo/` cu programul vostru și un pipe.
 
 ---
 
@@ -208,17 +207,15 @@ tutoriat-05/
 ├── slides.pdf                     # Export static al slide-urilor, pentru printat
 ├── img/                           # Capturile de terminal folosite în slide-uri
 ├── schelet/                       # Codul de lucru pentru studenți
-│   ├── Makefile                   # Compilare, demo/, teste, script
-│   ├── exercitiu.c                # Mini ls -i, cu instrucțiuni /* TODO */
-│   └── legaturi.sh                # 2 exerciții de Bash (de completat)
+│   ├── Makefile                   # Compilare, demo/, teste
+│   └── exercitiu.c                # Mini ls -i, cu instrucțiuni /* TODO */
 ├── solutii/                       # Soluțiile complete
 │   ├── Makefile
-│   ├── exercitiu.c
-│   └── legaturi.sh
+│   └── exercitiu.c
 └── kahoot/                        # Quiz-ul săptămânal (păstrat local, nu e public)
 ```
 
-Folderul `demo/` nu e în git (git nu păstrează hard link-urile): îl face `make demo`, iar `make test` și `make script` îl fac singure.
+Folderul `demo/` nu e în git (git nu păstrează hard link-urile): îl face `make demo`, iar `make test` și `make run` îl refac singure.
 
 ### Pași de urmat la laborator:
 
@@ -232,11 +229,7 @@ Folderul `demo/` nu e în git (git nu păstrează hard link-urile): îl face `ma
    make            # compilează cu -Wall -Wextra -std=c11 -pedantic -g
    make test       # 5 teste: argumente, listare, comparație cu ls -i, director lipsă, fișier în loc de director
    ```
-4. **Exercițiile din `legaturi.sh`:**
-   ```bash
-   make script     # face demo/ și rulează: bash legaturi.sh
-   ```
-5. **Curățați fișierele generate:** `make clean` (șterge și `demo/`, și `lab/`).
+4. **Curățați fișierele generate:** `make clean` (șterge și `demo/`).
 
 Pe macOS: o singură dată `xcode-select --install`, apoi aceleași comenzi.
 
