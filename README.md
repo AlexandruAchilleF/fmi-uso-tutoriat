@@ -40,6 +40,8 @@ fmi-uso-tutoriat/
 │   └── ...
 ├── tutoriat-04/                       # aceeasi structura, plus verifica.sh (exercitii Bash cu programul C)
 │   └── ...
+├── tutoriat-05/                       # aceeasi structura, plus legaturi.sh (exercitii cu ln si ln -s)
+│   └── ...
 └── tutoriat-10/
 ```
 ---
@@ -52,7 +54,7 @@ fmi-uso-tutoriat/
 | **[Tutoriat 02](tutoriat-02/)** | Utilitare Text, Filtre, Despecializare si Redirectari (+ bonus: primul contact cu Valgrind) | `grep`, `sort`, `uniq`, `wc`, `cut`, pipe `\|`, redirectari `<`, `>`, `2>`, ghilimele `' '` / `" "`|
 | **[Tutoriat 03](tutoriat-03/)** | Shell Scripting in Bash: Conditii, Bucle si Automatizari | `if [ ... ]`, `test`, `for`, `while read`, `$1..$n`, `$(( ))`, `$( )`|
 | **[Tutoriat 04](tutoriat-04/)** | Interfata C: Apeluri Sistem vs Biblioteca Standard C, citirea unui raport Valgrind | descriptori `0/1/2`, `open()`, `read()`, `write()`, `close()`, `errno`, `perror()`, `FILE*` vs `fd`, `valgrind --leak-check=full --track-fds=yes` |
-| **Tutoriat 05** | Sistemul de Fisiere EXT: I-noduri, Links si Directoare in C | `lseek()`, `dup2()`, `link()`, `symlink()`, `opendir()`, `readdir()`|
+| **[Tutoriat 05](tutoriat-05/)** | Sistemul de Fisiere EXT: I-noduri, Links si Directoare in C | `ls -i`, `ln`, `ln -s`, `link()`, `symlink()`, `opendir()`, `readdir()`, `closedir()`|
 | **Tutoriat 06** | Metadate Fisiere, Drepturi rwx, Biti Speciali si Useri | `stat()`, `chmod()`, SUID, SGID, Sticky bit, `getpwuid()`, `umask()` |
 | **Tutoriat 07** | Procese I: Memorie Virtuala, `fork()`, `wait()` si COW | `fork()`, Copy-on-Write, starile proceselor, Zombie, Orfani, `waitpid()`|
 | **Tutoriat 08** | Procese II: Familia `exec`, Mediu si Construire Mini-Shell | `execvp()`, `environ`, `getcwd()`, comenzi interne vs externe|
