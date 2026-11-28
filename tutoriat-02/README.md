@@ -288,13 +288,12 @@ tutoriat-02/
 │   ├── pipeline.sh                # 5 exerciții cu pipe-uri și redirectări (de completat)
 │   ├── date.in                    # Text de test pentru exercitiu.c
 │   └── jurnal.txt                 # Jurnal de autentificări pentru exercițiile cu pipe-uri
-├── solutii/                       # Soluțiile complete demonstrate la tablă
-│   ├── Makefile
-│   ├── exercitiu.c                # Mini-grep complet implementat și documentat
-│   ├── pipeline.sh                # Toate cele 5 exerciții rezolvate și explicate
-│   ├── date.in
-│   └── jurnal.txt
-└── kahoot/                        # Quiz-ul săptămânal (păstrat local, nu e public)
+└── solutii/                       # Soluțiile complete demonstrate la tablă
+    ├── Makefile
+    ├── exercitiu.c                # Mini-grep complet implementat și documentat
+    ├── pipeline.sh                # Toate cele 5 exerciții rezolvate și explicate
+    ├── date.in
+    └── jurnal.txt
 ```
 
 ### Pași de urmat la laborator:

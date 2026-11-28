@@ -228,10 +228,9 @@ tutoriat-06/
 ├── schelet/                       # Codul de lucru pentru studenți
 │   ├── Makefile                   # Compilare, demo/, teste
 │   └── exercitiu.c                # Mini ls -l, cu instrucțiuni /* TODO */
-├── solutii/                       # Soluțiile complete
-│   ├── Makefile
-│   └── exercitiu.c
-└── kahoot/                        # Quiz-ul săptămânal (păstrat local, nu e public)
+└── solutii/                       # Soluțiile complete
+    ├── Makefile
+    └── exercitiu.c
 ```
 
 Folderul `demo/` nu e în git (git păstrează doar bitul `x`, nu și restul drepturilor): îl face `make demo`, iar `make test` și `make run` îl refac singure.

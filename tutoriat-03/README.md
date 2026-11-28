@@ -236,12 +236,11 @@ tutoriat-03/
 │   ├── exercitiu.c                # Media notelor, cu instrucțiuni /* TODO */
 │   ├── note.sh                    # 3 exerciții de scripting (de completat)
 │   └── note.txt                   # Un student pe linie: nume nota1 nota2 nota3
-├── solutii/                       # Soluțiile complete
-│   ├── Makefile
-│   ├── exercitiu.c
-│   ├── note.sh                    # Toate cele 3 exerciții rezolvate și explicate
-│   └── note.txt
-└── kahoot/                        # Quiz-ul săptămânal (păstrat local, nu e public)
+└── solutii/                       # Soluțiile complete
+    ├── Makefile
+    ├── exercitiu.c
+    ├── note.sh                    # Toate cele 3 exerciții rezolvate și explicate
+    └── note.txt
 ```
 
 ### Pași de urmat la laborator:

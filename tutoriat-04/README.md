@@ -220,12 +220,11 @@ tutoriat-04/
 │   ├── exercitiu.c                # Mini cp, cu instrucțiuni /* TODO */
 │   ├── verifica.sh                # 2 exerciții de Bash (de completat)
 │   └── mesaj.txt                  # Fișierul pe care îl copiem
-├── solutii/                       # Soluțiile complete
-│   ├── Makefile
-│   ├── exercitiu.c
-│   ├── verifica.sh
-│   └── mesaj.txt
-└── kahoot/                        # Quiz-ul săptămânal (păstrat local, nu e public)
+└── solutii/                       # Soluțiile complete
+    ├── Makefile
+    ├── exercitiu.c
+    ├── verifica.sh
+    └── mesaj.txt
 ```
 
 ### Ce vă trebuie

@@ -337,14 +337,11 @@ tutoriat-01/
 │   ├── Makefile                   # Automatizarea compilarii
 │   ├── exercitiu.c                # Scheletul C cu instructiuni /* TODO */
 │   └── date.in                    # Fisier de intrare pentru teste
-├── solutii/                       # Solutiile complete demonstrate la tabla
-│   ├── Makefile                   # Makefile-ul complet
-│   ├── exercitiu.c                # Programul C complet implementat si documentat
-│   ├── date.in                    # Datele de intrare demonstrative
-│   └── setup_bashrc.sh            # Script Bash de configurare personala a mediului
-└── kahoot/                        # Quiz-ul saptamanal complet explicat
-    ├── README.md                  # Intrebarile, variantele si explicatiile pe larg
-    └── quiz.json                  # Format structurat pentru import rapid
+└── solutii/                       # Solutiile complete demonstrate la tabla
+    ├── Makefile                   # Makefile-ul complet
+    ├── exercitiu.c                # Programul C complet implementat si documentat
+    ├── date.in                    # Datele de intrare demonstrative
+    └── setup_bashrc.sh            # Script Bash de configurare personala a mediului
 ```
 
 ### Pași de urmat la laborator:

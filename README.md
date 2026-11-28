@@ -29,10 +29,9 @@ fmi-uso-tutoriat/
 │   │   ├── Makefile                   # Automatizarea compilării
 │   │   ├── exercitiu.c
 │   │   └── date.in
-│   ├── solutii/                       # Rezolvările complete explicate și testate
-│   │   ├── Makefile
-│   │   └── exercitiu.c
-│   └── kahoot/                        # Întrebările din quiz, variantele de răspuns și explicații
+│   └── solutii/                       # Rezolvările complete explicate și testate
+│       ├── Makefile
+│       └── exercitiu.c
 │
 ├── tutoriat-02/                       # aceeasi structura, plus pipeline.sh (exercitii cu pipe-uri)
 │   └── ...
@@ -42,10 +41,14 @@ fmi-uso-tutoriat/
 │   └── ...
 ├── tutoriat-05/                       # aceeasi structura (fara script Bash; demo/ se face cu make demo)
 │   └── ...
-├── tutoriat-06/                       # aceeasi structura (fara script Bash; demo/ se face cu make demo)
-│   └── ...
-└── tutoriat-10/
+└── tutoriat-06/                       # aceeasi structura (fara script Bash; demo/ se face cu make demo)
+    └── ...
 ```
+
+Incepand cu Tutoriatul 02, fiecare folder are si `img/`, cu capturile de terminal folosite in slide-uri. Tutoriatele 07–10 vor fi adaugate pe parcursul semestrului.
+
+Quiz-urile Kahoot nu sunt in repository: le jucam in timpul tutoriatului, ca sa nu fie vazute dinainte.
+
 ---
 
 ## Planul Celor 10 Tutoriate
