@@ -29,5 +29,6 @@ bin/
 # Quiz-uri Kahoot (pastrate local pentru a nu fi vazute in avans de studenti)
 **/kahoot/
 
-# Folder generat de make in tutoriat-05 (demo/ cu hard link-uri)
+# Foldere generate de make (demo/ cu hard link-uri in T05, cu drepturi in T06)
 tutoriat-05/*/demo/
+tutoriat-06/*/demo/

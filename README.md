@@ -42,6 +42,8 @@ fmi-uso-tutoriat/
 │   └── ...
 ├── tutoriat-05/                       # aceeasi structura (fara script Bash; demo/ se face cu make demo)
 │   └── ...
+├── tutoriat-06/                       # aceeasi structura (fara script Bash; demo/ se face cu make demo)
+│   └── ...
 └── tutoriat-10/
 ```
 ---
@@ -55,7 +57,7 @@ fmi-uso-tutoriat/
 | **[Tutoriat 03](tutoriat-03/)** | Shell Scripting in Bash: Conditii, Bucle si Automatizari | `if [ ... ]`, `test`, `for`, `while read`, `$1..$n`, `$(( ))`, `$( )`|
 | **[Tutoriat 04](tutoriat-04/)** | Interfata C: Apeluri Sistem vs Biblioteca Standard C, citirea unui raport Valgrind | descriptori `0/1/2`, `open()`, `read()`, `write()`, `close()`, `errno`, `perror()`, `FILE*` vs `fd`, `valgrind --leak-check=full --track-fds=yes` |
 | **[Tutoriat 05](tutoriat-05/)** | Sistemul de Fisiere EXT: I-noduri, Links si Directoare in C | `ls -i`, `ln`, `ln -s`, `link()`, `symlink()`, `opendir()`, `readdir()`, `closedir()`|
-| **Tutoriat 06** | Metadate Fisiere, Drepturi rwx, Biti Speciali si Useri | `stat()`, `chmod()`, SUID, SGID, Sticky bit, `getpwuid()`, `umask()` |
+| **[Tutoriat 06](tutoriat-06/)** | Metadate Fisiere, Drepturi rwx, Biti Speciali si Useri | `stat()`, `chmod()`, SUID, SGID, Sticky bit, `getpwuid()`, `umask()` |
 | **Tutoriat 07** | Procese I: Memorie Virtuala, `fork()`, `wait()` si COW | `fork()`, Copy-on-Write, starile proceselor, Zombie, Orfani, `waitpid()`|
 | **Tutoriat 08** | Procese II: Familia `exec`, Mediu si Construire Mini-Shell | `execvp()`, `environ`, `getcwd()`, comenzi interne vs externe|
 | **Tutoriat 09** | Comunicare Inter-Proces: Semnale POSIX si Tuburi | `sigaction()`, `kill()`, `pipe()`, capete nefolosite, `mkfifo()`|
@@ -84,7 +86,7 @@ Fiecare sedinta are slide-uri interactive in `slides.html`. Deschide fisierul in
 ### 3. Cum lucrezi la o sedinta de tutoriat
 In timpul tutoriatului, intra direct in folderul `schelet` al laboratorului curent:
 ```bash
-cd tutoriat-05/schelet
+cd tutoriat-06/schelet
 ```
 * In folder vei gasi fisiere `.c` gata pregatite, unde bibliotecile necesare si verificarile initiale de argumente (`argc`/`argv`) sunt deja scrise.
 * Cauta sectiunile marcate cu comentarii de tipul `/* TODO: ... */` si completeaza logica folosind apelurile de sistem discutate.
